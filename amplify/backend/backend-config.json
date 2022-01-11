@@ -1,0 +1,11 @@
+{
+  "auth": {
+    "soplantandroid213d8a13": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

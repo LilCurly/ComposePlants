@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-soplantandroid-dev-154215-authRole",
+      "UnauthRoleArn": "arn:aws:iam::597236252805:role/amplify-soplantandroid-dev-154215-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::597236252805:role/amplify-soplantandroid-dev-154215-authRole",
+      "Region": "eu-west-3",
+      "DeploymentBucketName": "amplify-soplantandroid-dev-154215-deployment",
+      "UnauthRoleName": "amplify-soplantandroid-dev-154215-unauthRole",
+      "StackName": "amplify-soplantandroid-dev-154215",
+      "StackId": "arn:aws:cloudformation:eu-west-3:597236252805:stack/amplify-soplantandroid-dev-154215/831906c0-7223-11ec-8680-0afabf21c8aa",
+      "AmplifyAppId": "d29k0679qdxh0s"
+    },
+    "categories": {
+      "auth": {
+        "soplantandroid213d8a13": {
+          "userPoolId": "eu-west-3_7Gw432LnW",
+          "userPoolName": "soplant_dev",
+          "webClientId": "12gb0ke7nv7a4rbent9cm77t8r",
+          "nativeClientId": "12gb0ke7nv7a4rbent9cm77t8r"
+        }
+      }
+    }
+  }
+}
