@@ -15,7 +15,7 @@ class SoPlantApplication: Application() {
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             Amplify.configure(applicationContext)
-            Log.i("SoPlantApplication", "Initialized Amplify")
+            Log.i("SoPlantApplication", "Initialized Amplifys")
         } catch (error: AmplifyException) {
             Log.e("SoPlantApplication", "Could not initialize Amplify", error)
         }
