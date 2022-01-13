@@ -14,8 +14,24 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val store: Store<LoginViewState, LoginAction>): ViewModel() {
     val state: StateFlow<LoginViewState> = store.state
 
-    private fun loginWithCredentials() {
+    fun loginWithCredentials() {
         val action = LoginAction.LoginClicked
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updateEmail(newEmail: String) {
+        val action = LoginAction.UpdatingUsername(newEmail)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updatePassword(newPassword: String) {
+        val action = LoginAction.UpdatingPassword(newPassword)
 
         viewModelScope.launch {
             store.dispatch(action, this)
