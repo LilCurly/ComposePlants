@@ -1,5 +1,6 @@
 package com.example.soplant.application.network.sources
 
+import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.kotlin.core.Amplify
 import javax.inject.Inject

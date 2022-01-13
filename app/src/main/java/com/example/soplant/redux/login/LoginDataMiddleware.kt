@@ -31,7 +31,11 @@ class LoginDataMiddleware @Inject constructor(val loginWithCredentials: LoginWit
                             close()
                         }
                         Resource.Status.SUCCESS -> {
-                            send(LoginAction.LoginSucceeded)
+                            if (it.data == true) {
+                                send(LoginAction.LoginSucceeded)
+                            } else {
+                                send(LoginAction.LoginFailed)
+                            }
                             close()
                         }
                     }
