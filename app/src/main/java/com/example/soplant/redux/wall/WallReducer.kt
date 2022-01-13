@@ -23,6 +23,8 @@ class WallReducer @Inject constructor(): Reducer<WallAction, WallViewState> {
             }
             is WallAction.WalletLoadingSuccess -> {
                 previousState.copy(isLoadingWallet = false, wallet = currentAction.wallet)
+            } else -> {
+                previousState
             }
         }
     }

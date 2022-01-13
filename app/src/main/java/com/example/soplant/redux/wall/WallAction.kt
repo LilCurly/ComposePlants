@@ -5,9 +5,11 @@ import com.example.soplant.domain.entities.Wallet
 import com.example.soplant.redux.Action
 
 sealed class WallAction: Action {
+    object ShouldLoadProducts: WallAction()
     object ProductLoading: WallAction()
     object ProductLoadingFailed: WallAction()
     data class ProductLoadingSuccess(val products: List<Product>): WallAction()
+    object ShouldLoadWallet: WallAction()
     object WalletLoading: WallAction()
     object WalletLoadingFailed: WallAction()
     data class WalletLoadingSuccess(val wallet: Wallet): WallAction()

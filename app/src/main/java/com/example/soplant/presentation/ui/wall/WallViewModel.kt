@@ -17,7 +17,7 @@ class WallViewModel @Inject constructor(private val store: Store<WallViewState, 
     val state: StateFlow<WallViewState> = store.state
 
     private fun loadProducts() {
-        val action = LoginAction.LoginClicked
+        val action = WallAction.ShouldLoadProducts
 
         viewModelScope.launch {
             store.dispatch(action, this)
@@ -25,11 +25,11 @@ class WallViewModel @Inject constructor(private val store: Store<WallViewState, 
     }
 
     private fun clickProducts() {
-        val action = LoginAction.LoginClicked
+        /*val action = LoginAction.LoginClicked
 
         viewModelScope.launch {
             store.dispatch(action, this)
-        }
+        }*/
     }
 
     private fun loadWallet() {

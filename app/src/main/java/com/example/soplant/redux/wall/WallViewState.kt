@@ -11,7 +11,8 @@ data class WallViewState (
     val products: List<Product>?,
     val isLoadingWallet: Boolean,
     val wallet: Wallet?,
+    val lastProductTimestamp: Long?
 ): State {
     @Inject
-    constructor(): this(true, null, true, null)
+    constructor(): this(true, null, true, null, null)
 }

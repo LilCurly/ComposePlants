@@ -1,14 +1,22 @@
 package com.example.soplant.di
 
+import com.example.soplant.application.network.services.ProductService
 import com.example.soplant.application.repositories.LoginRepositoryImpl
+import com.example.soplant.application.repositories.ProductRepositoryImpl
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
+import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.repositories.LoginRepository
+import com.example.soplant.domain.repositories.ProductsRepository
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginDataMiddleware
 import com.example.soplant.redux.login.LoginReducer
 import com.example.soplant.redux.login.LoginViewState
+import com.example.soplant.redux.wall.WallAction
+import com.example.soplant.redux.wall.WallDataMiddleware
+import com.example.soplant.redux.wall.WallReducer
+import com.example.soplant.redux.wall.WallViewState
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -32,17 +40,17 @@ class ApplicationModule {
 
     // SERVICES
 
-    /*@Provides
+    @Provides
     @Singleton
-    fun provideCoinService(): CoinService {
+    fun provideCoinService(): ProductService {
         return Retrofit
             .Builder()
-            .baseUrl(Constants.BASE_URL)
+            .baseUrl("https://i40wosaqzh.execute-api.eu-west-3.amazonaws.com/v1/product")
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(CoinService::class.java)
-    }*/
+            .create(ProductService::class.java)
+    }
 
     // MIDDLEWARES
 
@@ -50,6 +58,12 @@ class ApplicationModule {
     @Singleton
     fun provideLoginMiddlewares(loginWithCredentials: LoginWithCredentials): List<Middleware<LoginAction, LoginViewState>> {
         return listOf(LoginDataMiddleware(loginWithCredentials))
+    }
+
+    @Provides
+    @Singleton
+    fun provideWallMiddlewares(getOfflineWall: GetOfflineWall): List<Middleware<WallAction, WallViewState>> {
+        return listOf(WallDataMiddleware(getOfflineWall))
     }
 
     @Module
@@ -64,6 +78,12 @@ class ApplicationModule {
             loginRepositoryImpl: LoginRepositoryImpl
         ): LoginRepository
 
+        @Binds
+        @Singleton
+        fun bindWallRepository(
+            productRepositoryImpl: ProductRepositoryImpl
+        ): ProductsRepository
+
         // REDUCERS
 
         @Binds
@@ -71,5 +91,11 @@ class ApplicationModule {
         fun bindLoginReducer(
             loginReducer: LoginReducer
         ): Reducer<LoginAction, LoginViewState>
+
+        @Binds
+        @Singleton
+        fun bindWallReducer(
+            wallReducer: WallReducer
+        ): Reducer<WallAction, WallViewState>
     }
 }

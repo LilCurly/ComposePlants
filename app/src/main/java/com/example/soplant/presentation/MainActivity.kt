@@ -21,6 +21,7 @@ import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.ui.custom.CustomBackground
 import com.example.soplant.presentation.ui.login.ComposeLoginScreen
 import com.example.soplant.presentation.ui.register.ComposeRegisterScreen
+import com.example.soplant.presentation.ui.wall.ComposeWallScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,12 +32,15 @@ class MainActivity : ComponentActivity() {
             SoPlantTheme {
                 CustomBackground(painter = painterResource(id = R.drawable.background), contentDescription = null) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "login") {
+                    NavHost(navController = navController, startDestination = "wall") {
                         composable("login") {
                             ComposeLoginScreen(navController = navController)
                         }
                         composable("register") {
                             ComposeRegisterScreen(navController = navController)
+                        }
+                        composable("wall") {
+                            ComposeWallScreen(navController = navController)
                         }
                     }
                 }

@@ -12,7 +12,7 @@ data class Product(
     val unitaryPriceSeller: String,
     val unitaryPriceDisplay: String,
     val sellerVerified: Boolean,
-    val isVarigated: Boolean,
+    val isVariegated: Boolean,
     val isPetFriendly: Boolean,
     val type: String,
     val isBeginnerFriendly: Boolean,
