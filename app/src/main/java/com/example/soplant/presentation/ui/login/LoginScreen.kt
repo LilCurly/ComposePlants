@@ -8,6 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -42,6 +43,7 @@ import com.example.soplant.R
 import com.example.soplant.presentation.theme.*
 import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
+import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.ui.login.components.SocialButtonComponent
 
 @Composable
@@ -162,11 +164,19 @@ fun ComposeLoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "Don’t have an account already? Signup here.",
-                    style = MaterialTheme.typography.subtitle1,
-                    color = MaterialTheme.colors.onBackground
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth().noRippleClickable {
+                        navController.navigate("register")
+                    },
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = "Don’t have an account already? Signup here.",
+                        style = MaterialTheme.typography.subtitle1,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                }
             }
         }
     }

@@ -20,6 +20,7 @@ import com.example.soplant.R
 import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.ui.custom.CustomBackground
 import com.example.soplant.presentation.ui.login.ComposeLoginScreen
+import com.example.soplant.presentation.ui.register.ComposeRegisterScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +34,9 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = "login") {
                         composable("login") {
                             ComposeLoginScreen(navController = navController)
+                        }
+                        composable("register") {
+                            ComposeRegisterScreen(navController = navController)
                         }
                     }
                 }
