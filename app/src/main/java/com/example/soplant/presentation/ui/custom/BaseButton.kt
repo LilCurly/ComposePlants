@@ -10,13 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BaseButton(modifier: Modifier = Modifier, text: String, onClick: () -> Unit) {
+fun BaseButton(modifier: Modifier = Modifier, text: String, enabled: Boolean = true, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         colors = greenButtonColors(),
         contentPadding = greenButtonContentPadding(),
         elevation = zeroButtonElevation(),
         shape = MaterialTheme.shapes.medium,
+        enabled = enabled,
         modifier = modifier
             .height(50.dp)
     ) {

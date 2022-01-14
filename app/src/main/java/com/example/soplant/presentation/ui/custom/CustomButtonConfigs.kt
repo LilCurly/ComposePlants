@@ -14,7 +14,7 @@ fun lightGreenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
     backgroundColor = GreenAlpha,
     contentColor = MaterialTheme.colors.primary,
     disabledBackgroundColor = GreyLight,
-    disabledContentColor = MaterialTheme.colors.primary
+    disabledContentColor = MaterialTheme.colors.onPrimary
 )
 
 @Composable
@@ -29,8 +29,8 @@ fun lightGreenButtonContentPadding(): PaddingValues = PaddingValues(
 fun greenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
     backgroundColor = MaterialTheme.colors.primary,
     contentColor = MaterialTheme.colors.onPrimary,
-    disabledBackgroundColor = Grey,
-    disabledContentColor = MaterialTheme.colors.primary
+    disabledBackgroundColor = GreyTransparent,
+    disabledContentColor = MaterialTheme.colors.onPrimary
 )
 
 @Composable

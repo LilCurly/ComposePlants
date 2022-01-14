@@ -1,6 +1,7 @@
 package com.example.soplant.application.repositories
 
 import com.example.soplant.application.network.sources.LoginRemoteDataSource
+import com.example.soplant.commons.Constants
 import com.example.soplant.domain.repositories.LoginRepository
 import com.example.soplant.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -16,15 +17,35 @@ class LoginRepositoryImpl @Inject constructor(
         try {
             emit(Resource.loading(null))
             val result = remoteSource.loginWithCredentials(username, password)
-            emit(Resource.success(result))
+            emit(Resource.success(result.operationSuccess))
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(e.localizedMessage ?: "An unexpected error occured"))
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>("You seem to be disconnected"))
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
         }
     }
 
     override fun loginWithSSO() {
         TODO("Not yet implemented")
+    }
+
+    override fun signupUser(
+        email: String,
+        username: String,
+        password: String
+    ): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteSource.signupUser(email, username, password)
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
+        }
     }
 }
