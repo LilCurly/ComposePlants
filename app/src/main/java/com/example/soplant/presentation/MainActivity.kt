@@ -22,6 +22,7 @@ import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScree
 import com.example.soplant.presentation.ui.custom.CustomBackground
 import com.example.soplant.presentation.ui.login.ComposeLoginScreen
 import com.example.soplant.presentation.ui.register.ComposeRegisterScreen
+import com.example.soplant.presentation.ui.wall.ComposeWallScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,6 +42,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("confirmation") {
                             ComposeConfirmationScreen(navController = navController)
+                        }
+                        composable("wall") {
+                            ComposeWallScreen(navController = navController)
                         }
                     }
                 }
