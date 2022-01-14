@@ -2,6 +2,7 @@ package com.example.soplant.presentation.ui.wall
 
 import android.graphics.Color
 import android.graphics.drawable.shapes.Shape
+import android.widget.Space
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,9 +31,13 @@ import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.example.soplant.domain.entities.Product
 import com.example.soplant.presentation.theme.*
+import com.example.soplant.presentation.ui.extensions.advancedShadow
 
 @Composable
 fun ComposeWallScreen(
@@ -63,6 +69,10 @@ fun ComposeWallScreen(
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
+            Products()
+            Spacer(modifier = Modifier.height(19.dp))
+            Products()
+            Spacer(modifier = Modifier.height(19.dp))
             Products()
         }
     }
@@ -151,9 +161,15 @@ fun Products()
 {
     Card(
         modifier = Modifier
-            .size(323.dp, 250.dp)
-            .shadow(elevation = 20.dp, shape = MaterialTheme.shapes.medium),
-        shape = MaterialTheme.shapes.medium,
+            .height(250.dp)
+            .fillMaxWidth()
+            .advancedShadow(
+                color = Grey,
+                alpha = 0.3f,
+                cornersRadius = 0.dp,
+                shadowBlurRadius = 20.dp
+            ),
+        shape = MaterialTheme.shapes.large,
         elevation = 0.dp,
         backgroundColor = WhiteTransparent
 
@@ -178,15 +194,32 @@ fun Products()
                     Dots()
                 }
             }
-
-
+            
             Spacer(modifier = Modifier.size(10.dp))
 
-            Row() {
-                Text(text = "Plant Title",
-                    style = MaterialTheme.typography.h2,
-                    color = MaterialTheme.colors.onSurface
-                )
+            Row(modifier = Modifier
+                .padding(20.dp, 0.dp)
+                .size(323.dp),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(
+
+                ) {
+                    Text(text = "Plant Title",
+                        style = MaterialTheme.typography.h2,
+                        color = MaterialTheme.colors.onSurface
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    ProfileViewReviewsComposable()
+
+                }
+                Column(modifier = Modifier.padding(0.dp, 19.dp)) {
+                    Text(text = "$10.50",
+                        style = MaterialTheme.typography.h1,
+                        color = MaterialTheme.colors.primary
+                    )
+                }
             }
         }
     }
@@ -257,3 +290,46 @@ fun Dots()
 }
 
 
+@Composable
+fun ProfileViewReviewsComposable()
+{
+    Row(modifier = Modifier.height(27.dp)) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Image(painter = painterResource(R.drawable.splashscreen),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(23.dp)
+                    .clip(CircleShape)
+            )
+        }
+        Spacer(modifier = Modifier.size(6.dp))
+        Column(modifier = Modifier.fillMaxHeight()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "Seller name", style = MaterialTheme.typography.h4)
+                Spacer(modifier = Modifier.size(2.dp))
+                Icon(painter = painterResource(id = R.drawable.icon_complete),
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.primary,
+                    modifier = Modifier.size(8.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(painter = painterResource(id = R.drawable.star_yellow),
+                    contentDescription = null,
+                    modifier = Modifier.size(10.dp)
+                )
+                Spacer(modifier = Modifier.size(2.dp))
+                Text(text = "4.5",
+                    style = MaterialTheme.typography.caption,
+                    color = Grey
+                )
+            }
+        }
+    }
+}
