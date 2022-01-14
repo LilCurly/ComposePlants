@@ -43,6 +43,9 @@ class RegisterReducer @Inject constructor(): Reducer<RegisterAction, RegisterVie
             is RegisterAction.FormValidated -> {
                 previousState.copy(formValidated = true)
             }
+            is RegisterAction.NavigateToConfirmationScreen -> {
+                previousState.copy(signUpSuccessful = false)
+            }
             is RegisterAction.ProcessSignup -> {
                 previousState
             }

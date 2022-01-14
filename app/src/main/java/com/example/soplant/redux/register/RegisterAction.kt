@@ -11,6 +11,7 @@ sealed class RegisterAction: Action {
     object ProcessSignup: RegisterAction()
     object PasswordInvalidated: RegisterAction()
     object EmailInvalidated: RegisterAction()
+    object NavigateToConfirmationScreen: RegisterAction()
     data class UpdatingEmail(val newEmail: String): RegisterAction()
     data class UpdatingUsername(val newUsername: String): RegisterAction()
     data class UpdatingPassword(val newPassword: String): RegisterAction()

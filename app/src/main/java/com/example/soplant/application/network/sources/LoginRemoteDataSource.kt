@@ -39,6 +39,24 @@ class LoginRemoteDataSource @Inject constructor() {
         }
     }
 
+    suspend fun validateUser(email: String, code: String): AmplifyModel {
+        return try {
+            val result = Amplify.Auth.confirmSignUp(username = email, confirmationCode = code)
+            AmplifyModel(result.isSignUpComplete, null)
+        } catch (error: AmplifyException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+        }
+    }
+
+    suspend fun resendCode(email: String): AmplifyModel {
+        return try {
+            val result = Amplify.Auth.resendSignUpCode(username = email)
+            AmplifyModel(true, null)
+        } catch (error: AmplifyException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+        }
+    }
+
     fun loginWithSSO() {
 
     }

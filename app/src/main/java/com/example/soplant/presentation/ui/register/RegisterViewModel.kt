@@ -2,6 +2,7 @@ package com.example.soplant.presentation.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.register.RegisterAction
 import com.example.soplant.redux.register.RegisterViewState
@@ -60,5 +61,15 @@ class RegisterViewModel @Inject constructor(private val store: Store<RegisterVie
         viewModelScope.launch {
             store.dispatch(action, this)
         }
+    }
+
+    fun navigateToConfirmationScreen(navController: NavController) {
+        val action = RegisterAction.NavigateToConfirmationScreen
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+
+        navController.navigate("confirmation")
     }
 }

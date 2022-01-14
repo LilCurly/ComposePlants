@@ -7,4 +7,6 @@ interface LoginRepository {
     fun loginWithCredentials(username: String, password: String): Flow<Resource<Boolean>>
     fun loginWithSSO()
     fun signupUser(email: String, username: String, password: String): Flow<Resource<Boolean>>
+    fun validateUser(email: String, code: String): Flow<Resource<Boolean>>
+    fun resendCode(email: String): Flow<Resource<Boolean>>
 }

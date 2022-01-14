@@ -44,6 +44,10 @@ fun ComposeRegisterScreen(
         viewModel.signupUser()
     }
 
+    if (state.signUpSuccessful) {
+        viewModel.navigateToConfirmationScreen(navController)
+    }
+
     LoadingScreenComposable(isLoading = state.isSigningUp) {
         Column(modifier = Modifier
             .fillMaxSize()
@@ -110,6 +114,9 @@ fun ComposeRegisterScreen(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusManager.clearFocus(true)
+                    }),
                     hideContent = true
                 )
             }
