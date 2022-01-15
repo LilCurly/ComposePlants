@@ -16,6 +16,12 @@ class LoginRemoteDataSource @Inject constructor() {
         return try {
             val result = Amplify.Auth.signIn(username, password)
             AmplifyModel(result.isSignInComplete, null)
+        } catch (error: AuthException.UserNotConfirmedException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_NOT_CONFIRMED)
+        } catch (error: AuthException.NotAuthorizedException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_WRONG_USER)
+        } catch (error: AuthException.InvalidParameterException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_WRONG_USER)
         } catch (error: AmplifyException) {
             AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
@@ -43,6 +49,12 @@ class LoginRemoteDataSource @Inject constructor() {
         return try {
             val result = Amplify.Auth.confirmSignUp(username = email, confirmationCode = code)
             AmplifyModel(result.isSignUpComplete, null)
+        } catch (error: AuthException.CodeExpiredException) {
+            AmplifyModel(false, "AMPLIFY_CODE_EXPIRED")
+        } catch (error: AuthException.CodeMismatchException) {
+            AmplifyModel(false, "AMPLIFY_CODE_MISMATCH")
+        } catch (error: AuthException.LimitExceededException) {
+            AmplifyModel(false, "AMPLIFY_LIMIT_EXCEEDED")
         } catch (error: AmplifyException) {
             AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
@@ -50,7 +62,7 @@ class LoginRemoteDataSource @Inject constructor() {
 
     suspend fun resendCode(email: String): AmplifyModel {
         return try {
-            val result = Amplify.Auth.resendSignUpCode(username = email)
+            Amplify.Auth.resendSignUpCode(username = email)
             AmplifyModel(true, null)
         } catch (error: AmplifyException) {
             AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)

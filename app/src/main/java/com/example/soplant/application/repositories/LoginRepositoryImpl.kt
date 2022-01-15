@@ -17,7 +17,11 @@ class LoginRepositoryImpl @Inject constructor(
         try {
             emit(Resource.loading(null))
             val result = remoteSource.loginWithCredentials(username, password)
-            emit(Resource.success(result.operationSuccess))
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
         } catch (e: HttpException) {
             emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {

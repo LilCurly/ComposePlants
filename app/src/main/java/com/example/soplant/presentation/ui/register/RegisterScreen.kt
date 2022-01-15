@@ -91,7 +91,9 @@ fun ComposeRegisterScreen(
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 CustomTextField(
                     value = state.username,
-                    onValueChange = { viewModel.updateUsername(it) },
+                    onValueChange = {
+                        viewModel.updateUsername(it)
+                    },
                     placeholder = "Enter here",
                     title = "Username",
                     keyboardOptions = KeyboardOptions(

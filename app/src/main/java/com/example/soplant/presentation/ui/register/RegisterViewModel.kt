@@ -70,6 +70,6 @@ class RegisterViewModel @Inject constructor(private val store: Store<RegisterVie
             store.dispatch(action, this)
         }
 
-        navController.navigate("confirmation")
+        navController.navigate("confirmation/${state.value.email}/${state.value.password}")
     }
 }

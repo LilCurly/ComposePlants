@@ -1,5 +1,6 @@
 package com.example.soplant.redux.login
 
+import com.example.soplant.commons.Constants
 import com.example.soplant.redux.Reducer
 import javax.inject.Inject
 
@@ -19,7 +20,17 @@ class LoginReducer @Inject constructor(): Reducer<LoginAction, LoginViewState> {
                 previousState.copy(isSigningIn = false, signInSuccessful = true)
             }
             is LoginAction.LoginFailed -> {
-                previousState.copy(isSigningIn = false, signInFailed = true)
+                if (currentAction.errorCode.equals(Constants.Amplify.AMPLIFY_USER_NOT_CONFIRMED)) {
+                    previousState.copy(isSigningIn = false, signInFailed = false, needsValidation = true)
+                } else {
+                    previousState.copy(isSigningIn = false, signInFailed = true, errorCode = currentAction.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+                }
+            }
+            is LoginAction.NavigateToUserValidation -> {
+                previousState.copy(needsValidation = false)
+            }
+            is LoginAction.NavigateToUserWall -> {
+                previousState.copy(signInSuccessful = false)
             }
             is LoginAction.LoginClicked -> {
                 previousState

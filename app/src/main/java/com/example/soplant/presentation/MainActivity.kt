@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.soplant.R
+import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
 import com.example.soplant.presentation.ui.custom.CustomBackground
@@ -33,15 +34,20 @@ class MainActivity : ComponentActivity() {
             SoPlantTheme {
                 CustomBackground(painter = painterResource(id = R.drawable.background), contentDescription = null) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "confirmation") {
+                    val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
+                    NavHost(navController = navController, startDestination = if (isSignedIn) "wall" else "login") {
                         composable("login") {
                             ComposeLoginScreen(navController = navController)
                         }
                         composable("register") {
                             ComposeRegisterScreen(navController = navController)
                         }
-                        composable("confirmation") {
-                            ComposeConfirmationScreen(navController = navController)
+                        composable("confirmation/{userEmail}/{userPassword}") {
+                            ComposeConfirmationScreen(
+                                navController = navController,
+                                userEmail = it.arguments?.getString("userEmail") ?: "",
+                                userPassword = it.arguments?.getString("userPassword") ?: ""
+                            )
                         }
                         composable("wall") {
                             ComposeWallScreen(navController = navController)

@@ -8,8 +8,10 @@ data class LoginViewState(
     val signInSuccessful: Boolean,
     val signInFailed: Boolean,
     val username: String,
-    val password: String
+    val password: String,
+    val errorCode: String,
+    val needsValidation: Boolean
 ): State {
     @Inject
-    constructor(): this(false, false, false, "", "")
+    constructor(): this(false, false, false, "", "", "", false)
 }

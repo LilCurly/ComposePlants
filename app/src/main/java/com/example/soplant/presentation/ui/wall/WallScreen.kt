@@ -35,6 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.domain.entities.Product
 import com.example.soplant.presentation.theme.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
@@ -49,7 +50,7 @@ fun ComposeWallScreen(
         .padding(26.dp, 26.dp)) {
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Column {
-                ProfileViewComposable(painterResource(R.drawable.splashscreen), name = "Anna K.")
+                ProfileViewComposable(painterResource(R.drawable.splashscreen), name = SharedPreferencesManager.shared().getUserUsername())
             }
             Column {
                 WalletViewComposable("1234")

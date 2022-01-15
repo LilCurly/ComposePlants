@@ -45,6 +45,7 @@ import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.ui.login.components.SocialButtonComponent
+import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
 fun ComposeLoginScreen(
@@ -53,6 +54,14 @@ fun ComposeLoginScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val focusManager = LocalFocusManager.current
+
+    if (state.signInSuccessful) {
+        viewModel.navigateToUserWall(navController)
+    }
+
+    if (state.needsValidation) {
+        viewModel.navigateToUserValidation(navController)
+    }
 
     LoadingScreenComposable(isLoading = state.isSigningIn) {
         Column(modifier = Modifier
@@ -133,10 +142,10 @@ fun ComposeLoginScreen(
             Spacer(modifier = Modifier.height(25.dp))
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "The credentials you provided seems to be wrong.",
+                    text = ErrorCodeConverter.convertErrorCodeToMessage(state.errorCode),
                     color = RedError,
                     style = MaterialTheme.typography.body2,
-                    modifier = Modifier.alpha(if (state.signInFailed) 1f else 0f)
+                    modifier = Modifier.alpha(if (state.errorCode.isNotEmpty()) 1f else 0f)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 BaseButton(text = "Login", modifier = Modifier.fillMaxWidth()) {

@@ -89,4 +89,7 @@ dependencies {
     implementation 'com.amplifyframework:core-kotlin:0.15.1'
     implementation 'com.amplifyframework:aws-auth-cognito:1.31.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    // Security
+    implementation("androidx.security:security-crypto:1.0.0")
 }

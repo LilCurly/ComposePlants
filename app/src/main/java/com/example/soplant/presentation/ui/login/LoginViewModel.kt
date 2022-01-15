@@ -2,6 +2,7 @@ package com.example.soplant.presentation.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginViewState
@@ -36,5 +37,25 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
         viewModelScope.launch {
             store.dispatch(action, this)
         }
+    }
+
+    fun navigateToUserWall(navController: NavController) {
+        val action = LoginAction.NavigateToUserWall
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+
+        navController.navigate("wall")
+    }
+
+    fun navigateToUserValidation(navController: NavController) {
+        val action = LoginAction.NavigateToUserValidation
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+
+        navController.navigate("confirmation/${state.value.username}/${state.value.password}")
     }
 }

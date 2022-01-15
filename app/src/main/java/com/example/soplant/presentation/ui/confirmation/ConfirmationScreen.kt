@@ -7,28 +7,58 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
 import com.example.soplant.presentation.theme.Grey
+import com.example.soplant.presentation.theme.RedError
 import com.example.soplant.presentation.ui.confirmation.components.ConfirmInputComponent
+import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
 import com.example.soplant.presentation.ui.custom.BaseButton
 import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
+import com.example.soplant.presentation.ui.extensions.noRippleClickable
+import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
 fun ComposeConfirmationScreen(
-    navController: NavController
+    navController: NavController,
+    userEmail: String,
+    userPassword: String,
+    viewModel: ConfirmationViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
     val focusManager = LocalFocusManager.current
 
-    LoadingScreenComposable(isLoading = false) {
+    if (state.validationSuccessful) {
+        viewModel.authUser()
+    }
+
+    if (state.authSucceeded) {
+        viewModel.navigateToUserWall(navController)
+    }
+
+    if (state.authFailed) {
+        viewModel.navigateToLogin(navController)
+    }
+
+    if (state.email.isEmpty() && state.password.isEmpty()) {
+        viewModel.setUserEmail(userEmail)
+        viewModel.setUserPassword(userPassword)
+    }
+
+    LoadingScreenComposable(isLoading = state.isLoading) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,93 +82,55 @@ fun ComposeConfirmationScreen(
                 )
             }
             Spacer(modifier = Modifier.height(35.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+            OtpComponent(
+                focusManager = focusManager,
+                valueOne = state.valueOne,
+                updateValueOne = { viewModel.updateValueOne(it) },
+                valueTwo = state.valueTwo,
+                updateValueTwo = { viewModel.updateValueTwo(it) },
+                valueThree = state.valueThree,
+                updateValueThree = { viewModel.updateValueThree(it) },
+                valueFour = state.valueFour,
+                updateValueFour = { viewModel.updateValueFour(it) },
+                valueFive = state.valueFive,
+                updateValueFive = { viewModel.updateValueFive(it) },
+                valueSix = state.valueSix,
+                updateValueSix = { viewModel.updateValueSix(it) }
             ) {
-                ConfirmInputComponent(
-                    value = "0",
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Right) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    ),
-                    onValueChange = {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    })
-                ConfirmInputComponent(
-                    value = "",
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Right) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    ),
-                    onValueChange = {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    })
-                ConfirmInputComponent(
-                    value = "",
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Right) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    ),
-                    onValueChange = {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    })
-                ConfirmInputComponent(
-                    value = "",
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Right) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    ),
-                    onValueChange = {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    })
-                ConfirmInputComponent(
-                    value = "",
-                    keyboardActions = KeyboardActions(
-                        onNext = { focusManager.moveFocus(FocusDirection.Right) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Next
-                    ),
-                    onValueChange = {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    })
-                ConfirmInputComponent(
-                    value = "",
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus(true) }
-                    ),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.NumberPassword,
-                        imeAction = ImeAction.Done
-                    ),
-                    onValueChange = {})
+                viewModel.confirmClicked()
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .noRippleClickable {
+                    viewModel.resendClicked()
+                },
+                horizontalArrangement = Arrangement.Center) {
                 Text(text = "Didn't receive? Resend.", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.primary)
             }
             Spacer(modifier = Modifier.height(55.dp))
-            Row(modifier = Modifier.fillMaxWidth()) {
-                BaseButton(
-                    text = "Confirm & Finish",
-                    enabled = true,
-                    modifier = Modifier.fillMaxWidth()
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-
+                    Text(
+                        text = ErrorCodeConverter.convertErrorCodeToMessage(state.errorCode),
+                        color = RedError,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.alpha(if (state.errorCode.isNotEmpty()) 1f else 0f)
+                    )
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    BaseButton(
+                        text = "Confirm & Finish",
+                        enabled = state.canConfirm,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        viewModel.confirmClicked()
+                    }
                 }
             }
         }

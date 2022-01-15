@@ -3,6 +3,8 @@ package com.example.soplant.di
 import com.example.soplant.application.network.services.ProductService
 import com.example.soplant.application.repositories.LoginRepositoryImpl
 import com.example.soplant.application.repositories.ProductRepositoryImpl
+import com.example.soplant.domain.interactors.confirmation.ResendCode
+import com.example.soplant.domain.interactors.confirmation.ValidateUser
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.repositories.LoginRepository
@@ -11,6 +13,10 @@ import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.repositories.ProductsRepository
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
+import com.example.soplant.redux.confirmation.ConfirmationAction
+import com.example.soplant.redux.confirmation.ConfirmationDataMiddleware
+import com.example.soplant.redux.confirmation.ConfirmationReducer
+import com.example.soplant.redux.confirmation.ConfirmationViewState
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginDataMiddleware
 import com.example.soplant.redux.login.LoginReducer
@@ -59,8 +65,14 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideLoginMiddlewares(loginWithCredentials: LoginWithCredentials): List<Middleware<LoginAction, LoginViewState>> {
-        return listOf(LoginDataMiddleware(loginWithCredentials))
+    fun provideLoginMiddlewares(loginWithCredentials: LoginWithCredentials, resendCode: ResendCode): List<Middleware<LoginAction, LoginViewState>> {
+        return listOf(LoginDataMiddleware(loginWithCredentials, resendCode))
+    }
+
+    @Provides
+    @Singleton
+    fun provideConfirmationMiddlewares(validateUser: ValidateUser, resendCode: ResendCode, loginWithCredentials: LoginWithCredentials): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
+        return listOf(ConfirmationDataMiddleware(validateUser, resendCode, loginWithCredentials))
     }
 
     @Provides
@@ -109,6 +121,12 @@ class ApplicationModule {
         fun bindRegisterReducer(
             registerReducer: RegisterReducer
         ): Reducer<RegisterAction, RegisterViewState>
+
+        @Binds
+        @Singleton
+        fun bindConfirmationReducer(
+            confirmationReducer: ConfirmationReducer
+        ): Reducer<ConfirmationAction, ConfirmationViewState>
 
         @Binds
         @Singleton

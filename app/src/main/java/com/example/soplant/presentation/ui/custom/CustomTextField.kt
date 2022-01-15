@@ -59,7 +59,7 @@ fun CustomTextField(modifier: Modifier = Modifier, value: String, onValueChange:
                     .weight(1f)
                 ) {
                     val inter = remember { MutableInteractionSource() }
-                    val isFocused = inter.collectIsFocusedAsState().value
+                    val isFocused by inter.collectIsFocusedAsState()
                     val transition = updateTransition(isFocused, label = null)
                     val titleTextSize by transition.animateFloat(label = "titleTextSize", transitionSpec = {
                         tween(durationMillis = 250, easing = LinearEasing)
