@@ -84,4 +84,36 @@ class LoginRepositoryImpl @Inject constructor(
             emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
         }
     }
+
+    override fun resetPassword(email: String): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteSource.resetPassword(email)
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
+        }
+    }
+
+    override fun confirmReset(newPassword: String, code: String): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteSource.confirmReset(newPassword, code)
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
+        }
+    }
 }

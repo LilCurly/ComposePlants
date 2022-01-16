@@ -8,6 +8,7 @@ object Constants {
     object Amplify {
         const val AMPLIFY_USER_EXISTS: String = "AMPLIFY_USER_EXISTS"
         const val AMPLIFY_USER_WRONG_USER: String = "AMPLIFY_USER_WRONG_USER"
+        const val AMPLIFY_USER_NOT_FOUND: String = "AMPLIFY_USER_NOT_FOUND"
         const val AMPLIFY_UNEXPECTED_ERROR: String = "AMPLIFY_UNEXPECTED_ERROR"
         const val AMPLIFY_USER_NOT_CONFIRMED: String = "AMPLIFY_USER_NOT_CONFIRMED"
         const val AMPLIFY_CODE_EXPIRED: String = "AMPLIFY_CODE_EXPIRED"

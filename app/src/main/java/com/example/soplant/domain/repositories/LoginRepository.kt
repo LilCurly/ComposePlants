@@ -9,4 +9,6 @@ interface LoginRepository {
     fun signupUser(email: String, username: String, password: String): Flow<Resource<Boolean>>
     fun validateUser(email: String, code: String): Flow<Resource<Boolean>>
     fun resendCode(email: String): Flow<Resource<Boolean>>
+    fun resetPassword(email: String): Flow<Resource<Boolean>>
+    fun confirmReset(newPassword: String, code: String): Flow<Resource<Boolean>>
 }

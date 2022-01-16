@@ -3,16 +3,19 @@ package com.example.soplant.di
 import com.example.soplant.application.network.services.ProductService
 import com.example.soplant.application.repositories.LoginRepositoryImpl
 import com.example.soplant.application.repositories.ProductRepositoryImpl
+import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
 import com.example.soplant.domain.interactors.confirmation.ResendCode
 import com.example.soplant.domain.interactors.confirmation.ValidateUser
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.interactors.register.SignupUser
+import com.example.soplant.domain.interactors.reset_password.ResetPassword
 import com.example.soplant.domain.repositories.LoginRepository
 import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.repositories.ProductsRepository
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
+import com.example.soplant.redux.confirm_reset.*
 import com.example.soplant.redux.confirmation.ConfirmationAction
 import com.example.soplant.redux.confirmation.ConfirmationDataMiddleware
 import com.example.soplant.redux.confirmation.ConfirmationReducer
@@ -22,6 +25,7 @@ import com.example.soplant.redux.login.LoginDataMiddleware
 import com.example.soplant.redux.login.LoginReducer
 import com.example.soplant.redux.login.LoginViewState
 import com.example.soplant.redux.register.*
+import com.example.soplant.redux.reset_password.*
 import com.example.soplant.redux.wall.WallAction
 import com.example.soplant.redux.wall.WallDataMiddleware
 import com.example.soplant.redux.wall.WallReducer
@@ -86,6 +90,24 @@ class ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideResetPasswordMiddlewares(resetPassword: ResetPassword, stringValidators: StringValidators): List<Middleware<ResetPasswordAction, ResetPasswordViewState>> {
+        return listOf(
+            ResetPasswordValidatorMiddleware(stringValidators),
+            ResetPasswordDataMiddleware(resetPassword)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideConfirmResetMiddlewares(confirmReset: ConfirmReset, stringValidators: StringValidators): List<Middleware<ConfirmResetAction, ConfirmResetViewState>> {
+        return listOf(
+            ConfirmResetValidatorMiddleware(stringValidators),
+            ConfirmResetDataMiddleware(confirmReset)
+        )
+    }
+
+    @Provides
+    @Singleton
     fun provideWallMiddlewares(getOfflineWall: GetOfflineWall): List<Middleware<WallAction, WallViewState>> {
         return listOf(WallDataMiddleware(getOfflineWall))
     }
@@ -127,6 +149,18 @@ class ApplicationModule {
         fun bindConfirmationReducer(
             confirmationReducer: ConfirmationReducer
         ): Reducer<ConfirmationAction, ConfirmationViewState>
+
+        @Binds
+        @Singleton
+        fun bindResetPasswordReducer(
+            resetPasswordReducer: ResetPasswordReducer
+        ): Reducer<ResetPasswordAction, ResetPasswordViewState>
+
+        @Binds
+        @Singleton
+        fun bindConfirmResetReducer(
+            confirmResetReducer: ConfirmResetReducer
+        ): Reducer<ConfirmResetAction, ConfirmResetViewState>
 
         @Binds
         @Singleton

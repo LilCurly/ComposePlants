@@ -15,13 +15,13 @@ class ProductRepositoryImpl @Inject constructor(
 ): ProductsRepository {
     override fun getOfflineWall(lastPaginationTimestamp: Long): Flow<Resource<ProductList>> = flow {
         try {
-            emit(Resource.loading())
+            emit(Resource.loading(null))
             val result = remoteDataSource.getOfflineWall()
             emit(Resource.success(result))
         } catch (e: HttpException) {
-            emit(Resource.error(""))
+            emit(Resource.error<ProductList>(""))
         } catch (e: IOException) {
-            emit(Resource.error(""))
+            emit(Resource.error<ProductList>(""))
         }
     }
 }

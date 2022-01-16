@@ -50,11 +50,11 @@ class LoginRemoteDataSource @Inject constructor() {
             val result = Amplify.Auth.confirmSignUp(username = email, confirmationCode = code)
             AmplifyModel(result.isSignUpComplete, null)
         } catch (error: AuthException.CodeExpiredException) {
-            AmplifyModel(false, "AMPLIFY_CODE_EXPIRED")
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_EXPIRED)
         } catch (error: AuthException.CodeMismatchException) {
-            AmplifyModel(false, "AMPLIFY_CODE_MISMATCH")
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_MISMATCH)
         } catch (error: AuthException.LimitExceededException) {
-            AmplifyModel(false, "AMPLIFY_LIMIT_EXCEEDED")
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_LIMIT_EXCEEDED)
         } catch (error: AmplifyException) {
             AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
@@ -71,5 +71,31 @@ class LoginRemoteDataSource @Inject constructor() {
 
     fun loginWithSSO() {
 
+    }
+
+    suspend fun resetPassword(email: String): AmplifyModel {
+        return try {
+            val result = Amplify.Auth.resetPassword(username = email)
+            AmplifyModel(true, null)
+        } catch (error: AuthException.UserNotFoundException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_NOT_FOUND)
+        } catch (error: AmplifyException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+        }
+    }
+
+    suspend fun confirmReset(newPassword: String, code: String): AmplifyModel {
+        return try {
+            val result = Amplify.Auth.confirmResetPassword(newPassword, code)
+            AmplifyModel(true, null)
+        } catch (error: AuthException.CodeExpiredException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_EXPIRED)
+        } catch (error: AuthException.CodeMismatchException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_MISMATCH)
+        } catch (error: AuthException.LimitExceededException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_LIMIT_EXCEEDED)
+        } catch (error: AmplifyException) {
+            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+        }
     }
 }

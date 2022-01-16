@@ -19,10 +19,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.soplant.R
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.theme.SoPlantTheme
+import com.example.soplant.presentation.ui.confirm_reset.ComposeConfirmResetScreen
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
 import com.example.soplant.presentation.ui.custom.CustomBackground
 import com.example.soplant.presentation.ui.login.ComposeLoginScreen
 import com.example.soplant.presentation.ui.register.ComposeRegisterScreen
+import com.example.soplant.presentation.ui.reset_password.ComposeResetPasswordScreen
 import com.example.soplant.presentation.ui.wall.ComposeWallScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,6 +53,12 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("wall") {
                             ComposeWallScreen(navController = navController)
+                        }
+                        composable("resetPassword") {
+                            ComposeResetPasswordScreen(navController = navController)
+                        }
+                        composable("confirmReset") {
+                            ComposeConfirmResetScreen(navController = navController)
                         }
                     }
                 }

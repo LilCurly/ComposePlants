@@ -137,7 +137,9 @@ fun ComposeLoginScreen(
                     text = "Forgot password?",
                     style = MaterialTheme.typography.caption,
                     color = Grey,
-                    modifier = Modifier.padding(0.dp, 0.dp, 7.dp, 0.dp))
+                    modifier = Modifier.padding(0.dp, 0.dp, 7.dp, 0.dp).noRippleClickable {
+                        navController.navigate("resetPassword")
+                    })
             }
             Spacer(modifier = Modifier.height(25.dp))
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
