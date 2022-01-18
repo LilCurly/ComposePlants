@@ -11,7 +11,7 @@ object UserAttributes {
     suspend fun fetchUserAttributes(): Flow<Boolean> = flow {
         try {
             val result = Amplify.Auth.fetchUserAttributes()
-            Log.i("SoPlantApplication", "Successfully fetched user attributes")
+            Log.i("AuthSession", "Successfully fetched user attributes")
             result.forEach { attr ->
                 SharedPreferencesManager.shared().storeLoggedIn()
                 when (attr.key.keyString) {
@@ -33,11 +33,25 @@ object UserAttributes {
                     Constants.AuthSessionKeys.USER_VERIFIED -> {
                         SharedPreferencesManager.shared().storeUserVerified(attr.value.equals("true"))
                     }
+                    Constants.AuthSessionKeys.USER_PICTURE -> {
+                        SharedPreferencesManager.shared().storePictureUrl(attr.value)
+                    }
+                    Constants.AuthSessionKeys.SOCIAL_IDENTITIES -> {
+                        if (attr.value.contains("Google")) {
+                            SharedPreferencesManager.shared().storeSocialMethod(Constants.SocialSignInMethod.GOOGLE)
+                        } else if(attr.value.contains("Facebook")) {
+                            SharedPreferencesManager.shared().storeSocialMethod(Constants.SocialSignInMethod.FACEBOOK)
+                            val userId = "\\d{17}".toRegex().find(attr.value)
+                            if (userId != null) {
+                                SharedPreferencesManager.shared().storePictureUrl("https://graph.facebook.com/v12.0/${userId.value}/picture?type=large")
+                            }
+                        }
+                    }
                 }
             }
             emit(true)
         } catch (error: AmplifyException) {
-            Log.i("SoPlantApplication", "Failed to fetch auth session")
+            Log.i("AuthSession", "Failed to fetch auth session")
             emit(false)
         }
     }

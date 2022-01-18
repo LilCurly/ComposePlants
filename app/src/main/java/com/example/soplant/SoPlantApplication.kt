@@ -1,6 +1,7 @@
 package com.example.soplant
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.AuthChannelEventName
@@ -22,9 +23,14 @@ import kotlinx.coroutines.flow.launchIn
 
 @HiltAndroidApp
 class SoPlantApplication: Application() {
+    companion object {
+        var sharedApplicationContext: Context? = null
+    }
+
     override fun onCreate() {
         super.onCreate()
 
+        sharedApplicationContext = applicationContext
         SharedPreferencesManager.initializeSharedPreferencesManager(applicationContext)
 
         initializeAmplify()
@@ -36,9 +42,9 @@ class SoPlantApplication: Application() {
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             Amplify.configure(applicationContext)
-            Log.i("SoPlantApplication", "Initialized Amplifys")
+            Log.i("AmplifyInit", "Initialized Amplifys")
         } catch (error: AmplifyException) {
-            Log.e("SoPlantApplication", "Could not initialize Amplify", error)
+            Log.e("AmplifyInit", "Could not initialize Amplify", error)
         }
     }
 
@@ -47,23 +53,23 @@ class SoPlantApplication: Application() {
             Amplify.Hub.subscribe(HubChannel.AUTH).collect {
                 when (it.name) {
                     InitializationStatus.SUCCEEDED.toString() ->
-                        Log.i("SoPlantApplication", "Auth successfully initialized")
+                        Log.i("AuthSession", "Auth successfully initialized")
                     InitializationStatus.FAILED.toString() ->
-                        Log.i("SoPlantApplication", "Auth failed to succeed")
+                        Log.i("AuthSession", "Auth failed to succeed")
                     else -> when (AuthChannelEventName.valueOf(it.name)) {
                         AuthChannelEventName.SIGNED_IN -> {
-                            Log.i("SoPlantApplication", "Auth just became signed in.")
+                            Log.i("AuthSession", "Auth just became signed in.")
                         }
                         AuthChannelEventName.SIGNED_OUT -> {
-                            Log.i("SoPlantApplication", "Auth just became signed out.")
+                            Log.i("AuthSession", "Auth just became signed out.")
                             SharedPreferencesManager.shared().signOut()
                         }
                         AuthChannelEventName.SESSION_EXPIRED -> {
-                            Log.i("SoPlantApplication", "Auth session just expired.")
+                            Log.i("AuthSession", "Auth session just expired.")
                             SharedPreferencesManager.shared().signOut()
                         }
                         else ->
-                            Log.w("SoPlantApplication", "Unhandled Auth Event: ${it.name}")
+                            Log.w("AuthSession", "Unhandled Auth Event: ${it.name}")
                     }
                 }
             }
@@ -75,14 +81,14 @@ class SoPlantApplication: Application() {
             try {
                 val session = Amplify.Auth.fetchAuthSession() as AWSCognitoAuthSession
                 if (session.isSignedIn) {
-                    Log.i("SoPlantApplication", "signed in")
+                    Log.i("AuthSession", "User ${session.userSub.value} currently signed in")
                     UserAttributes.fetchUserAttributes().launchIn(this)
                 } else {
-                    Log.i("SoPlantApplication", "signed out")
+                    Log.i("AuthSession", "User currently signed out")
                     SharedPreferencesManager.shared().signOut()
                 }
             } catch (error: AuthException) {
-                Log.e("SoPlantApplication", "Failed to fetch session", error)
+                Log.e("AuthSession", "Failed to fetch session", error)
             }
         }
     }

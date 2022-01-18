@@ -1,16 +1,10 @@
 package com.example.soplant.redux.login
 
-import android.util.Log
-import com.amplifyframework.AmplifyException
-import com.amplifyframework.kotlin.core.Amplify
-import com.example.soplant.commons.Constants
-import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.commons.UserAttributes
 import com.example.soplant.domain.interactors.confirmation.ResendCode
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.utils.Resource
 import com.example.soplant.redux.Middleware
-import com.example.soplant.redux.confirmation.ConfirmationAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -20,7 +14,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class LoginDataMiddleware @Inject constructor(val loginWithCredentials: LoginWithCredentials, val resendCode: ResendCode): Middleware<LoginAction, LoginViewState> {
+class LoginDataMiddleware @Inject constructor(private val loginWithCredentials: LoginWithCredentials,
+                                              private val resendCode: ResendCode): Middleware<LoginAction, LoginViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: LoginViewState,

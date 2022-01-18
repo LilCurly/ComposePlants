@@ -116,4 +116,36 @@ class LoginRepositoryImpl @Inject constructor(
             emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
         }
     }
+
+    override fun federateSignIn(username: String, location: String): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteSource.federateSignIn(username, location)
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
+        }
+    }
+
+    override fun signOut(): Flow<Resource<Boolean>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteSource.signOut()
+            if (result.operationSuccess) {
+                emit(Resource.success(result.operationSuccess))
+            } else {
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Boolean>(Constants.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Boolean>(Constants.General.NETWORK_ERROR))
+        }
+    }
 }

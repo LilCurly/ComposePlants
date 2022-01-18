@@ -13,11 +13,19 @@
     },
     "categories": {
       "auth": {
-        "soplantandroid6a021ad5": {
+        "soplantandroid0e9c7578": {
           "userPoolId": "eu-west-3_7Gw432LnW",
           "userPoolName": "soplant_dev",
           "webClientId": "12gb0ke7nv7a4rbent9cm77t8r",
-          "nativeClientId": "12gb0ke7nv7a4rbent9cm77t8r"
+          "nativeClientId": "12gb0ke7nv7a4rbent9cm77t8r",
+          "identityPoolId": "eu-west-3:30cb9d0e-5da5-4d52-8093-2d968ee4b677",
+          "identityPoolName": "soplant-dev",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::597236252805:role/Cognito_soplantdevAuth_Role",
+          "authRoleName": "Cognito_soplantdevAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::597236252805:role/Cognito_soplantdevUnauth_Role",
+          "unauthRoleName": "Cognito_soplantdevUnauth_Role",
+          "googleAndroid": "755113433001-8p5lqvpk6jq62bmr88mgtdnjoi4h3bre.apps.googleusercontent.com"
         }
       }
     }

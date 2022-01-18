@@ -9,6 +9,7 @@ sealed class LoginAction: Action {
     object LoginClicked: LoginAction()
     object NavigateToUserValidation: LoginAction()
     object NavigateToUserWall: LoginAction()
+    object StopSigningProcess: LoginAction()
     data class UpdatingUsername(val newUsername: String): LoginAction()
     data class UpdatingPassword(val newPassword: String): LoginAction()
 }

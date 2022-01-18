@@ -1,5 +1,6 @@
 package com.example.soplant.presentation.ui.login
 
+import android.util.Log
 import android.widget.Space
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloat
@@ -18,10 +19,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -29,6 +27,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,9 +39,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
+import com.example.soplant.commons.Constants
+import com.example.soplant.commons.SharedPreferencesManager
+import com.example.soplant.presentation.MainActivity
 import com.example.soplant.presentation.theme.*
 import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
+import com.example.soplant.presentation.ui.extensions.getActivity
 import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.ui.login.components.SocialButtonComponent
 import com.example.soplant.presentation.utils.ErrorCodeConverter
@@ -52,7 +55,9 @@ fun ComposeLoginScreen(
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val activity = LocalContext.current.getActivity() as MainActivity
     val state by viewModel.state.collectAsState()
+    val federatedSignIn by activity.federatedSignIn.collectAsState()
     val focusManager = LocalFocusManager.current
 
     if (state.signInSuccessful) {
@@ -61,6 +66,17 @@ fun ComposeLoginScreen(
 
     if (state.needsValidation) {
         viewModel.navigateToUserValidation(navController)
+    }
+
+    DisposableEffect(federatedSignIn) {
+        if (federatedSignIn.isNotEmpty()) {
+            viewModel.stopSigningProcess()
+            viewModel.federateSignIn(federatedSignIn, navController)
+        }
+
+        onDispose {
+            activity.clearState()
+        }
     }
 
     LoadingScreenComposable(isLoading = state.isSigningIn) {
@@ -137,9 +153,11 @@ fun ComposeLoginScreen(
                     text = "Forgot password?",
                     style = MaterialTheme.typography.caption,
                     color = Grey,
-                    modifier = Modifier.padding(0.dp, 0.dp, 7.dp, 0.dp).noRippleClickable {
-                        navController.navigate("resetPassword")
-                    })
+                    modifier = Modifier
+                        .padding(0.dp, 0.dp, 7.dp, 0.dp)
+                        .noRippleClickable {
+                            navController.navigate("resetPassword")
+                        })
             }
             Spacer(modifier = Modifier.height(25.dp))
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -164,9 +182,13 @@ fun ComposeLoginScreen(
             }
             Spacer(modifier = Modifier.height(50.dp))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-                SocialButtonComponent(image = painterResource(id = R.drawable.icon_facebook), buttonColors = facebookButtonColors()) {}
+                SocialButtonComponent(image = painterResource(id = R.drawable.icon_facebook), buttonColors = facebookButtonColors()) {
+                    viewModel.signInFacebook(activity)
+                }
                 Spacer(modifier = Modifier.width(40.dp))
-                SocialButtonComponent(image = painterResource(id = R.drawable.icon_google), buttonColors = googleButtonColors()) {}
+                SocialButtonComponent(image = painterResource(id = R.drawable.icon_google), buttonColors = googleButtonColors()) {
+                    viewModel.signInGoogle(activity)
+                }
             }
             Column(
                 modifier = Modifier
@@ -176,9 +198,11 @@ fun ComposeLoginScreen(
             ) {
                 Spacer(modifier = Modifier.weight(1f))
                 Row(
-                    modifier = Modifier.fillMaxWidth().noRippleClickable {
-                        navController.navigate("register")
-                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .noRippleClickable {
+                            navController.navigate("register")
+                        },
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom
                 ) {

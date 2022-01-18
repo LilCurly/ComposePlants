@@ -6,9 +6,11 @@ import com.example.soplant.application.repositories.ProductRepositoryImpl
 import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
 import com.example.soplant.domain.interactors.confirmation.ResendCode
 import com.example.soplant.domain.interactors.confirmation.ValidateUser
+import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.interactors.reset_password.ResetPassword
+import com.example.soplant.domain.interactors.social_signin.SignOut
 import com.example.soplant.domain.repositories.LoginRepository
 import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
@@ -26,6 +28,10 @@ import com.example.soplant.redux.login.LoginReducer
 import com.example.soplant.redux.login.LoginViewState
 import com.example.soplant.redux.register.*
 import com.example.soplant.redux.reset_password.*
+import com.example.soplant.redux.social_signin.SocialSignInAction
+import com.example.soplant.redux.social_signin.SocialSignInDataMiddleware
+import com.example.soplant.redux.social_signin.SocialSignInReducer
+import com.example.soplant.redux.social_signin.SocialSignInViewState
 import com.example.soplant.redux.wall.WallAction
 import com.example.soplant.redux.wall.WallDataMiddleware
 import com.example.soplant.redux.wall.WallReducer
@@ -77,6 +83,12 @@ class ApplicationModule {
     @Singleton
     fun provideConfirmationMiddlewares(validateUser: ValidateUser, resendCode: ResendCode, loginWithCredentials: LoginWithCredentials): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
         return listOf(ConfirmationDataMiddleware(validateUser, resendCode, loginWithCredentials))
+    }
+
+    @Provides
+    @Singleton
+    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
+        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut))
     }
 
     @Provides
@@ -149,6 +161,12 @@ class ApplicationModule {
         fun bindConfirmationReducer(
             confirmationReducer: ConfirmationReducer
         ): Reducer<ConfirmationAction, ConfirmationViewState>
+
+        @Binds
+        @Singleton
+        fun bindSocialSignInReducer(
+            socialSignInReducer: SocialSignInReducer
+        ): Reducer<SocialSignInAction, SocialSignInViewState>
 
         @Binds
         @Singleton

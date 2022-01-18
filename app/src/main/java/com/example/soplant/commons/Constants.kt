@@ -23,6 +23,8 @@ object Constants {
         const val PREF_USER_LOCATION: String = "PREF_USER_LOCATION"
         const val PREF_USER_VERIFIED: String = "PREF_USER_VERIFIED"
         const val PREF_LOGIN_STATUS: String = "PREF_LOGIN_STATUS"
+        const val PREF_SOCIAL_METHOD: String = "PREF_SOCIAL_METHOD"
+        const val PREF_PROFILE_URL: String = "PREF_PROFILE_URL"
     }
     object LoginStatus {
         const val STATUS_LOGGED_IN: String = "STATUS_LOGGED_IN"
@@ -35,5 +37,13 @@ object Constants {
         const val USER_EMAIL: String = "email"
         const val USER_VERIFIED: String = "custom:is_verified"
         const val USER_LOCATION: String = "custom:location"
+        const val FIRST_SOCIAL_LOGIN: String = "custom:firstSocialLogin"
+        const val SOCIAL_IDENTITIES: String = "identities"
+        const val USER_PICTURE: String = "picture"
+    }
+    object SocialSignInMethod {
+        const val GOOGLE: String = "Google"
+        const val FACEBOOK: String = "Facebook"
+        const val FAILED: String = "FAILED"
     }
 }

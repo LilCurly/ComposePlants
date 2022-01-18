@@ -41,7 +41,7 @@ fun ConfirmInputComponent(value: String, keyboardActions: KeyboardActions, keybo
     val inter = remember { MutableInteractionSource() }
     val isFocused by inter.collectIsFocusedAsState()
     Card(
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.large,
         backgroundColor = MaterialTheme.colors.background,
         border = BorderStroke((0.9).dp, if (isFocused) MaterialTheme.colors.primary else Color.Transparent),
         elevation = 0.dp,

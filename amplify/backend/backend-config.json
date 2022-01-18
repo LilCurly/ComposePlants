@@ -1,6 +1,6 @@
 {
   "auth": {
-    "soplantandroid6a021ad5": {
+    "soplantandroid0e9c7578": {
       "service": "Cognito",
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",

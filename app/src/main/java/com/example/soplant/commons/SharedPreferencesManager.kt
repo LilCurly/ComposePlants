@@ -108,12 +108,36 @@ class SharedPreferencesManager constructor(private val sharedPreferences: Shared
         }
     }
 
+    fun getSocialMethod(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_SOCIAL_METHOD, "") ?: ""
+    }
+
+    fun storeSocialMethod(socialMethod: String) {
+        with(sharedPreferences.edit()) {
+            putString(Constants.SharedPreferences.PREF_SOCIAL_METHOD, socialMethod)
+            apply()
+        }
+    }
+
+    fun getPictureUrl(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_PROFILE_URL, "") ?: ""
+    }
+
+    fun storePictureUrl(profileUrl: String) {
+        with(sharedPreferences.edit()) {
+            putString(Constants.SharedPreferences.PREF_PROFILE_URL, profileUrl)
+            apply()
+        }
+    }
+
     fun signOut() {
         with(sharedPreferences.edit()) {
             putString(Constants.SharedPreferences.PREF_USER_NAME, "")
             putString(Constants.SharedPreferences.PREF_USER_ID, "")
             putString(Constants.SharedPreferences.PREF_USER_EMAIL, "")
             putString(Constants.SharedPreferences.PREF_USER_USERNAME, "")
+            putString(Constants.SharedPreferences.PREF_USER_LOCATION, "")
+            putBoolean(Constants.SharedPreferences.PREF_USER_VERIFIED, false)
             putString(Constants.SharedPreferences.PREF_LOGIN_STATUS, Constants.LoginStatus.STATUS_LOGGED_OUT)
             apply()
         }

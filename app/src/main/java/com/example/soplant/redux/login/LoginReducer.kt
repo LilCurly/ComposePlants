@@ -35,6 +35,9 @@ class LoginReducer @Inject constructor(): Reducer<LoginAction, LoginViewState> {
             is LoginAction.LoginClicked -> {
                 previousState
             }
+            is LoginAction.StopSigningProcess -> {
+                previousState.copy(isSigningIn = false)
+            }
         }
     }
 }

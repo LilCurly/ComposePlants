@@ -16,7 +16,7 @@ fun BaseButton(modifier: Modifier = Modifier, text: String, enabled: Boolean = t
         colors = greenButtonColors(),
         contentPadding = greenButtonContentPadding(),
         elevation = zeroButtonElevation(),
-        shape = MaterialTheme.shapes.medium,
+        shape = MaterialTheme.shapes.large,
         enabled = enabled,
         modifier = modifier
             .height(50.dp)

@@ -3,6 +3,9 @@ package com.example.soplant.presentation.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.soplant.commons.Constants
+import com.example.soplant.commons.SharedPreferencesManager
+import com.example.soplant.presentation.MainActivity
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginViewState
@@ -57,5 +60,41 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
         }
 
         navController.navigate("confirmation/${state.value.username}/${state.value.password}")
+    }
+
+    fun signInGoogle(activity: MainActivity) {
+        val action = LoginAction.StartSigningProcess
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+            activity.federateSignInGoogle(this)
+        }
+    }
+
+    fun signInFacebook(activity: MainActivity) {
+        val action = LoginAction.StartSigningProcess
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+            activity.federateSignInFacebook(this)
+        }
+    }
+
+    fun stopSigningProcess() {
+        val action = LoginAction.StopSigningProcess
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun federateSignIn(method: String, navController: NavController) {
+        if (method != Constants.SocialSignInMethod.FAILED) {
+            if (SharedPreferencesManager.shared().getUserUsername().isEmpty() || SharedPreferencesManager.shared().getUserLocation().isEmpty()) {
+                navController.navigate("socialSignIn")
+            } else {
+                navController.navigate("wall")
+            }
+        }
     }
 }

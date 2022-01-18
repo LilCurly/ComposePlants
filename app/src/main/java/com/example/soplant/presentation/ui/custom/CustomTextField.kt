@@ -36,7 +36,7 @@ import com.example.soplant.presentation.ui.extensions.advancedShadow
 fun CustomTextField(modifier: Modifier = Modifier, value: String, onValueChange: (String) -> Unit, placeholder: String, title: String, keyboardOptions: KeyboardOptions = KeyboardOptions.Default, keyboardActions: KeyboardActions = KeyboardActions.Default, hideContent: Boolean = false, errorMessage: String = "") {
     Column(modifier = modifier) {
         Card(
-            shape = MaterialTheme.shapes.medium,
+            shape = MaterialTheme.shapes.large,
             backgroundColor = MaterialTheme.colors.background,
             elevation = 0.dp,
             modifier = Modifier

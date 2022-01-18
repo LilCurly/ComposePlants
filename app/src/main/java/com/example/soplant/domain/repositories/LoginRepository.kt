@@ -11,4 +11,6 @@ interface LoginRepository {
     fun resendCode(email: String): Flow<Resource<Boolean>>
     fun resetPassword(email: String): Flow<Resource<Boolean>>
     fun confirmReset(newPassword: String, code: String): Flow<Resource<Boolean>>
+    fun federateSignIn(username: String, location: String): Flow<Resource<Boolean>>
+    fun signOut(): Flow<Resource<Boolean>>
 }
