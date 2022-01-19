@@ -1,13 +1,17 @@
 package com.example.soplant.di
 
+import com.example.soplant.BuildConfig
 import com.example.soplant.application.network.services.ProductService
+import com.example.soplant.application.network.services.ResourceService
 import com.example.soplant.application.repositories.LoginRepositoryImpl
 import com.example.soplant.application.repositories.ProductRepositoryImpl
+import com.example.soplant.application.repositories.ResourceRepositoryImpl
 import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
 import com.example.soplant.domain.interactors.confirmation.ResendCode
 import com.example.soplant.domain.interactors.confirmation.ValidateUser
 import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
+import com.example.soplant.domain.interactors.register.GetCountries
 import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.interactors.reset_password.ResetPassword
 import com.example.soplant.domain.interactors.social_signin.SignOut
@@ -15,6 +19,7 @@ import com.example.soplant.domain.repositories.LoginRepository
 import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.repositories.ProductsRepository
+import com.example.soplant.domain.repositories.ResourceRepository
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
 import com.example.soplant.redux.confirm_reset.*
@@ -61,14 +66,26 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideCoinService(): ProductService {
+    fun provideProductService(): ProductService {
         return Retrofit
             .Builder()
-            .baseUrl("https://i40wosaqzh.execute-api.eu-west-3.amazonaws.com/v1/product")
+            .baseUrl(BuildConfig.API_PRODUCT_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ProductService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideResourceService(): ResourceService {
+        return Retrofit
+            .Builder()
+            .baseUrl(BuildConfig.API_RESOURCE_URL)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ResourceService::class.java)
     }
 
     // MIDDLEWARES
@@ -87,16 +104,16 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
-        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut))
+    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut, getCountries: GetCountries): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
+        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut, getCountries))
     }
 
     @Provides
     @Singleton
-    fun provideRegisterMiddlewares(signupUser: SignupUser, stringValidators: StringValidators): List<Middleware<RegisterAction, RegisterViewState>> {
+    fun provideRegisterMiddlewares(signupUser: SignupUser, getCountries: GetCountries, stringValidators: StringValidators): List<Middleware<RegisterAction, RegisterViewState>> {
         return listOf(
             RegisterValidatorMiddleware(stringValidators),
-            RegisterDataMiddleware(signupUser)
+            RegisterDataMiddleware(signupUser, getCountries)
         )
     }
 
@@ -141,6 +158,12 @@ class ApplicationModule {
         fun bindWallRepository(
             productRepositoryImpl: ProductRepositoryImpl
         ): ProductsRepository
+
+        @Binds
+        @Singleton
+        fun bindResourceRepository(
+            resourceRepositoryImpl: ResourceRepositoryImpl
+        ): ResourceRepository
 
         // REDUCERS
 

@@ -3,6 +3,9 @@ package com.example.soplant.presentation.ui.confirm_reset
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.soplant.commons.Constants
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.confirm_reset.ConfirmResetAction
 import com.example.soplant.redux.confirm_reset.ConfirmResetViewState
@@ -94,6 +97,10 @@ class ConfirmResetViewModel @Inject constructor(private val store: Store<Confirm
             store.dispatch(action, this)
         }
 
-        navController.navigate("login")
+        navController.navigate(Screen.Login.route) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
     }
 }

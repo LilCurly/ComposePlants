@@ -20,16 +20,16 @@ class RegisterReducer @Inject constructor(): Reducer<RegisterAction, RegisterVie
                 previousState.copy(isSigningUp = true, signUpFailed = false, signUpSuccessful = false, formValidated = false)
             }
             is RegisterAction.UpdatingEmail -> {
-                previousState.copy(email = currentAction.newEmail, canSignUp = previousState.tosChecked && currentAction.newEmail.isNotEmpty() && previousState.username.isNotEmpty() && previousState.password.isNotEmpty())
+                previousState.copy(email = currentAction.newEmail, canSignUp = previousState.tosChecked && currentAction.newEmail.isNotEmpty() && previousState.username.isNotEmpty() && previousState.password.isNotEmpty() && previousState.selectedCountry != null)
             }
             is RegisterAction.UpdatingUsername -> {
-                previousState.copy(username = currentAction.newUsername, canSignUp = previousState.tosChecked && previousState.email.isNotEmpty() && currentAction.newUsername.isNotEmpty() && previousState.password.isNotEmpty())
+                previousState.copy(username = currentAction.newUsername, canSignUp = previousState.tosChecked && previousState.email.isNotEmpty() && currentAction.newUsername.isNotEmpty() && previousState.password.isNotEmpty() && previousState.selectedCountry != null)
             }
             is RegisterAction.UpdatingPassword -> {
-                previousState.copy(password = currentAction.newPassword, canSignUp = previousState.tosChecked && previousState.email.isNotEmpty() && previousState.username.isNotEmpty() && currentAction.newPassword.isNotEmpty())
+                previousState.copy(password = currentAction.newPassword, canSignUp = previousState.tosChecked && previousState.email.isNotEmpty() && previousState.username.isNotEmpty() && currentAction.newPassword.isNotEmpty() && previousState.selectedCountry != null)
             }
             is RegisterAction.ClickedReadTos -> {
-                previousState.copy(tosChecked = currentAction.newStatus, canSignUp = currentAction.newStatus && previousState.email.isNotEmpty() && previousState.username.isNotEmpty() && previousState.password.isNotEmpty())
+                previousState.copy(tosChecked = currentAction.newStatus, canSignUp = currentAction.newStatus && previousState.email.isNotEmpty() && previousState.username.isNotEmpty() && previousState.password.isNotEmpty() && previousState.selectedCountry != null)
             }
             is RegisterAction.PasswordInvalidated -> {
                 previousState.copy(isPasswordValid = false)
@@ -48,6 +48,21 @@ class RegisterReducer @Inject constructor(): Reducer<RegisterAction, RegisterVie
             }
             is RegisterAction.ProcessSignup -> {
                 previousState
+            }
+            is RegisterAction.SelectingCountry -> {
+                previousState.copy(selectedCountry = currentAction.newSelectedCountry, canSignUp = previousState.tosChecked && previousState.email.isNotEmpty() && previousState.username.isNotEmpty() && previousState.password.isNotEmpty() && currentAction.newSelectedCountry != null)
+            }
+            is RegisterAction.FetchCountries -> {
+                previousState
+            }
+            is RegisterAction.FetchCountriesStarted -> {
+                previousState.copy(fetchingCountries = true)
+            }
+            is RegisterAction.CountriesRetrieved -> {
+                previousState.copy(fetchingCountries = false, countries = currentAction.countries)
+            }
+            is RegisterAction.FailedToRetrieveCountries -> {
+                previousState.copy(fetchingCountries = false)
             }
         }
     }

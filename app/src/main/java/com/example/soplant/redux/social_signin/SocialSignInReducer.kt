@@ -11,10 +11,10 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
     ): SocialSignInViewState {
         return when (currentAction) {
             is SocialSignInAction.UpdatingUsername -> {
-                previousState.copy(username = currentAction.username, canContinue = currentAction.username.isNotEmpty() && previousState.tosChecked)
+                previousState.copy(username = currentAction.username, canContinue = currentAction.username.isNotEmpty() && previousState.tosChecked && previousState.selectedCountry != null)
             }
             is SocialSignInAction.ClickingTos -> {
-                previousState.copy(tosChecked = !previousState.tosChecked, canContinue = !previousState.tosChecked && previousState.username.isNotEmpty())
+                previousState.copy(tosChecked = !previousState.tosChecked, canContinue = !previousState.tosChecked && previousState.username.isNotEmpty() && previousState.selectedCountry != null)
             }
             is SocialSignInAction.ClickingContinue -> {
                 previousState.copy(errorCode = "")
@@ -45,6 +45,21 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
             }
             is SocialSignInAction.SigningOutFailed -> {
                 previousState.copy(errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR, isLoading = false)
+            }
+            is SocialSignInAction.FetchCountries -> {
+                previousState
+            }
+            is SocialSignInAction.FetchCountriesStarted -> {
+                previousState.copy(fetchingCountries = true)
+            }
+            is SocialSignInAction.CountriesRetrieved -> {
+                previousState.copy(fetchingCountries = false, countries = currentAction.countries)
+            }
+            is SocialSignInAction.FailedToRetrieveCountries -> {
+                previousState.copy(fetchingCountries = false)
+            }
+            is SocialSignInAction.SelectingCountry -> {
+                previousState.copy(selectedCountry = currentAction.newSelectedCountry, canContinue = previousState.tosChecked && previousState.username.isNotEmpty() && currentAction.newSelectedCountry != null)
             }
         }
     }

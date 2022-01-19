@@ -37,7 +37,6 @@ object Constants {
         const val USER_EMAIL: String = "email"
         const val USER_VERIFIED: String = "custom:is_verified"
         const val USER_LOCATION: String = "custom:location"
-        const val FIRST_SOCIAL_LOGIN: String = "custom:firstSocialLogin"
         const val SOCIAL_IDENTITIES: String = "identities"
         const val USER_PICTURE: String = "picture"
     }
@@ -45,5 +44,13 @@ object Constants {
         const val GOOGLE: String = "Google"
         const val FACEBOOK: String = "Facebook"
         const val FAILED: String = "FAILED"
+    }
+    object Endpoints {
+        object ResourceApi {
+            const val COUNTRIES: String = "countries"
+        }
+        object ProductApi {
+            const val OFFLINE_WALL: String = "list/dwall"
+        }
     }
 }

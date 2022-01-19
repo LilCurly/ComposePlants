@@ -3,9 +3,11 @@ package com.example.soplant.presentation.ui.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.MainActivity
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginViewState
@@ -49,7 +51,11 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
             store.dispatch(action, this)
         }
 
-        navController.navigate("wall")
+        navController.navigate(Screen.Wall.route) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
     }
 
     fun navigateToUserValidation(navController: NavController) {
@@ -59,7 +65,7 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
             store.dispatch(action, this)
         }
 
-        navController.navigate("confirmation/${state.value.username}/${state.value.password}")
+        navController.navigate(Screen.SignUpConfirmation(userEmail = state.value.username, userPassword = state.value.password).route)
     }
 
     fun signInGoogle(activity: MainActivity) {
@@ -91,9 +97,17 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
     fun federateSignIn(method: String, navController: NavController) {
         if (method != Constants.SocialSignInMethod.FAILED) {
             if (SharedPreferencesManager.shared().getUserUsername().isEmpty() || SharedPreferencesManager.shared().getUserLocation().isEmpty()) {
-                navController.navigate("socialSignIn")
+                navController.navigate(Screen.SocialSignIn.route) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
             } else {
-                navController.navigate("wall")
+                navController.navigate(Screen.Wall.route) {
+                    popUpTo(0) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }

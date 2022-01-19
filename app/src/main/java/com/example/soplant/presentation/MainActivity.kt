@@ -32,6 +32,7 @@ import com.example.soplant.SoPlantApplication
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.commons.UserAttributes
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.ui.confirm_reset.ComposeConfirmResetScreen
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
@@ -67,30 +68,30 @@ class MainActivity : ComponentActivity() {
                     val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
                     val username = SharedPreferencesManager.shared().getUserUsername()
                     val location = SharedPreferencesManager.shared().getUserLocation()
-                    NavHost(navController = navController, startDestination = if (!isSignedIn) "login" else if (isSignedIn && (username.isEmpty() || location.isEmpty())) "socialSignIn" else "wall") {
-                        composable("login") {
+                    NavHost(navController = navController, startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route) {
+                        composable(Screen.Login.route) {
                             ComposeLoginScreen(navController = navController)
                         }
-                        composable("register") {
+                        composable(Screen.Register.route) {
                             ComposeRegisterScreen(navController = navController)
                         }
-                        composable("confirmation/{userEmail}/{userPassword}") {
+                        composable(Screen.SignUpConfirmation().route) {
                             ComposeConfirmationScreen(
                                 navController = navController,
                                 userEmail = it.arguments?.getString("userEmail") ?: "",
                                 userPassword = it.arguments?.getString("userPassword") ?: ""
                             )
                         }
-                        composable("wall") {
+                        composable(Screen.Wall.route) {
                             ComposeWallScreen(navController = navController)
                         }
-                        composable("resetPassword") {
+                        composable(Screen.ResetPassword.route) {
                             ComposeResetPasswordScreen(navController = navController)
                         }
-                        composable("confirmReset") {
+                        composable(Screen.ConfirmReset.route) {
                             ComposeConfirmResetScreen(navController = navController)
                         }
-                        composable("socialSignIn") {
+                        composable(Screen.SocialSignIn.route) {
                             ComposeSocialSignInScreen(
                                 navController = navController
                             )

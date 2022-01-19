@@ -33,12 +33,13 @@ class LoginRemoteDataSource @Inject constructor() {
         }
     }
 
-    suspend fun signupUser(email: String, username: String, password: String): AmplifyModel {
+    suspend fun signupUser(email: String, username: String, password: String, location: String): AmplifyModel {
         val options = AuthSignUpOptions.builder()
             .userAttributes(mutableListOf(
                 AuthUserAttribute(AuthUserAttributeKey.email(), email),
                 AuthUserAttribute(AuthUserAttributeKey.name(), username),
-                AuthUserAttribute(AuthUserAttributeKey.custom("custom:username"), username),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_USERNAME), username),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location),
             ))
             .build()
         return try {

@@ -36,11 +36,12 @@ class LoginRepositoryImpl @Inject constructor(
     override fun signupUser(
         email: String,
         username: String,
-        password: String
+        password: String,
+        location: String
     ): Flow<Resource<Boolean>> = flow {
         try {
             emit(Resource.loading(null))
-            val result = remoteSource.signupUser(email, username, password)
+            val result = remoteSource.signupUser(email, username, password, location)
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {

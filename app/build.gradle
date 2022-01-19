@@ -47,6 +47,17 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    flavorDimensions "ENVIRONEMENT"
+    productFlavors {
+        dev {
+            isDefault = true
+            dimension "ENVIRONEMENT"
+            applicationIdSuffix ".dev"
+            buildConfigField 'String', 'API_RESOURCE_URL', '"https://a0p0oxzdji.execute-api.eu-west-3.amazonaws.com/v1/resource/"'
+            buildConfigField 'String', 'API_PRODUCT_URL', '"https://i40wosaqzh.execute-api.eu-west-3.amazonaws.com/v1/product/"'
+        }
+    }
 }
 
 dependencies {

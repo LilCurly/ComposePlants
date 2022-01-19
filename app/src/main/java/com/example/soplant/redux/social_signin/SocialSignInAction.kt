@@ -1,6 +1,8 @@
 package com.example.soplant.redux.social_signin
 
+import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Action
+import com.example.soplant.redux.register.RegisterAction
 
 sealed class SocialSignInAction: Action {
     data class UpdatingUsername(val username: String): SocialSignInAction()
@@ -15,4 +17,9 @@ sealed class SocialSignInAction: Action {
     object AttributeUpdatedSucceeded: SocialSignInAction()
     object NavigateToWall: SocialSignInAction()
     object NavigateToLogin: SocialSignInAction()
+    object FetchCountries: SocialSignInAction()
+    object FetchCountriesStarted: SocialSignInAction()
+    data class CountriesRetrieved(val countries: List<CustomDropDownModel>): SocialSignInAction()
+    object FailedToRetrieveCountries: SocialSignInAction()
+    data class SelectingCountry(val newSelectedCountry: CustomDropDownModel?): SocialSignInAction()
 }

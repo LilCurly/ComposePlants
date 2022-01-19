@@ -3,6 +3,8 @@ package com.example.soplant.presentation.ui.confirmation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.confirmation.ConfirmationAction
 import com.example.soplant.redux.confirmation.ConfirmationViewState
@@ -102,7 +104,11 @@ class ConfirmationViewModel @Inject constructor(private val store: Store<Confirm
             store.dispatch(action, this)
         }
 
-        navController.navigate("wall")
+        navController.navigate(Screen.Wall.route) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
     }
 
     fun navigateToLogin(navController: NavController) {
@@ -112,7 +118,11 @@ class ConfirmationViewModel @Inject constructor(private val store: Store<Confirm
             store.dispatch(action, this)
         }
 
-        navController.navigate("wall")
+        navController.navigate(Screen.Login.route) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
     }
 
     fun authUser() {

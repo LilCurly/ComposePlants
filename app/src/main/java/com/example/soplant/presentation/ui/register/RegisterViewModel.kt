@@ -2,7 +2,11 @@ package com.example.soplant.presentation.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.soplant.presentation.commons.Screen
+import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.register.RegisterAction
 import com.example.soplant.redux.register.RegisterViewState
@@ -14,6 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val store: Store<RegisterViewState, RegisterAction>): ViewModel() {
     val state: StateFlow<RegisterViewState> = store.state
+
+    init {
+        val action = RegisterAction.FetchCountries
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
 
     fun signupUser() {
         val action = RegisterAction.ProcessSignup
@@ -70,6 +82,16 @@ class RegisterViewModel @Inject constructor(private val store: Store<RegisterVie
             store.dispatch(action, this)
         }
 
-        navController.navigate("confirmation/${state.value.email}/${state.value.password}")
+        navController.navigate(Screen.SignUpConfirmation(userEmail = state.value.username, userPassword = state.value.password).route) {
+            popUpTo(Screen.Login.route)
+        }
+    }
+
+    fun selectCountry(selectedCountry: CustomDropDownModel?) {
+        val action = RegisterAction.SelectingCountry(selectedCountry)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
     }
 }

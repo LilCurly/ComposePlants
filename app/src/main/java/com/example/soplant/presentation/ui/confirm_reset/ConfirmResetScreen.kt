@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -62,6 +63,7 @@ fun ComposeConfirmResetScreen(
                     text = "We sent a confirmation code on the email you provided.",
                     color = Grey,
                     style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.padding(20.dp, 0.dp)
                 )
                 Text(

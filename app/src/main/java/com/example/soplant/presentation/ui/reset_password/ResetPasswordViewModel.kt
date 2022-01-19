@@ -3,6 +3,7 @@ package com.example.soplant.presentation.ui.reset_password
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.reset_password.ResetPasswordAction
 import com.example.soplant.redux.reset_password.ResetPasswordViewState
@@ -46,6 +47,8 @@ class ResetPasswordViewModel @Inject constructor(private val store: Store<ResetP
             store.dispatch(action, this)
         }
 
-        navController.navigate("confirmReset")
+        navController.navigate(Screen.ConfirmReset.route) {
+            popUpTo(Screen.Login.route)
+        }
     }
 }

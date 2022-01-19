@@ -1,6 +1,7 @@
 package com.example.soplant.application.repositories
 
 import com.example.soplant.application.network.sources.ProductRemoteDataSource
+import com.example.soplant.commons.Constants
 import com.example.soplant.domain.entities.ProductList
 import com.example.soplant.domain.repositories.ProductsRepository
 import com.example.soplant.domain.utils.Resource
@@ -19,9 +20,9 @@ class ProductRepositoryImpl @Inject constructor(
             val result = remoteDataSource.getOfflineWall()
             emit(Resource.success(result))
         } catch (e: HttpException) {
-            emit(Resource.error<ProductList>(""))
+            emit(Resource.error<ProductList>(Constants.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {
-            emit(Resource.error<ProductList>(""))
+            emit(Resource.error<ProductList>(Constants.General.NETWORK_ERROR))
         }
     }
 }

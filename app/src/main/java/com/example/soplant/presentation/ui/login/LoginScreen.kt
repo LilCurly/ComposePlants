@@ -42,6 +42,7 @@ import com.example.soplant.R
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.MainActivity
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.*
 import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
@@ -110,11 +111,17 @@ fun ComposeLoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Welcome :)", color = Grey, style = MaterialTheme.typography.body1)
+                Text(
+                    text = "Welcome :)",
+                    color = Grey,
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center
+                )
                 Text(
                     text = "Please enter your login details",
                     color = Grey,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center
                 )
             }
             Spacer(modifier = Modifier.height(28.dp))
@@ -156,7 +163,7 @@ fun ComposeLoginScreen(
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 7.dp, 0.dp)
                         .noRippleClickable {
-                            navController.navigate("resetPassword")
+                            navController.navigate(Screen.ResetPassword.route)
                         })
             }
             Spacer(modifier = Modifier.height(25.dp))
@@ -201,7 +208,7 @@ fun ComposeLoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .noRippleClickable {
-                            navController.navigate("register")
+                            navController.navigate(Screen.Register.route)
                         },
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Bottom

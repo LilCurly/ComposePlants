@@ -1,7 +1,9 @@
 package com.example.soplant.redux.register
 
+import com.example.soplant.domain.interactors.register.GetCountries
 import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.utils.Resource
+import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.login.LoginAction
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class RegisterDataMiddleware @Inject constructor(val signupUser: SignupUser): Middleware<RegisterAction, RegisterViewState> {
+class RegisterDataMiddleware @Inject constructor(val signupUser: SignupUser, val getCountries: GetCountries): Middleware<RegisterAction, RegisterViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: RegisterViewState,
@@ -22,7 +24,7 @@ class RegisterDataMiddleware @Inject constructor(val signupUser: SignupUser): Mi
     ): Flow<RegisterAction> = channelFlow {
         when (action) {
             is RegisterAction.ProcessSignup -> {
-                signupUser(currentState.email, currentState.username, currentState.password).onEach {
+                signupUser(currentState.email, currentState.username, currentState.password, currentState.selectedCountry?.code ?: "").onEach {
                     when (it.status) {
                         Resource.Status.SUCCESS -> {
                             send(RegisterAction.SignupSucceeded)
@@ -33,6 +35,25 @@ class RegisterDataMiddleware @Inject constructor(val signupUser: SignupUser): Mi
                         }
                         Resource.Status.ERROR -> {
                             send(RegisterAction.SignupFailed(it.message))
+                            close()
+                        }
+                    }
+                }.launchIn(coroutineScope)
+            }
+            is RegisterAction.FetchCountries -> {
+                getCountries().onEach {
+                    when (it.status) {
+                        Resource.Status.LOADING -> {
+                            send(RegisterAction.FetchCountriesStarted)
+                        }
+                        Resource.Status.SUCCESS -> {
+                            send(RegisterAction.CountriesRetrieved(it.data?.map { country ->
+                                CustomDropDownModel(name = country.name, imageUrl = country.image, code = country.code)
+                            } ?: listOf()))
+                            close()
+                        }
+                        Resource.Status.ERROR -> {
+                            send(RegisterAction.FailedToRetrieveCountries)
                             close()
                         }
                     }
