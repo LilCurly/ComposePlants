@@ -45,9 +45,14 @@ fun ComposeSocialSignInScreen(
     val focusManager = LocalFocusManager.current
     val state by viewModel.state.collectAsState()
     val userSocialName: String = SharedPreferencesManager.shared().getUserName()
+    val userImageUrl: String = SharedPreferencesManager.shared().getPictureUrl()
 
     if (state.username.isEmpty() && userSocialName.isNotEmpty()) {
         viewModel.updateUsername(userSocialName)
+    }
+
+    if (state.userImageUrl.isEmpty() && userImageUrl.isNotEmpty()) {
+        viewModel.updateUserImageUrl(userImageUrl)
     }
 
     if (state.updateSuccessful) {

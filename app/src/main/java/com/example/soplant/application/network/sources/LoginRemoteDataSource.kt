@@ -20,16 +20,16 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(result.isSignInComplete, null)
         } catch (error: AuthException.UserNotConfirmedException) {
             Log.e("LoginDataSource", "Failed to login user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_NOT_CONFIRMED)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_USER_NOT_CONFIRMED)
         } catch (error: AuthException.NotAuthorizedException) {
             Log.e("LoginDataSource", "Failed to login user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_WRONG_USER)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_USER_WRONG_USER)
         } catch (error: AuthException.InvalidParameterException) {
             Log.e("LoginDataSource", "Failed to login user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_WRONG_USER)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_USER_WRONG_USER)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Failed to login user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -48,10 +48,10 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(result.isSignUpComplete, null)
         } catch (error: AuthException.UsernameExistsException) {
             Log.e("LoginDataSource", "Failed to sign up user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_EXISTS)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_USER_EXISTS)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Failed to sign up user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -62,16 +62,16 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(result.isSignUpComplete, null)
         } catch (error: AuthException.CodeExpiredException) {
             Log.e("LoginDataSource", "Failed to validate user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_EXPIRED)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_CODE_EXPIRED)
         } catch (error: AuthException.CodeMismatchException) {
             Log.e("LoginDataSource", "Failed to validate user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_MISMATCH)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_CODE_MISMATCH)
         } catch (error: AuthException.LimitExceededException) {
             Log.e("LoginDataSource", "Failed to validate user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_LIMIT_EXCEEDED)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_LIMIT_EXCEEDED)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Failed to validate user", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -82,7 +82,7 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(true, null)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Failed to resend sign up code", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -93,10 +93,10 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(true, null)
         } catch (error: AuthException.UserNotFoundException) {
             Log.e("LoginDataSource", "Reset password first step failed", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_USER_NOT_FOUND)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_USER_NOT_FOUND)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Reset password first step failed", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -107,31 +107,32 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(true, null)
         } catch (error: AuthException.CodeExpiredException) {
             Log.e("LoginDataSource", "Failed to confirm reset password", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_EXPIRED)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_CODE_EXPIRED)
         } catch (error: AuthException.CodeMismatchException) {
             Log.e("LoginDataSource", "Failed to confirm reset password", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_CODE_MISMATCH)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_CODE_MISMATCH)
         } catch (error: AuthException.LimitExceededException) {
             Log.e("LoginDataSource", "Failed to confirm reset password", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_LIMIT_EXCEEDED)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_LIMIT_EXCEEDED)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Failed to confirm reset password", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
-    suspend fun federateSignIn(username: String, location: String): AmplifyModel {
+    suspend fun federateSignIn(username: String, location: String, userImageUrl: String): AmplifyModel {
         val attrs = listOf(
             AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_USERNAME), username),
-            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location)
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_IMAGE_URL), userImageUrl)
         )
         return try {
             Amplify.Auth.updateUserAttributes(attrs)
-            Log.i("LoginDataSource", "Successfully updated firstSocialLogin attribute")
+            Log.i("LoginDataSource", "Successfully updated user attributes")
             AmplifyModel(true, null)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Federate sign in failed", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 
@@ -143,7 +144,7 @@ class LoginRemoteDataSource @Inject constructor() {
             AmplifyModel(true, null)
         } catch (error: AmplifyException) {
             Log.e("LoginDataSource", "Sign out failed", error)
-            AmplifyModel(false, Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+            AmplifyModel(false, Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
         }
     }
 }

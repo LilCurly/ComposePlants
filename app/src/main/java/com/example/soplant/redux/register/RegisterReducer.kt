@@ -11,7 +11,7 @@ class RegisterReducer @Inject constructor(): Reducer<RegisterAction, RegisterVie
     ): RegisterViewState {
         return when (currentAction) {
             is RegisterAction.SignupFailed -> {
-                previousState.copy(isSigningUp = false, signUpFailed = true, errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR)
+                previousState.copy(isSigningUp = false, signUpFailed = true, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is RegisterAction.SignupSucceeded -> {
                 previousState.copy(isSigningUp = false, signUpSuccessful = true)

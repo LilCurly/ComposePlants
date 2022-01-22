@@ -29,7 +29,7 @@ class ResetPasswordReducer @Inject constructor(): Reducer<ResetPasswordAction, R
                 previousState.copy(isVerifyingUser = true)
             }
             is ResetPasswordAction.VerificationFailed -> {
-                previousState.copy(errorCode = currentAction.error ?: Constants.General.UNEXPECTED_ERROR)
+                previousState.copy(errorCode = currentAction.error ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is ResetPasswordAction.VerificationSucceeded -> {
                 previousState.copy(canProcessNextStep = true)

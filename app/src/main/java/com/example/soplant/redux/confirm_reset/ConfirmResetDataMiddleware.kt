@@ -28,7 +28,7 @@ class ConfirmResetDataMiddleware @Inject constructor(private val confirmReset: C
                             send(ConfirmResetAction.ConfirmationStarted)
                         }
                         Resource.Status.ERROR -> {
-                            send(ConfirmResetAction.ConfirmationFailed(it.message ?: Constants.General.UNEXPECTED_ERROR))
+                            send(ConfirmResetAction.ConfirmationFailed(it.message ?: Constants.Error.General.UNEXPECTED_ERROR))
                             close()
                         }
                         Resource.Status.SUCCESS -> {

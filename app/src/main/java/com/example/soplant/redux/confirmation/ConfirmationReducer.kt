@@ -14,13 +14,13 @@ class ConfirmationReducer @Inject constructor() : Reducer<ConfirmationAction, Co
                 previousState.copy(isLoading = true, errorCode = "")
             }
             is ConfirmationAction.ResendFailed -> {
-                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR)
+                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is ConfirmationAction.ResendSucceeded -> {
                 previousState.copy(isLoading = false)
             }
             is ConfirmationAction.ConfirmationFailed -> {
-                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR)
+                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is ConfirmationAction.ConfirmationSucceeded -> {
                 previousState.copy(validationSuccessful = true)

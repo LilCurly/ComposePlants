@@ -25,7 +25,8 @@
           "authRoleName": "Cognito_soplantdevAuth_Role",
           "unauthRoleArn": "arn:aws:iam::597236252805:role/Cognito_soplantdevUnauth_Role",
           "unauthRoleName": "Cognito_soplantdevUnauth_Role",
-          "googleAndroid": "755113433001-8p5lqvpk6jq62bmr88mgtdnjoi4h3bre.apps.googleusercontent.com"
+          "googleAndroid": "755113433001-8p5lqvpk6jq62bmr88mgtdnjoi4h3bre.apps.googleusercontent.com",
+          "facebookAppId": "1296224977562746"
         }
       }
     }

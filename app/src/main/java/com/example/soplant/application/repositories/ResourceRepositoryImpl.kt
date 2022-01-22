@@ -21,12 +21,12 @@ class ResourceRepositoryImpl @Inject constructor(
             if (result.isSuccessful) {
                 emit(Resource.success(result.value))
             } else {
-                emit(Resource.error<List<Country>>(Constants.General.UNEXPECTED_ERROR))
+                emit(Resource.error<List<Country>>(Constants.Error.General.UNEXPECTED_ERROR))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<List<Country>>(Constants.General.UNEXPECTED_ERROR))
+            emit(Resource.error<List<Country>>(Constants.Error.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {
-            emit(Resource.error<List<Country>>(Constants.General.NETWORK_ERROR))
+            emit(Resource.error<List<Country>>(Constants.Error.General.NETWORK_ERROR))
         }
     }
 }

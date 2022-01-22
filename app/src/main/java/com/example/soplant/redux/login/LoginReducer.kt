@@ -20,10 +20,10 @@ class LoginReducer @Inject constructor(): Reducer<LoginAction, LoginViewState> {
                 previousState.copy(isSigningIn = false, signInSuccessful = true)
             }
             is LoginAction.LoginFailed -> {
-                if (currentAction.errorCode.equals(Constants.Amplify.AMPLIFY_USER_NOT_CONFIRMED)) {
+                if (currentAction.errorCode.equals(Constants.Error.Amplify.AMPLIFY_USER_NOT_CONFIRMED)) {
                     previousState.copy(isSigningIn = false, signInFailed = false, needsValidation = true)
                 } else {
-                    previousState.copy(isSigningIn = false, signInFailed = true, errorCode = currentAction.errorCode ?: Constants.Amplify.AMPLIFY_UNEXPECTED_ERROR)
+                    previousState.copy(isSigningIn = false, signInFailed = true, errorCode = currentAction.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR)
                 }
             }
             is LoginAction.NavigateToUserValidation -> {

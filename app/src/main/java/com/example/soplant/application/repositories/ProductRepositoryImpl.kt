@@ -20,9 +20,9 @@ class ProductRepositoryImpl @Inject constructor(
             val result = remoteDataSource.getOfflineWall()
             emit(Resource.success(result))
         } catch (e: HttpException) {
-            emit(Resource.error<ProductList>(Constants.General.UNEXPECTED_ERROR))
+            emit(Resource.error<ProductList>(Constants.Error.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {
-            emit(Resource.error<ProductList>(Constants.General.NETWORK_ERROR))
+            emit(Resource.error<ProductList>(Constants.Error.General.NETWORK_ERROR))
         }
     }
 }

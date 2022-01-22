@@ -35,6 +35,14 @@ class SocialSignInViewModel @Inject constructor(private val store: Store<SocialS
         }
     }
 
+    fun updateUserImageUrl(userImageUrl: String) {
+        val action = SocialSignInAction.UpdatingUserImageUrl(userImageUrl)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
     fun updateTosState() {
         val action = SocialSignInAction.ClickingTos
 

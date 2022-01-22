@@ -12,6 +12,7 @@ import com.example.soplant.redux.register.RegisterAction
 import com.example.soplant.redux.register.RegisterViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +21,10 @@ class RegisterViewModel @Inject constructor(private val store: Store<RegisterVie
     val state: StateFlow<RegisterViewState> = store.state
 
     init {
+        fetchCountries()
+    }
+
+    private fun fetchCountries() {
         val action = RegisterAction.FetchCountries
 
         viewModelScope.launch {
@@ -82,7 +87,7 @@ class RegisterViewModel @Inject constructor(private val store: Store<RegisterVie
             store.dispatch(action, this)
         }
 
-        navController.navigate(Screen.SignUpConfirmation(userEmail = state.value.username, userPassword = state.value.password).route) {
+        navController.navigate(Screen.SignUpConfirmation(userEmail = state.value.email, userPassword = state.value.password).route) {
             popUpTo(Screen.Login.route)
         }
     }

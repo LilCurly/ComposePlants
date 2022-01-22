@@ -14,7 +14,8 @@ data class SocialSignInViewState(
     val signOutSuccessful: Boolean,
     val selectedCountry: CustomDropDownModel?,
     val countries: List<CustomDropDownModel>,
-    val fetchingCountries: Boolean
+    val fetchingCountries: Boolean,
+    val userImageUrl: String
 ): State {
-    @Inject constructor(): this("", false, false, false, "", false, false, null, listOf(), false)
+    @Inject constructor(): this("", false, false, false, "", false, false, null, listOf(), false, "")
 }

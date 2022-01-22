@@ -2,6 +2,9 @@ package com.example.soplant.redux.social_signin
 
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.UserAttributes
+import com.example.soplant.domain.interactors.confirmation.CreateAccount
+import com.example.soplant.domain.interactors.confirmation.CreateExploration
+import com.example.soplant.domain.interactors.confirmation.CreateWallet
 import com.example.soplant.domain.interactors.register.GetCountries
 import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.social_signin.SignOut
@@ -14,7 +17,14 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class SocialSignInDataMiddleware @Inject constructor(private val federateSignIn: FederateSignIn, private val signOut: SignOut, private val getCountries: GetCountries): Middleware<SocialSignInAction, SocialSignInViewState> {
+class SocialSignInDataMiddleware @Inject constructor(
+    private val federateSignIn: FederateSignIn,
+    private val signOut: SignOut,
+    private val getCountries: GetCountries,
+    private val createAccount: CreateAccount,
+    private val createWallet: CreateWallet,
+    private val createExploration: CreateExploration
+): Middleware<SocialSignInAction, SocialSignInViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: SocialSignInViewState,
@@ -23,7 +33,7 @@ class SocialSignInDataMiddleware @Inject constructor(private val federateSignIn:
     ): Flow<SocialSignInAction> = channelFlow {
         when (action) {
             is SocialSignInAction.ClickingContinue -> {
-                federateSignIn(currentState.username, currentState.selectedCountry?.code ?: "").onEach {
+                federateSignIn(currentState.username, currentState.selectedCountry?.code ?: "", currentState.userImageUrl).onEach {
                     when (it.status) {
                         Resource.Status.LOADING -> {
                             send(SocialSignInAction.StartedAttributeUpdate)
@@ -33,6 +43,9 @@ class SocialSignInDataMiddleware @Inject constructor(private val federateSignIn:
                             close()
                         }
                         Resource.Status.SUCCESS -> {
+                            createAccount().launchIn(coroutineScope)
+                            createWallet().launchIn(coroutineScope)
+                            createExploration().launchIn(coroutineScope)
                             UserAttributes.fetchUserAttributes().collect { success ->
                                 if (success) {
                                     send(SocialSignInAction.AttributeUpdatedSucceeded)
@@ -56,7 +69,7 @@ class SocialSignInDataMiddleware @Inject constructor(private val federateSignIn:
                             close()
                         }
                         Resource.Status.ERROR -> {
-                            send(SocialSignInAction.SigningOutFailed(it.message ?: Constants.General.UNEXPECTED_ERROR))
+                            send(SocialSignInAction.SigningOutFailed(it.message ?: Constants.Error.General.UNEXPECTED_ERROR))
                             close()
                         }
                     }

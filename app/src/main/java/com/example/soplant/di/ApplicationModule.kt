@@ -1,25 +1,18 @@
 package com.example.soplant.di
 
 import com.example.soplant.BuildConfig
-import com.example.soplant.application.network.services.ProductService
-import com.example.soplant.application.network.services.ResourceService
-import com.example.soplant.application.repositories.LoginRepositoryImpl
-import com.example.soplant.application.repositories.ProductRepositoryImpl
-import com.example.soplant.application.repositories.ResourceRepositoryImpl
+import com.example.soplant.application.network.services.*
+import com.example.soplant.application.repositories.*
 import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
-import com.example.soplant.domain.interactors.confirmation.ResendCode
-import com.example.soplant.domain.interactors.confirmation.ValidateUser
+import com.example.soplant.domain.interactors.confirmation.*
 import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
-import com.example.soplant.domain.interactors.register.GetCountries
-import com.example.soplant.domain.interactors.register.SignupUser
+import com.example.soplant.domain.interactors.register.*
 import com.example.soplant.domain.interactors.reset_password.ResetPassword
 import com.example.soplant.domain.interactors.social_signin.SignOut
-import com.example.soplant.domain.repositories.LoginRepository
 import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
-import com.example.soplant.domain.repositories.ProductsRepository
-import com.example.soplant.domain.repositories.ResourceRepository
+import com.example.soplant.domain.repositories.*
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
 import com.example.soplant.redux.confirm_reset.*
@@ -88,6 +81,42 @@ class ApplicationModule {
             .create(ResourceService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideWalletService(): WalletService {
+        return Retrofit
+            .Builder()
+            .baseUrl(BuildConfig.API_WALLET_URL)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(WalletService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountService(): AccountService {
+        return Retrofit
+            .Builder()
+            .baseUrl(BuildConfig.API_ACCOUNT_URL)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AccountService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExplorationService(): ExplorationService {
+        return Retrofit
+            .Builder()
+            .baseUrl(BuildConfig.API_EXPLORATION_URL)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ExplorationService::class.java)
+    }
+
     // MIDDLEWARES
 
     @Provides
@@ -98,14 +127,14 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideConfirmationMiddlewares(validateUser: ValidateUser, resendCode: ResendCode, loginWithCredentials: LoginWithCredentials): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
-        return listOf(ConfirmationDataMiddleware(validateUser, resendCode, loginWithCredentials))
+    fun provideConfirmationMiddlewares(validateUser: ValidateUser, resendCode: ResendCode, createWallet: CreateWallet, createAccount: CreateAccount, createExploration: CreateExploration, loginWithCredentials: LoginWithCredentials): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
+        return listOf(ConfirmationDataMiddleware(validateUser, resendCode, loginWithCredentials, createAccount, createWallet, createExploration))
     }
 
     @Provides
     @Singleton
-    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut, getCountries: GetCountries): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
-        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut, getCountries))
+    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut, getCountries: GetCountries, createWallet: CreateWallet, createAccount: CreateAccount, createExploration: CreateExploration): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
+        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut, getCountries, createAccount, createWallet, createExploration))
     }
 
     @Provides
@@ -164,6 +193,24 @@ class ApplicationModule {
         fun bindResourceRepository(
             resourceRepositoryImpl: ResourceRepositoryImpl
         ): ResourceRepository
+
+        @Binds
+        @Singleton
+        fun bindAccountRepository(
+            accountRepositoryImpl: AccountRepositoryImpl
+        ): AccountRepository
+
+        @Binds
+        @Singleton
+        fun bindWalletRepository(
+            walletRepositoryImpl: WalletRepositoryImpl
+        ): WalletRepository
+
+        @Binds
+        @Singleton
+        fun bindExplorationRepository(
+            resourceExplorationImpl: ExplorationRepositoryImpl
+        ): ExplorationRepository
 
         // REDUCERS
 

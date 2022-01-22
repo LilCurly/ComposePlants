@@ -1,13 +1,7 @@
 package com.example.soplant.redux.confirmation
 
-import android.util.Log
-import com.amplifyframework.AmplifyException
-import com.amplifyframework.kotlin.core.Amplify
-import com.example.soplant.commons.Constants
-import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.commons.UserAttributes
-import com.example.soplant.domain.interactors.confirmation.ResendCode
-import com.example.soplant.domain.interactors.confirmation.ValidateUser
+import com.example.soplant.domain.interactors.confirmation.*
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.utils.Resource
 import com.example.soplant.redux.Middleware
@@ -20,7 +14,11 @@ import javax.inject.Inject
 class ConfirmationDataMiddleware @Inject constructor(
     private val validateUser: ValidateUser,
     private val resendCode: ResendCode,
-    private val loginWithCredentials: LoginWithCredentials): Middleware<ConfirmationAction, ConfirmationViewState> {
+    private val loginWithCredentials: LoginWithCredentials,
+    private val createAccount: CreateAccount,
+    private val createWallet: CreateWallet,
+    private val createExploration: CreateExploration
+    ): Middleware<ConfirmationAction, ConfirmationViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: ConfirmationViewState,
@@ -68,6 +66,9 @@ class ConfirmationDataMiddleware @Inject constructor(
                 loginWithCredentials(currentState.email, currentState.password).onEach {
                     when (it.status) {
                         Resource.Status.SUCCESS -> {
+                            createAccount().launchIn(coroutineScope)
+                            createWallet().launchIn(coroutineScope)
+                            createExploration().launchIn(coroutineScope)
                             UserAttributes.fetchUserAttributes().onEach { success ->
                                 if (success) {
                                     send(ConfirmationAction.AuthSucceeded)

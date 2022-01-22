@@ -23,7 +23,7 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
                 previousState.copy(isLoading = true)
             }
             is SocialSignInAction.AttributeUpdateFailed -> {
-                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR)
+                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is SocialSignInAction.AttributeUpdatedSucceeded -> {
                 previousState.copy(isLoading = false, updateSuccessful = true)
@@ -44,7 +44,7 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
                 previousState.copy(signOutSuccessful = false)
             }
             is SocialSignInAction.SigningOutFailed -> {
-                previousState.copy(errorCode = currentAction.errorCode ?: Constants.General.UNEXPECTED_ERROR, isLoading = false)
+                previousState.copy(errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, isLoading = false)
             }
             is SocialSignInAction.FetchCountries -> {
                 previousState
@@ -60,6 +60,9 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
             }
             is SocialSignInAction.SelectingCountry -> {
                 previousState.copy(selectedCountry = currentAction.newSelectedCountry, canContinue = previousState.tosChecked && previousState.username.isNotEmpty() && currentAction.newSelectedCountry != null)
+            }
+            is SocialSignInAction.UpdatingUserImageUrl -> {
+                previousState.copy(userImageUrl = currentAction.userImageUrl)
             }
         }
     }

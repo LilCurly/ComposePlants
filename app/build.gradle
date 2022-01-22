@@ -56,6 +56,9 @@ android {
             applicationIdSuffix ".dev"
             buildConfigField 'String', 'API_RESOURCE_URL', '"https://a0p0oxzdji.execute-api.eu-west-3.amazonaws.com/v1/resource/"'
             buildConfigField 'String', 'API_PRODUCT_URL', '"https://i40wosaqzh.execute-api.eu-west-3.amazonaws.com/v1/product/"'
+            buildConfigField 'String', 'API_ACCOUNT_URL', '"https://lqvtfo6nyb.execute-api.eu-west-3.amazonaws.com/v1/"'
+            buildConfigField 'String', 'API_EXPLORATION_URL', '"https://44merljiv8.execute-api.eu-west-3.amazonaws.com/v1/"'
+            buildConfigField 'String', 'API_WALLET_URL', '"https://f66nswplnb.execute-api.eu-west-3.amazonaws.com/v1/"'
         }
     }
 }

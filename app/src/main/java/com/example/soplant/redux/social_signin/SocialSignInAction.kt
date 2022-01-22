@@ -6,6 +6,7 @@ import com.example.soplant.redux.register.RegisterAction
 
 sealed class SocialSignInAction: Action {
     data class UpdatingUsername(val username: String): SocialSignInAction()
+    data class UpdatingUserImageUrl(val userImageUrl: String): SocialSignInAction()
     object ClickingTos: SocialSignInAction()
     object ClickingContinue: SocialSignInAction()
     object ClickingChange: SocialSignInAction()

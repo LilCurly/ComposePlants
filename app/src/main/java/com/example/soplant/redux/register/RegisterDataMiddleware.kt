@@ -1,11 +1,12 @@
 package com.example.soplant.redux.register
 
-import com.example.soplant.domain.interactors.register.GetCountries
-import com.example.soplant.domain.interactors.register.SignupUser
+import com.example.soplant.domain.interactors.confirmation.CreateAccount
+import com.example.soplant.domain.interactors.confirmation.CreateExploration
+import com.example.soplant.domain.interactors.confirmation.CreateWallet
+import com.example.soplant.domain.interactors.register.*
 import com.example.soplant.domain.utils.Resource
 import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Middleware
-import com.example.soplant.redux.login.LoginAction
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
@@ -15,7 +16,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class RegisterDataMiddleware @Inject constructor(val signupUser: SignupUser, val getCountries: GetCountries): Middleware<RegisterAction, RegisterViewState> {
+class RegisterDataMiddleware @Inject constructor(
+    private val signupUser: SignupUser,
+    private val getCountries: GetCountries
+    ): Middleware<RegisterAction, RegisterViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: RegisterViewState,
