@@ -25,4 +25,20 @@ class ProductRepositoryImpl @Inject constructor(
             emit(Resource.error<ProductList>(Constants.Error.General.NETWORK_ERROR))
         }
     }
+
+    override fun getUserWall(lastPaginationTimestamp: String?): Flow<Resource<ProductList>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val result = remoteDataSource.getUserWall(lastPaginationTimestamp)
+            if (result.isSuccessful && result.value != null) {
+                emit(Resource.success(result.value))
+            } else {
+                emit(Resource.error(Constants.Error.ProductApi.FAILED_TO_LOAD))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<ProductList>(Constants.Error.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<ProductList>(Constants.Error.General.NETWORK_ERROR))
+        }
+    }
 }

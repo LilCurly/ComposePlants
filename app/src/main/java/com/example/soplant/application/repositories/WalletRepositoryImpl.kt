@@ -2,6 +2,7 @@ package com.example.soplant.application.repositories
 
 import com.example.soplant.application.network.sources.WalletRemoteDataSource
 import com.example.soplant.commons.Constants
+import com.example.soplant.domain.entities.Wallet
 import com.example.soplant.domain.repositories.WalletRepository
 import com.example.soplant.domain.utils.Resource
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +27,22 @@ class WalletRepositoryImpl @Inject constructor(
             emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
         } catch (e: IOException) {
             emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+        }
+    }
+
+    override fun getWallet(): Flow<Resource<Wallet>> = flow {
+        try {
+            emit(Resource.loading(null))
+            val response = remoteDataSource.getWallet()
+            if (response.isSuccessful && response.value != null) {
+                emit(Resource.success(response.value))
+            } else {
+                emit(Resource.error(Constants.Error.WalletApi.FAILED_TO_LOAD))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.error<Wallet>(Constants.Error.General.UNEXPECTED_ERROR))
+        } catch (e: IOException) {
+            emit(Resource.error<Wallet>(Constants.Error.General.NETWORK_ERROR))
         }
     }
 }

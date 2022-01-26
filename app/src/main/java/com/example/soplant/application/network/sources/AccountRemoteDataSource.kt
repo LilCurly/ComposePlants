@@ -1,6 +1,5 @@
 package com.example.soplant.application.network.sources
 
-import com.example.soplant.application.network.models.request.CreateAccountRequest
 import com.example.soplant.application.network.services.AccountService
 import com.example.soplant.application.network.utils.Headers
 import com.example.soplant.application.utils.CustomResponse

@@ -16,29 +16,24 @@ import javax.inject.Inject
 class WallViewModel @Inject constructor(private val store: Store<WallViewState, WallAction>): ViewModel() {
     val state: StateFlow<WallViewState> = store.state
 
+    init {
+        loadWallet()
+        loadProducts()
+    }
+
     private fun loadProducts() {
-        val action = WallAction.ShouldLoadProducts
+        val action = WallAction.LoadProducts
 
         viewModelScope.launch {
             store.dispatch(action, this)
         }
     }
 
-    private fun clickProducts() {
-        /*val action = LoginAction.LoginClicked
+    private fun loadWallet() {
+        val action = WallAction.LoadWallet
 
         viewModelScope.launch {
             store.dispatch(action, this)
-        }*/
+        }
     }
-
-    private fun loadWallet() {
-
-    }
-
-    private fun clickWallet() {
-
-    }
-
-
 }

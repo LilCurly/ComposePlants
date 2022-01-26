@@ -26,6 +26,14 @@ fun lightGreenButtonContentPadding(): PaddingValues = PaddingValues(
 )
 
 @Composable
+fun variantGreenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
+    backgroundColor = MaterialTheme.colors.primaryVariant,
+    contentColor = MaterialTheme.colors.primary,
+    disabledBackgroundColor = GreyLight,
+    disabledContentColor = MaterialTheme.colors.onPrimary
+)
+
+@Composable
 fun greenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
     backgroundColor = MaterialTheme.colors.primary,
     contentColor = MaterialTheme.colors.onPrimary,

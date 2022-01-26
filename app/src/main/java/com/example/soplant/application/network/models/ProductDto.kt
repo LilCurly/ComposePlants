@@ -15,6 +15,10 @@ data class ProductDto(
     val sellerId: String?,
     @Json(name = "sellerName")
     val sellerName: String?,
+    @Json(name = "sellerImageUrl")
+    val sellerImageUrl: String?,
+    @Json(name = "sellerReviewAverage")
+    val sellerReviewAverage: String?,
     @Json(name = "headerImageUrl")
     val headerImageUrl: String?,
     @Json(name = "complementaryImagesUrl")
@@ -36,7 +40,7 @@ data class ProductDto(
     @Json(name = "isBeginnerFriendly")
     val isBeginnerFriendly: Boolean?,
     @Json(name = "size")
-    val size: List<Int>?,
+    val size: Int?,
     @Json(name = "weight")
     val weight: Int?,
     @Json(name = "sellerCountryCode")

@@ -21,9 +21,13 @@ object Constants {
         }
         object WalletApi {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_WALLET"
+            const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_WALLET"
         }
         object ExplorationApi {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_EXPLORATION"
+        }
+        object ProductApi {
+            const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_PRODUCTS"
         }
     }
     object SharedPreferences {
@@ -63,9 +67,11 @@ object Constants {
         }
         object ProductApi {
             const val OFFLINE_WALL: String = "list/dwall"
+            const val USER_WALL: String = "list/cwall"
         }
         object WalletApi {
             const val CREATE_WALLET: String = "wallet"
+            const val GET_WALLET: String = "wallet"
         }
         object AccountApi {
             const val CREATE_ACCOUNT: String = "account"

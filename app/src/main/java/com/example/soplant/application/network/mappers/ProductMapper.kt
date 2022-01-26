@@ -23,14 +23,16 @@ class ProductMapper @Inject constructor(): Mapper<ProductDto, Product> {
             isPetFriendly = model.isPetFriendly ?: false,
             type = model.type ?: "",
             isBeginnerFriendly = model.isBeginnerFriendly ?: false,
-            size = model.size ?: listOf(),
+            size = model.size ?: 0,
             weight = model.weight ?: 0,
             sellerCountryCode = model.sellerCountryCode ?: "",
             sellInternationally = model.sellInternationally ?: false,
             createdOn = model.createdOn ?: 0,
             waterLevel = model.waterLevel ?: 0,
             lightLevel = model.lightLevel ?: 0,
-            maturity = model.maturity ?: 0
+            maturity = model.maturity ?: 0,
+            sellerImageUrl = model.sellerImageUrl ?: "",
+            sellerReviewAverage = model.sellerReviewAverage ?: "?"
         )
     }
 
@@ -58,7 +60,9 @@ class ProductMapper @Inject constructor(): Mapper<ProductDto, Product> {
             createdOn = entity.createdOn,
             waterLevel = entity.waterLevel,
             lightLevel = entity.lightLevel,
-            maturity = entity.maturity
+            maturity = entity.maturity,
+            sellerReviewAverage = entity.sellerReviewAverage,
+            sellerImageUrl = entity.sellerImageUrl
         )
     }
 }

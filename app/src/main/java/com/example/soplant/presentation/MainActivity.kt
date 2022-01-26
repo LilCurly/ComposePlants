@@ -8,17 +8,24 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.amazonaws.mobile.auth.core.signin.AuthException
 import com.amplifyframework.AmplifyException
@@ -33,12 +40,22 @@ import com.example.soplant.commons.Constants
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.commons.UserAttributes
 import com.example.soplant.presentation.commons.Screen
+import com.example.soplant.presentation.theme.Black
+import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.SoPlantTheme
+import com.example.soplant.presentation.theme.White
+import com.example.soplant.presentation.ui.chat.ComposeChatScreen
 import com.example.soplant.presentation.ui.confirm_reset.ComposeConfirmResetScreen
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
 import com.example.soplant.presentation.ui.custom.CustomBackground
+import com.example.soplant.presentation.ui.custom.lightGreenButtonColors
+import com.example.soplant.presentation.ui.custom.variantGreenButtonColors
+import com.example.soplant.presentation.ui.custom.zeroButtonElevation
+import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.ui.login.ComposeLoginScreen
+import com.example.soplant.presentation.ui.profile.ComposeProfileScreen
 import com.example.soplant.presentation.ui.register.ComposeRegisterScreen
+import com.example.soplant.presentation.ui.research.ComposeResearchScreen
 import com.example.soplant.presentation.ui.reset_password.ComposeResetPasswordScreen
 import com.example.soplant.presentation.ui.social_signin.ComposeSocialSignInScreen
 import com.example.soplant.presentation.ui.wall.ComposeWallScreen
@@ -63,41 +80,143 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SoPlantTheme {
-                CustomBackground(painter = painterResource(id = R.drawable.background), contentDescription = null) {
-                    val navController = rememberNavController()
-                    val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
-                    val username = SharedPreferencesManager.shared().getUserUsername()
-                    val location = SharedPreferencesManager.shared().getUserLocation()
-                    NavHost(navController = navController, startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route) {
-                        composable(Screen.Login.route) {
-                            ComposeLoginScreen(navController = navController)
+                val navController = rememberNavController()
+                val navControllerState by navController.currentBackStackEntryAsState()
+                val shouldShowBottomBar = navControllerState?.destination?.route == Screen.Wall.route ||
+                        navControllerState?.destination?.route == Screen.Research.route ||
+                        navControllerState?.destination?.route == Screen.Chat.route ||
+                        navControllerState?.destination?.route == Screen.Profile.route
+                Scaffold(
+                    bottomBar = {
+                        if (shouldShowBottomBar) {
+                            ComposeBottomNavigation(navController = navController)
                         }
-                        composable(Screen.Register.route) {
-                            ComposeRegisterScreen(navController = navController)
-                        }
-                        composable(Screen.SignUpConfirmation().route) {
-                            ComposeConfirmationScreen(
-                                navController = navController,
-                                userEmail = it.arguments?.getString("userEmail") ?: "",
-                                userPassword = it.arguments?.getString("userPassword") ?: ""
-                            )
-                        }
-                        composable(Screen.Wall.route) {
-                            ComposeWallScreen(navController = navController)
-                        }
-                        composable(Screen.ResetPassword.route) {
-                            ComposeResetPasswordScreen(navController = navController)
-                        }
-                        composable(Screen.ConfirmReset.route) {
-                            ComposeConfirmResetScreen(navController = navController)
-                        }
-                        composable(Screen.SocialSignIn.route) {
-                            ComposeSocialSignInScreen(
-                                navController = navController
-                            )
+                    }
+                ) {
+                    CustomBackground(painter = painterResource(id = R.drawable.background), contentDescription = null, shouldShowBottomBar = shouldShowBottomBar) {
+                        val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
+                        val username = SharedPreferencesManager.shared().getUserUsername()
+                        val location = SharedPreferencesManager.shared().getUserLocation()
+                        NavHost(navController = navController, startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route) {
+                            composable(Screen.Login.route) {
+                                ComposeLoginScreen(navController = navController)
+                            }
+                            composable(Screen.Register.route) {
+                                ComposeRegisterScreen(navController = navController)
+                            }
+                            composable(Screen.SignUpConfirmation().route) {
+                                ComposeConfirmationScreen(
+                                    navController = navController,
+                                    userEmail = it.arguments?.getString("userEmail") ?: "",
+                                    userPassword = it.arguments?.getString("userPassword") ?: ""
+                                )
+                            }
+                            composable(Screen.Wall.route) {
+                                ComposeWallScreen(navController = navController)
+                            }
+                            composable(Screen.ResetPassword.route) {
+                                ComposeResetPasswordScreen(navController = navController)
+                            }
+                            composable(Screen.ConfirmReset.route) {
+                                ComposeConfirmResetScreen(navController = navController)
+                            }
+                            composable(Screen.SocialSignIn.route) {
+                                ComposeSocialSignInScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable(Screen.Research.route) {
+                                ComposeResearchScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable(Screen.Chat.route) {
+                                ComposeChatScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable(Screen.Profile.route) {
+                                ComposeProfileScreen(
+                                    navController = navController
+                                )
+                            }
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun ComposeBottomNavigation(
+        navController: NavController
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(101.dp)) {
+            BottomNavigation(
+                backgroundColor = White,
+                modifier = Modifier
+                    .height(69.dp)
+                    .fillMaxWidth()
+                    .advancedShadow(
+                        color = Black,
+                        alpha = 0.1f,
+                        cornersRadius = 26.dp,
+                        shadowBlurRadius = 20.dp
+                    )
+                    .clip(RoundedCornerShape(26.dp, 26.dp, 0.dp, 0.dp))
+                    .align(Alignment.BottomCenter)
+            ) {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                Spacer(modifier = Modifier.width(20.dp))
+                listOf(
+                    Screen.BottomNavigation.Wall,
+                    Screen.BottomNavigation.Research,
+                    Screen.BottomNavigation.Chat,
+                    Screen.BottomNavigation.Profile
+                ).forEachIndexed { i, item ->
+                    val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
+                    BottomNavigationItem(
+                        selected = isSelected,
+                        icon = if (isSelected) item.iconSelected else item.iconUnselected,
+                        onClick = {
+                            navController.navigate(item.route) {
+                                popUpTo(0) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        })
+                    if (i == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+                Spacer(modifier = Modifier.width(20.dp))
+            }
+            Button(
+                shape = CircleShape,
+                colors = variantGreenButtonColors(),
+                elevation = zeroButtonElevation(),
+                modifier = Modifier
+                    .size(64.dp)
+                    .align(Alignment.TopCenter)
+                    .advancedShadow(
+                        color = MaterialTheme.colors.primary,
+                        alpha = 0.28f,
+                        cornersRadius = 32.dp,
+                        shadowBlurRadius = 20.dp,
+                        offsetY = 4.dp),
+                onClick = {
+
+                }) {
+                Image(
+                    painter = painterResource(id = R.drawable.icon_add_white),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
             }
         }
     }

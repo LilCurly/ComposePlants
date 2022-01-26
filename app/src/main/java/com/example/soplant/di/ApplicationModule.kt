@@ -12,6 +12,8 @@ import com.example.soplant.domain.interactors.reset_password.ResetPassword
 import com.example.soplant.domain.interactors.social_signin.SignOut
 import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
+import com.example.soplant.domain.interactors.wall.GetUserWall
+import com.example.soplant.domain.interactors.wall.GetWallet
 import com.example.soplant.domain.repositories.*
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
@@ -166,8 +168,8 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideWallMiddlewares(getOfflineWall: GetOfflineWall): List<Middleware<WallAction, WallViewState>> {
-        return listOf(WallDataMiddleware(getOfflineWall))
+    fun provideWallMiddlewares(getOfflineWall: GetOfflineWall, getUserWall: GetUserWall, getWallet: GetWallet): List<Middleware<WallAction, WallViewState>> {
+        return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet))
     }
 
     @Module

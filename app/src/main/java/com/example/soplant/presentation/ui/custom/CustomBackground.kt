@@ -18,9 +18,10 @@ import androidx.compose.ui.unit.dp
 fun CustomBackground(
     painter: Painter,
     contentDescription: String?,
+    shouldShowBottomBar: Boolean,
     content: @Composable () -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(bottom = if(shouldShowBottomBar) 69.dp else 0.dp)) {
         Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()){}
         Image(
             painter = painter,

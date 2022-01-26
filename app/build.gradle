@@ -112,4 +112,7 @@ dependencies {
 
     // Federate
     implementation 'com.google.android.gms:play-services-auth:20.0.1'
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-placeholder-material:0.24.0-alpha"
 }
