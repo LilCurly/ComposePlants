@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -55,7 +56,14 @@ fun ComposeRegisterScreen(
                 Column(modifier = Modifier
                     .fillMaxSize()
                     .padding(26.dp)) {
-                    Spacer(modifier = Modifier.height(18.dp))
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        IconButton(onClick = {
+                            navController.popBackStack()
+                        }) {
+                            Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                     Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                         Image(
                             painter = painterResource(id = R.drawable.logo),
@@ -182,31 +190,6 @@ fun ComposeRegisterScreen(
                             ) {
                                 viewModel.validateForm()
                             }
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .noRippleClickable {
-                                    navController.navigate(Screen.Login.route) {
-                                        popUpTo(0) {
-                                            inclusive = true
-                                        }
-                                    }
-                                },
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.Bottom
-                        ) {
-                            Text(
-                                text = "Already have an account? Login here.",
-                                style = MaterialTheme.typography.subtitle1,
-                                color = MaterialTheme.colors.onBackground
-                            )
                         }
                     }
                 }

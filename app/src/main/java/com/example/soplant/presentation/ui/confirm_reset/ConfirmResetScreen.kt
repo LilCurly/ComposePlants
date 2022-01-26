@@ -3,6 +3,7 @@ package com.example.soplant.presentation.ui.confirm_reset
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -49,7 +50,14 @@ fun ComposeConfirmResetScreen(
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(26.dp)) {
-            Spacer(modifier = Modifier.height(18.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.logo),
@@ -70,6 +78,7 @@ fun ComposeConfirmResetScreen(
                     text = "Please enter it here and your new password below.",
                     color = Grey,
                     style = MaterialTheme.typography.body1,
+                    textAlign = TextAlign.Center,
                     modifier = Modifier.padding(20.dp, 0.dp)
                 )
             }

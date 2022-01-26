@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -51,7 +52,14 @@ fun ComposeResetPasswordScreen(
                 .fillMaxWidth()
                 .padding(26.dp)
         ) {
-            Spacer(modifier = Modifier.height(18.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                IconButton(onClick = {
+                    navController.popBackStack()
+                }) {
+                    Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.logo),
