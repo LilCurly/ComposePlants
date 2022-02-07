@@ -1,12 +1,9 @@
 package com.example.soplant.presentation
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -17,9 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -27,28 +22,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.amazonaws.mobile.auth.core.signin.AuthException
 import com.amplifyframework.AmplifyException
-import com.amplifyframework.api.ApiException
 import com.amplifyframework.auth.AuthProvider.facebook
 import com.amplifyframework.auth.AuthProvider.google
-import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.kotlin.core.Amplify
 import com.example.soplant.R
-import com.example.soplant.SoPlantApplication
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.commons.UserAttributes
 import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.Black
-import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.theme.White
 import com.example.soplant.presentation.ui.chat.ComposeChatScreen
 import com.example.soplant.presentation.ui.confirm_reset.ComposeConfirmResetScreen
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
+import com.example.soplant.presentation.ui.create_post.ComposeCreatePostScreen
 import com.example.soplant.presentation.ui.custom.CustomBackground
-import com.example.soplant.presentation.ui.custom.lightGreenButtonColors
 import com.example.soplant.presentation.ui.custom.variantGreenButtonColors
 import com.example.soplant.presentation.ui.custom.zeroButtonElevation
 import com.example.soplant.presentation.ui.extensions.advancedShadow
@@ -59,17 +49,11 @@ import com.example.soplant.presentation.ui.research.ComposeResearchScreen
 import com.example.soplant.presentation.ui.reset_password.ComposeResetPasswordScreen
 import com.example.soplant.presentation.ui.social_signin.ComposeSocialSignInScreen
 import com.example.soplant.presentation.ui.wall.ComposeWallScreen
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.Task
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.launchIn
-import java.security.AuthProvider
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -82,10 +66,11 @@ class MainActivity : ComponentActivity() {
             SoPlantTheme {
                 val navController = rememberNavController()
                 val navControllerState by navController.currentBackStackEntryAsState()
-                val shouldShowBottomBar = navControllerState?.destination?.route == Screen.Wall.route ||
-                        navControllerState?.destination?.route == Screen.Research.route ||
-                        navControllerState?.destination?.route == Screen.Chat.route ||
-                        navControllerState?.destination?.route == Screen.Profile.route
+                val shouldShowBottomBar =
+                    navControllerState?.destination?.route == Screen.Wall.route ||
+                            navControllerState?.destination?.route == Screen.Research.route ||
+                            navControllerState?.destination?.route == Screen.Chat.route ||
+                            navControllerState?.destination?.route == Screen.Profile.route
                 Scaffold(
                     bottomBar = {
                         if (shouldShowBottomBar) {
@@ -93,11 +78,18 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    CustomBackground(painter = painterResource(id = R.drawable.background), contentDescription = null, shouldShowBottomBar = shouldShowBottomBar) {
+                    CustomBackground(
+                        painter = painterResource(id = R.drawable.background),
+                        contentDescription = null,
+                        shouldShowBottomBar = shouldShowBottomBar
+                    ) {
                         val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
                         val username = SharedPreferencesManager.shared().getUserUsername()
                         val location = SharedPreferencesManager.shared().getUserLocation()
-                        NavHost(navController = navController, startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route
+                        ) {
                             composable(Screen.Login.route) {
                                 ComposeLoginScreen(navController = navController)
                             }
@@ -140,6 +132,11 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
+                            composable(Screen.CreatePost.route) {
+                                ComposeCreatePostScreen(
+                                    navController = navController
+                                )
+                            }
                         }
                     }
                 }
@@ -151,9 +148,11 @@ class MainActivity : ComponentActivity() {
     fun ComposeBottomNavigation(
         navController: NavController
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(101.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(101.dp)
+        ) {
             BottomNavigation(
                 backgroundColor = White,
                 modifier = Modifier
@@ -177,7 +176,8 @@ class MainActivity : ComponentActivity() {
                     Screen.BottomNavigation.Chat,
                     Screen.BottomNavigation.Profile
                 ).forEachIndexed { i, item ->
-                    val isSelected = currentDestination?.hierarchy?.any { it.route == item.route } == true
+                    val isSelected =
+                        currentDestination?.hierarchy?.any { it.route == item.route } == true
                     BottomNavigationItem(
                         selected = isSelected,
                         icon = if (isSelected) item.iconSelected else item.iconUnselected,
@@ -208,9 +208,12 @@ class MainActivity : ComponentActivity() {
                         alpha = 0.28f,
                         cornersRadius = 32.dp,
                         shadowBlurRadius = 20.dp,
-                        offsetY = 4.dp),
+                        offsetY = 4.dp
+                    ),
                 onClick = {
-
+                    navController.navigate(Screen.CreatePost.route) {
+                        launchSingleTop = true
+                    }
                 }) {
                 Image(
                     painter = painterResource(id = R.drawable.icon_add_white),

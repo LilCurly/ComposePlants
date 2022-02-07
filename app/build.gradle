@@ -115,4 +115,6 @@ dependencies {
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-placeholder-material:0.24.0-alpha"
+    implementation "com.google.accompanist:accompanist-pager:0.24.0-alpha"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.0-alpha"
 }

@@ -41,4 +41,5 @@ sealed class Screen(val route: String) {
     object ConfirmReset: Screen("confirmReset")
     object SocialSignIn: Screen("socialSignIn")
     data class SignUpConfirmation(val userEmail: String = "{userEmail}", val userPassword: String = "{userPassword}"): Screen("confirmation/$userEmail/$userPassword")
+    object CreatePost: Screen("createPost")
 }

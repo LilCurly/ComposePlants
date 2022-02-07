@@ -1,6 +1,5 @@
 package com.example.soplant.presentation.ui.register
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,14 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.soplant.R
-import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.Grey
-import com.example.soplant.presentation.theme.GreyLight
 import com.example.soplant.presentation.theme.RedError
+import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.*
-import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
@@ -183,7 +179,7 @@ fun ComposeRegisterScreen(
                         }
                         Spacer(modifier = Modifier.height(6.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            BaseButton(
+                            BaseButtonComponent(
                                 text = "Signup",
                                 enabled = state.canSignUp,
                                 modifier = Modifier.fillMaxWidth()
@@ -192,6 +188,7 @@ fun ComposeRegisterScreen(
                             }
                         }
                     }
+                    KeyboardSpacer()
                 }
             }
         }

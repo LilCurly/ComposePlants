@@ -25,7 +25,7 @@ import com.example.soplant.R
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
 import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
-import com.example.soplant.presentation.ui.custom.BaseButton
+import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.CustomTextField
 import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
 import com.example.soplant.presentation.utils.ErrorCodeConverter
@@ -133,7 +133,7 @@ fun ComposeConfirmResetScreen(
                     modifier = Modifier.alpha(if (state.errorCode.isNotEmpty()) 1f else 0f)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                BaseButton(text = "Confirm", modifier = Modifier.fillMaxWidth(), enabled = state.canConfirm) {
+                BaseButtonComponent(text = "Confirm", modifier = Modifier.fillMaxWidth(), enabled = state.canConfirm) {
                     viewModel.confirmClicked()
                 }
             }

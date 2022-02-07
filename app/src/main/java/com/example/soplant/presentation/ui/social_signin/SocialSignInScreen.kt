@@ -3,11 +3,8 @@ package com.example.soplant.presentation.ui.social_signin
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -31,9 +26,8 @@ import com.example.soplant.R
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
-import com.example.soplant.presentation.theme.SilverGrey
+import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.*
-import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.ui.social_signin.components.ComposeSocialProfileCardComponent
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
@@ -156,7 +150,7 @@ fun ComposeSocialSignInScreen(
                         }
                         Spacer(modifier = Modifier.height(6.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            BaseButton(
+                            BaseButtonComponent(
                                 text = "Continue",
                                 enabled = state.canContinue,
                                 modifier = Modifier.fillMaxWidth()

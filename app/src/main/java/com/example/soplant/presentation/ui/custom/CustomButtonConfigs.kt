@@ -10,6 +10,14 @@ import androidx.compose.ui.unit.dp
 import com.example.soplant.presentation.theme.*
 
 @Composable
+fun addImageButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
+    backgroundColor = White,
+    contentColor = MaterialTheme.colors.primaryVariant,
+    disabledBackgroundColor = White,
+    disabledContentColor = MaterialTheme.colors.primaryVariant
+)
+
+@Composable
 fun lightGreenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
     backgroundColor = GreenAlpha,
     contentColor = MaterialTheme.colors.primary,

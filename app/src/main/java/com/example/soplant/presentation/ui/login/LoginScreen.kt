@@ -1,21 +1,7 @@
 package com.example.soplant.presentation.ui.login
 
-import android.util.Log
-import android.widget.Space
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateInt
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -23,29 +9,22 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
-import com.example.soplant.commons.Constants
-import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.MainActivity
 import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.*
+import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.*
-import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.ui.extensions.getActivity
 import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.ui.login.components.SocialButtonComponent
@@ -175,7 +154,7 @@ fun ComposeLoginScreen(
                     modifier = Modifier.alpha(if (state.errorCode.isNotEmpty()) 1f else 0f)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                BaseButton(text = "Login", modifier = Modifier.fillMaxWidth()) {
+                BaseButtonComponent(text = "Login", modifier = Modifier.fillMaxWidth()) {
                     viewModel.loginWithCredentials()
                 }
             }

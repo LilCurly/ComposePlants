@@ -15,12 +15,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.soplant.R
 import com.example.soplant.domain.entities.Product
-import com.example.soplant.presentation.theme.Black
-import com.example.soplant.presentation.theme.Grey
-import com.example.soplant.presentation.theme.WhiteTransparent
+import com.example.soplant.presentation.theme.*
+import com.example.soplant.presentation.ui.custom.CustomPlaceholderImage
 import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.ui.wall.Dots
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ProductViewComponent(product: Product)
 {
@@ -51,12 +55,22 @@ fun ProductViewComponent(product: Product)
                     .clip(MaterialTheme.shapes.medium)
                     .alpha(1f)
                 ) {
-                    Image(painter = painterResource(R.drawable.splashscreen),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        alpha = 0.8f
+                    val pagerState = rememberPagerState()
+                    HorizontalPager(count = 5, state = pagerState) {
+                        CustomPlaceholderImage(
+                            data = R.drawable.splashscreen,
+                            modifier = Modifier.alpha(0.8f)
+                        )
+                    }
+                    HorizontalPagerIndicator(
+                        pagerState = pagerState,
+                        activeColor = MaterialTheme.colors.primary,
+                        inactiveColor = Black.copy(alpha = 0.3f),
+                        spacing = 2.dp,
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(13.dp)
                     )
-                    Dots()
                 }
             }
 

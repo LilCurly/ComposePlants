@@ -12,7 +12,7 @@ import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
-fun CustomPlaceholderImage(data: Any?, modifier: Modifier) {
+fun CustomPlaceholderImage(data: Any?, modifier: Modifier = Modifier) {
     val loadingFinishedState = remember { mutableStateOf(false) }
     Image(
         painter = rememberImagePainter(

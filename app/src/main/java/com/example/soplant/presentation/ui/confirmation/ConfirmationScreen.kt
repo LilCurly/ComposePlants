@@ -2,8 +2,6 @@ package com.example.soplant.presentation.ui.confirmation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,23 +11,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
-import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
-import com.example.soplant.presentation.ui.confirmation.components.ConfirmInputComponent
 import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
-import com.example.soplant.presentation.ui.custom.BaseButton
+import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
 import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.utils.ErrorCodeConverter
@@ -135,7 +127,7 @@ fun ComposeConfirmationScreen(
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    BaseButton(
+                    BaseButtonComponent(
                         text = "Confirm & Finish",
                         enabled = state.canConfirm,
                         modifier = Modifier.fillMaxWidth()
