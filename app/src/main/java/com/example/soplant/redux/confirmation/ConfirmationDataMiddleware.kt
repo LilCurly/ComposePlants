@@ -80,9 +80,11 @@ class ConfirmationDataMiddleware @Inject constructor(
                             send(ConfirmationAction.AuthFailed)
                             close()
                         }
+                        else -> {}
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

@@ -63,6 +63,7 @@ class RegisterDataMiddleware @Inject constructor(
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

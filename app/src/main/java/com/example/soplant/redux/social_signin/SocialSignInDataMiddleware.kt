@@ -98,6 +98,7 @@ class SocialSignInDataMiddleware @Inject constructor(
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

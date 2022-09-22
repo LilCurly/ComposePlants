@@ -21,6 +21,7 @@ class ResetPasswordValidatorMiddleware @Inject constructor(private val validator
                     emit(ResetPasswordAction.FormValidated)
                 }
             }
+            else -> {}
         }
     }
 }

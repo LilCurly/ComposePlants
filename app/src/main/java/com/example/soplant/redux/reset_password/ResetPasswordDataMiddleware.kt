@@ -37,6 +37,7 @@ class ResetPasswordDataMiddleware @Inject constructor(val resetPassword: ResetPa
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

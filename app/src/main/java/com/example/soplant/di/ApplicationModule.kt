@@ -14,6 +14,7 @@ import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.interactors.wall.GetUserWall
 import com.example.soplant.domain.interactors.wall.GetWallet
+import com.example.soplant.domain.interactors.wallet.GetTransactions
 import com.example.soplant.domain.repositories.*
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
@@ -36,6 +37,7 @@ import com.example.soplant.redux.wall.WallAction
 import com.example.soplant.redux.wall.WallDataMiddleware
 import com.example.soplant.redux.wall.WallReducer
 import com.example.soplant.redux.wall.WallViewState
+import com.example.soplant.redux.wallet.*
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -172,6 +174,12 @@ class ApplicationModule {
         return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet))
     }
 
+    @Provides
+    @Singleton
+    fun provideWalletMiddlewares(getWallet: GetWallet, getTransactions: GetTransactions): List<Middleware<WalletAction, WalletViewState>> {
+        return listOf(WalletDataMiddleware(getWallet, getTransactions))
+    }
+
     @Module
     @InstallIn(SingletonComponent::class)
     interface RepositoriesModule {
@@ -213,6 +221,12 @@ class ApplicationModule {
         fun bindExplorationRepository(
             resourceExplorationImpl: ExplorationRepositoryImpl
         ): ExplorationRepository
+
+        @Binds
+        @Singleton
+        fun bindTransactionsRepository(
+            transactionsRepositoryImpl: TransactionRepositoryImpl
+        ): TransactionRepository
 
         // REDUCERS
 
@@ -257,5 +271,11 @@ class ApplicationModule {
         fun bindWallReducer(
             wallReducer: WallReducer
         ): Reducer<WallAction, WallViewState>
+
+        @Binds
+        @Singleton
+        fun bindWalletReducer(
+            walletReducer: WalletReducer
+        ): Reducer<WalletAction, WalletViewState>
     }
 }

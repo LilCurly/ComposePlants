@@ -38,6 +38,7 @@ class ConfirmResetDataMiddleware @Inject constructor(private val confirmReset: C
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

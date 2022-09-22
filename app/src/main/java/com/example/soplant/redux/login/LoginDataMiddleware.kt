@@ -52,6 +52,7 @@ class LoginDataMiddleware @Inject constructor(private val loginWithCredentials: 
             is LoginAction.NavigateToUserValidation -> {
                 resendCode(currentState.username).launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

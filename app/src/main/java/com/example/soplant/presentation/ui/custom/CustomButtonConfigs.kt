@@ -50,6 +50,14 @@ fun greenButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
 )
 
 @Composable
+fun whiteButtonColors(): ButtonColors = ButtonDefaults.buttonColors(
+    backgroundColor = MaterialTheme.colors.surface,
+    contentColor = MaterialTheme.colors.onSurface,
+    disabledBackgroundColor = GreyTransparent,
+    disabledContentColor = MaterialTheme.colors.onPrimary
+)
+
+@Composable
 fun greenButtonContentPadding(): PaddingValues = PaddingValues(
     top = 10.dp,
     start = 15.dp,

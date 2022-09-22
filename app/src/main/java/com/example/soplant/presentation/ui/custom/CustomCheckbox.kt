@@ -24,7 +24,7 @@ import com.example.soplant.presentation.ui.extensions.noRippleClickable
 
 @Composable
 fun CustomCheckbox(modifier: Modifier = Modifier, text: String, isChecked: Boolean, onSelect: () -> Unit) {
-    Row(modifier = modifier.noRippleClickable {
+    Row(modifier = modifier.clickable {
         onSelect()
     }) {
         Card(

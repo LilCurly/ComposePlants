@@ -21,6 +21,7 @@ class ConfirmResetValidatorMiddleware @Inject constructor(private val validator:
                     emit(ConfirmResetAction.FormValidated)
                 }
             }
+            else -> {}
         }
     }
 }

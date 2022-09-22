@@ -1,6 +1,7 @@
 package com.example.soplant.presentation.ui.confirmation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -105,7 +106,7 @@ fun ComposeConfirmationScreen(
             Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .noRippleClickable {
+                .clickable {
                     viewModel.resendClicked()
                 },
                 horizontalArrangement = Arrangement.Center) {

@@ -61,7 +61,8 @@ fun ComposeWallScreen(
                 Column {
                     WalletViewComponent(
                         state.isLoadingWallet,
-                        if (state.wallet != null) state.wallet!!.availableAmount else "0"
+                        if (state.wallet != null) state.wallet!!.availableAmount else "0",
+                        navController
                     )
                 }
             }

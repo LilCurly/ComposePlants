@@ -23,6 +23,10 @@ object Constants {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_WALLET"
             const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_WALLET"
         }
+        object TransactionsApi {
+            const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_WALLET"
+            const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_TRANSACTIONS"
+        }
         object ExplorationApi {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_EXPLORATION"
         }
@@ -72,12 +76,33 @@ object Constants {
         object WalletApi {
             const val CREATE_WALLET: String = "wallet"
             const val GET_WALLET: String = "wallet"
+            const val GET_TRANSACTIONS: String = "transaction"
         }
         object AccountApi {
             const val CREATE_ACCOUNT: String = "account"
         }
         object ExplorationApi {
             const val CREATE_EXPLORATION: String = "exploration"
+        }
+    }
+    object ApiUtils {
+        const val PAGINATION_TIMESTAMP: String = "lastPaginationTimestamp"
+        const val PAGINATION_KEY: String = "lastEvaluatedKey"
+    }
+    object Model {
+        object Transaction {
+            object Status {
+                const val FAILURE = "FAILURE"
+                const val FROZEN = "FROZEN"
+                const val COMPLETED = "COMPLETED"
+            }
+            object Origin {
+                const val BOOST = "BOOST"
+                const val BUY_PRODUCT = "BUY_PRODUCT"
+                const val SELL_PRODUCT = "SELL_PRODUCT"
+                const val FUND_WALLET = "FUND_WALLET"
+                const val WITHDRAWAL = "WITHDRAWAL"
+            }
         }
     }
 }

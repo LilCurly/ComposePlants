@@ -71,6 +71,7 @@ class WallDataMiddleware @Inject constructor(private val getOfflineWall: GetOffl
                     }
                 }.launchIn(coroutineScope)
             }
+            else -> {}
         }
         awaitClose()
     }

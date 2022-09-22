@@ -1,5 +1,6 @@
 package com.example.soplant.presentation.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -12,19 +13,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.soplant.R
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.GreenAlpha
+import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
 
 @Composable
-fun WalletViewComponent(isLoading: Boolean, value: String) {
+fun WalletViewComponent(isLoading: Boolean, value: String, navController: NavController) {
     Row(
         horizontalArrangement = Arrangement.End,
         modifier = Modifier.width(90.dp)
     ) {
-        Box {
+        Box(modifier = Modifier.clickable {
+            navController.navigate(Screen.Wallet.route) {
+                launchSingleTop = true
+            }
+        }) {
             Card(
                 modifier = Modifier
                     .size(80.dp, 35.dp)

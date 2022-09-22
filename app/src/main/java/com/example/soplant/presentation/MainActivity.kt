@@ -34,6 +34,7 @@ import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.Black
 import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.theme.White
+import com.example.soplant.presentation.ui.add_fund.ComposeAddFundScreen
 import com.example.soplant.presentation.ui.chat.ComposeChatScreen
 import com.example.soplant.presentation.ui.confirm_reset.ComposeConfirmResetScreen
 import com.example.soplant.presentation.ui.confirmation.ComposeConfirmationScreen
@@ -49,6 +50,7 @@ import com.example.soplant.presentation.ui.research.ComposeResearchScreen
 import com.example.soplant.presentation.ui.reset_password.ComposeResetPasswordScreen
 import com.example.soplant.presentation.ui.social_signin.ComposeSocialSignInScreen
 import com.example.soplant.presentation.ui.wall.ComposeWallScreen
+import com.example.soplant.presentation.ui.wallet.ComposeWalletScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -134,6 +136,16 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(Screen.CreatePost.route) {
                                 ComposeCreatePostScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable(Screen.Wallet.route) {
+                                ComposeWalletScreen(
+                                    navController = navController
+                                )
+                            }
+                            composable(Screen.AddFund.route) {
+                                ComposeAddFundScreen(
                                     navController = navController
                                 )
                             }

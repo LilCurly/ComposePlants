@@ -1,6 +1,7 @@
 package com.example.soplant.presentation.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -141,7 +142,7 @@ fun ComposeLoginScreen(
                     color = Grey,
                     modifier = Modifier
                         .padding(0.dp, 0.dp, 7.dp, 0.dp)
-                        .noRippleClickable {
+                        .clickable {
                             navController.navigate(Screen.ResetPassword.route)
                         })
             }
@@ -186,7 +187,7 @@ fun ComposeLoginScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .noRippleClickable {
+                        .clickable {
                             navController.navigate(Screen.Register.route)
                         },
                     horizontalArrangement = Arrangement.Center,

@@ -1,7 +1,6 @@
 package com.example.soplant.application.network.sources
 
 import com.example.soplant.application.network.mappers.ProductListMapper
-import com.example.soplant.application.network.models.request.GetUserWallRequest
 import com.example.soplant.application.network.services.ProductService
 import com.example.soplant.application.network.utils.Headers
 import com.example.soplant.application.utils.CustomResponse

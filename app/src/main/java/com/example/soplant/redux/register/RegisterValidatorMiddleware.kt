@@ -26,6 +26,7 @@ class RegisterValidatorMiddleware @Inject constructor(private val validator: Str
                     emit(RegisterAction.FormValidated)
                 }
             }
+            else -> {}
         }
     }
 }
