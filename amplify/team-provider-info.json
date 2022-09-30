@@ -13,19 +13,42 @@
     },
     "categories": {
       "auth": {
-        "soplantandroid0e9c7578": {
-          "userPoolId": "eu-west-3_7Gw432LnW",
-          "userPoolName": "soplant_dev",
-          "webClientId": "12gb0ke7nv7a4rbent9cm77t8r",
-          "nativeClientId": "12gb0ke7nv7a4rbent9cm77t8r",
-          "identityPoolId": "eu-west-3:30cb9d0e-5da5-4d52-8093-2d968ee4b677",
-          "identityPoolName": "soplant-dev",
-          "allowUnauthenticatedIdentities": true,
-          "authRoleArn": "arn:aws:iam::597236252805:role/Cognito_soplantdevAuth_Role",
-          "authRoleName": "Cognito_soplantdevAuth_Role",
-          "unauthRoleArn": "arn:aws:iam::597236252805:role/Cognito_soplantdevUnauth_Role",
-          "unauthRoleName": "Cognito_soplantdevUnauth_Role",
-          "googleAndroid": "755113433001-8p5lqvpk6jq62bmr88mgtdnjoi4h3bre.apps.googleusercontent.com",
+        "soplantandroid6279d1a2": {
+          "userPoolId": "eu-west-3_xwNUBS6sa",
+          "userPoolName": "junglbay-users-dev",
+          "webClientId": "58lgtm4chj1iih92iqkqa6dit1",
+          "nativeClientId": "58lgtm4chj1iih92iqkqa6dit1"
+        }
+      }
+    }
+  },
+  "junglbay": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-soplantandroid-junglbay-221629-authRole",
+      "UnauthRoleArn": "arn:aws:iam::239981609986:role/amplify-soplantandroid-junglbay-221629-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::239981609986:role/amplify-soplantandroid-junglbay-221629-authRole",
+      "Region": "eu-west-3",
+      "DeploymentBucketName": "amplify-soplantandroid-junglbay-221629-deployment",
+      "UnauthRoleName": "amplify-soplantandroid-junglbay-221629-unauthRole",
+      "StackName": "amplify-soplantandroid-junglbay-221629",
+      "StackId": "arn:aws:cloudformation:eu-west-3:239981609986:stack/amplify-soplantandroid-junglbay-221629/725e40d0-3ab3-11ed-bfae-0e498e33759a",
+      "AmplifyAppId": "d3fea04cn0l1da"
+    },
+    "categories": {
+      "auth": {
+        "soplantandroid4f671bc4": {
+          "userPoolId": "eu-west-3_xwNUBS6sa",
+          "userPoolName": "junglbay-users-dev",
+          "webClientId": "58lgtm4chj1iih92iqkqa6dit1",
+          "nativeClientId": "58lgtm4chj1iih92iqkqa6dit1",
+          "identityPoolId": "eu-west-3:66058dbf-73f8-47a1-96b6-9aa4c08c5882",
+          "identityPoolName": "junglbay-dev",
+          "allowUnauthenticatedIdentities": false,
+          "authRoleArn": "arn:aws:iam::239981609986:role/Cognito_junglbaydevAuth_Role",
+          "authRoleName": "Cognito_junglbaydevAuth_Role",
+          "unauthRoleArn": "arn:aws:iam::239981609986:role/Cognito_junglbaydevUnauth_Role",
+          "unauthRoleName": "Cognito_junglbaydevUnauth_Role",
+          "googleAndroid": "755113433001-1oa0cogbpm678up644jsarl3tbj72gj1.apps.googleusercontent.com",
           "facebookAppId": "1296224977562746"
         }
       }
