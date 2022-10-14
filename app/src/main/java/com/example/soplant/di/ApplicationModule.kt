@@ -5,17 +5,18 @@ import com.example.soplant.application.network.services.*
 import com.example.soplant.application.repositories.*
 import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
 import com.example.soplant.domain.interactors.confirmation.*
-import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
-import com.example.soplant.domain.interactors.register.*
+import com.example.soplant.domain.interactors.register.GetCountries
+import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.interactors.reset_password.ResetPassword
+import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.social_signin.SignOut
-import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.domain.interactors.wall.GetOfflineWall
 import com.example.soplant.domain.interactors.wall.GetUserWall
 import com.example.soplant.domain.interactors.wall.GetWallet
 import com.example.soplant.domain.interactors.wallet.GetTransactions
 import com.example.soplant.domain.repositories.*
+import com.example.soplant.domain.utils.StringValidators
 import com.example.soplant.redux.Middleware
 import com.example.soplant.redux.Reducer
 import com.example.soplant.redux.confirm_reset.*
@@ -37,7 +38,10 @@ import com.example.soplant.redux.wall.WallAction
 import com.example.soplant.redux.wall.WallDataMiddleware
 import com.example.soplant.redux.wall.WallReducer
 import com.example.soplant.redux.wall.WallViewState
-import com.example.soplant.redux.wallet.*
+import com.example.soplant.redux.wallet.WalletAction
+import com.example.soplant.redux.wallet.WalletDataMiddleware
+import com.example.soplant.redux.wallet.WalletReducer
+import com.example.soplant.redux.wallet.WalletViewState
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -78,7 +82,7 @@ class ApplicationModule {
     fun provideResourceService(): ResourceService {
         return Retrofit
             .Builder()
-            .baseUrl(BuildConfig.API_RESOURCE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -102,7 +106,7 @@ class ApplicationModule {
     fun provideAccountService(): AccountService {
         return Retrofit
             .Builder()
-            .baseUrl(BuildConfig.API_ACCOUNT_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -114,7 +118,7 @@ class ApplicationModule {
     fun provideExplorationService(): ExplorationService {
         return Retrofit
             .Builder()
-            .baseUrl(BuildConfig.API_EXPLORATION_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -125,25 +129,62 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideLoginMiddlewares(loginWithCredentials: LoginWithCredentials, resendCode: ResendCode): List<Middleware<LoginAction, LoginViewState>> {
+    fun provideLoginMiddlewares(
+        loginWithCredentials: LoginWithCredentials,
+        resendCode: ResendCode
+    ): List<Middleware<LoginAction, LoginViewState>> {
         return listOf(LoginDataMiddleware(loginWithCredentials, resendCode))
     }
 
     @Provides
     @Singleton
-    fun provideConfirmationMiddlewares(validateUser: ValidateUser, resendCode: ResendCode, createWallet: CreateWallet, createAccount: CreateAccount, createExploration: CreateExploration, loginWithCredentials: LoginWithCredentials): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
-        return listOf(ConfirmationDataMiddleware(validateUser, resendCode, loginWithCredentials, createAccount, createWallet, createExploration))
+    fun provideConfirmationMiddlewares(
+        validateUser: ValidateUser,
+        resendCode: ResendCode,
+        createAccount: CreateAccount,
+        createExploration: CreateExploration,
+        loginWithCredentials: LoginWithCredentials
+    ): List<Middleware<ConfirmationAction, ConfirmationViewState>> {
+        return listOf(
+            ConfirmationDataMiddleware(
+                validateUser,
+                resendCode,
+                loginWithCredentials,
+                createAccount,
+                createExploration
+            )
+        )
     }
 
     @Provides
     @Singleton
-    fun provideSocialSignInMiddlewares(federateSignIn: FederateSignIn, signOut: SignOut, getCountries: GetCountries, createWallet: CreateWallet, createAccount: CreateAccount, createExploration: CreateExploration): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
-        return listOf(SocialSignInDataMiddleware(federateSignIn, signOut, getCountries, createAccount, createWallet, createExploration))
+    fun provideSocialSignInMiddlewares(
+        federateSignIn: FederateSignIn,
+        signOut: SignOut,
+        getCountries: GetCountries,
+        createWallet: CreateWallet,
+        createAccount: CreateAccount,
+        createExploration: CreateExploration
+    ): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
+        return listOf(
+            SocialSignInDataMiddleware(
+                federateSignIn,
+                signOut,
+                getCountries,
+                createAccount,
+                createWallet,
+                createExploration
+            )
+        )
     }
 
     @Provides
     @Singleton
-    fun provideRegisterMiddlewares(signupUser: SignupUser, getCountries: GetCountries, stringValidators: StringValidators): List<Middleware<RegisterAction, RegisterViewState>> {
+    fun provideRegisterMiddlewares(
+        signupUser: SignupUser,
+        getCountries: GetCountries,
+        stringValidators: StringValidators
+    ): List<Middleware<RegisterAction, RegisterViewState>> {
         return listOf(
             RegisterValidatorMiddleware(stringValidators),
             RegisterDataMiddleware(signupUser, getCountries)
@@ -152,7 +193,10 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideResetPasswordMiddlewares(resetPassword: ResetPassword, stringValidators: StringValidators): List<Middleware<ResetPasswordAction, ResetPasswordViewState>> {
+    fun provideResetPasswordMiddlewares(
+        resetPassword: ResetPassword,
+        stringValidators: StringValidators
+    ): List<Middleware<ResetPasswordAction, ResetPasswordViewState>> {
         return listOf(
             ResetPasswordValidatorMiddleware(stringValidators),
             ResetPasswordDataMiddleware(resetPassword)
@@ -161,7 +205,10 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideConfirmResetMiddlewares(confirmReset: ConfirmReset, stringValidators: StringValidators): List<Middleware<ConfirmResetAction, ConfirmResetViewState>> {
+    fun provideConfirmResetMiddlewares(
+        confirmReset: ConfirmReset,
+        stringValidators: StringValidators
+    ): List<Middleware<ConfirmResetAction, ConfirmResetViewState>> {
         return listOf(
             ConfirmResetValidatorMiddleware(stringValidators),
             ConfirmResetDataMiddleware(confirmReset)
@@ -170,13 +217,20 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideWallMiddlewares(getOfflineWall: GetOfflineWall, getUserWall: GetUserWall, getWallet: GetWallet): List<Middleware<WallAction, WallViewState>> {
+    fun provideWallMiddlewares(
+        getOfflineWall: GetOfflineWall,
+        getUserWall: GetUserWall,
+        getWallet: GetWallet
+    ): List<Middleware<WallAction, WallViewState>> {
         return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet))
     }
 
     @Provides
     @Singleton
-    fun provideWalletMiddlewares(getWallet: GetWallet, getTransactions: GetTransactions): List<Middleware<WalletAction, WalletViewState>> {
+    fun provideWalletMiddlewares(
+        getWallet: GetWallet,
+        getTransactions: GetTransactions
+    ): List<Middleware<WalletAction, WalletViewState>> {
         return listOf(WalletDataMiddleware(getWallet, getTransactions))
     }
 

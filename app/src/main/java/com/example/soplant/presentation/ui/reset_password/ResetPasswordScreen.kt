@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
+import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.CustomTextField
-import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
@@ -44,7 +44,7 @@ fun ComposeResetPasswordScreen(
         viewModel.navigateToConfirmReset(navController)
     }
 
-    LoadingScreenComposable(isLoading = state.isVerifyingUser) {
+    LoadingScreenDecorator(isLoading = state.isVerifyingUser) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,7 +54,10 @@ fun ComposeResetPasswordScreen(
                 IconButton(onClick = {
                     navController.popBackStack()
                 }) {
-                    Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                    Image(
+                        painter = painterResource(id = R.drawable.back_arrow),
+                        contentDescription = null
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -66,7 +69,10 @@ fun ComposeResetPasswordScreen(
                 )
             }
             Spacer(modifier = Modifier.height(38.dp))
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = "Please enter your email.",
                     color = Grey,

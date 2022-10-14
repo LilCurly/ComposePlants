@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface LoginRepository {
     fun loginWithCredentials(username: String, password: String): Flow<Resource<Boolean>>
     fun loginWithSSO()
-    fun signupUser(email: String, username: String, password: String, location: String): Flow<Resource<Boolean>>
+    fun signupUser(registerAs: String, legalType: String, email: String, legalName: String, firstName: String, lastName: String, password: String, location: String): Flow<Resource<Boolean>>
     fun validateUser(email: String, code: String): Flow<Resource<Boolean>>
     fun resendCode(email: String): Flow<Resource<Boolean>>
     fun resetPassword(email: String): Flow<Resource<Boolean>>

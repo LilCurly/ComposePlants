@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,10 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.AuthProvider.facebook
 import com.amplifyframework.auth.AuthProvider.google
@@ -51,22 +51,26 @@ import com.example.soplant.presentation.ui.reset_password.ComposeResetPasswordSc
 import com.example.soplant.presentation.ui.social_signin.ComposeSocialSignInScreen
 import com.example.soplant.presentation.ui.wall.ComposeWallScreen
 import com.example.soplant.presentation.ui.wallet.ComposeWalletScreen
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val _federateSignIn = MutableStateFlow("")
     val federatedSignIn: StateFlow<String> = _federateSignIn
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SoPlantTheme {
-                val navController = rememberNavController()
+                val transitionTime = 300
+                val navController = rememberAnimatedNavController()
                 val navControllerState by navController.currentBackStackEntryAsState()
                 val shouldShowBottomBar =
                     navControllerState?.destination?.route == Screen.Wall.route ||
@@ -88,14 +92,34 @@ class MainActivity : ComponentActivity() {
                         val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
                         val username = SharedPreferencesManager.shared().getUserUsername()
                         val location = SharedPreferencesManager.shared().getUserLocation()
-                        NavHost(
+                        AnimatedNavHost(
                             navController = navController,
-                            startDestination = if (!isSignedIn) Screen.Login.route else if (isSignedIn && (username.isEmpty() || location.isEmpty())) Screen.SocialSignIn.route else Screen.Wall.route
+                            startDestination = if (!isSignedIn) Screen.Login.route else if (username.isEmpty() || location.isEmpty()) Screen.SocialSignIn.route else Screen.Wall.route
                         ) {
-                            composable(Screen.Login.route) {
+                            composable(Screen.Login.route, enterTransition = {
+                                slideIntoContainer(
+                                    AnimatedContentScope.SlideDirection.Right,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }, exitTransition = {
+                                slideOutOfContainer(
+                                    AnimatedContentScope.SlideDirection.Left,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }) {
                                 ComposeLoginScreen(navController = navController)
                             }
-                            composable(Screen.Register.route) {
+                            composable(Screen.Register.route, enterTransition = {
+                                slideIntoContainer(
+                                    AnimatedContentScope.SlideDirection.Left,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }, exitTransition = {
+                                slideOutOfContainer(
+                                    AnimatedContentScope.SlideDirection.Right,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }) {
                                 ComposeRegisterScreen(navController = navController)
                             }
                             composable(Screen.SignUpConfirmation().route) {

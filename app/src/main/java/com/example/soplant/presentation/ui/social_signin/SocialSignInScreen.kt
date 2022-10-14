@@ -24,10 +24,13 @@ import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.soplant.R
 import com.example.soplant.commons.SharedPreferencesManager
+import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
-import com.example.soplant.presentation.ui.custom.*
+import com.example.soplant.presentation.ui.custom.CustomCheckbox
+import com.example.soplant.presentation.ui.custom.CustomDropDown
+import com.example.soplant.presentation.ui.custom.CustomTextField
 import com.example.soplant.presentation.ui.social_signin.components.ComposeSocialProfileCardComponent
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
@@ -57,14 +60,19 @@ fun ComposeSocialSignInScreen(
         viewModel.navigateToLogin(navController)
     }
 
-    LoadingScreenComposable(isLoading = state.isLoading) {
+    LoadingScreenDecorator(isLoading = state.isLoading) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(26.dp)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(26.dp)
+                ) {
                     Spacer(modifier = Modifier.height(18.dp))
-                    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
                         Image(
                             painter = painterResource(id = R.drawable.logo),
                             contentDescription = null,
@@ -76,13 +84,18 @@ fun ComposeSocialSignInScreen(
                         ComposeSocialProfileCardComponent(
                             userName = userSocialName,
                             socialMethod = SharedPreferencesManager.shared().getSocialMethod(),
-                            image = rememberImagePainter(SharedPreferencesManager.shared().getPictureUrl())
+                            image = rememberImagePainter(
+                                SharedPreferencesManager.shared().getPictureUrl()
+                            )
                         ) {
                             viewModel.signOut()
                         }
                     }
                     Spacer(modifier = Modifier.height(26.dp))
-                    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(
                             text = "Welcome :)",
                             style = MaterialTheme.typography.h1,

@@ -1,9 +1,8 @@
 package com.example.soplant.redux.register
 
 import com.example.soplant.domain.interactors.confirmation.CreateAccount
-import com.example.soplant.domain.interactors.confirmation.CreateExploration
-import com.example.soplant.domain.interactors.confirmation.CreateWallet
-import com.example.soplant.domain.interactors.register.*
+import com.example.soplant.domain.interactors.register.GetCountries
+import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.utils.Resource
 import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Middleware
@@ -19,7 +18,7 @@ import javax.inject.Inject
 class RegisterDataMiddleware @Inject constructor(
     private val signupUser: SignupUser,
     private val getCountries: GetCountries
-    ): Middleware<RegisterAction, RegisterViewState> {
+) : Middleware<RegisterAction, RegisterViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: RegisterViewState,
@@ -28,7 +27,16 @@ class RegisterDataMiddleware @Inject constructor(
     ): Flow<RegisterAction> = channelFlow {
         when (action) {
             is RegisterAction.ProcessSignup -> {
-                signupUser(currentState.email, currentState.username, currentState.password, currentState.selectedCountry?.code ?: "").onEach {
+                signupUser(
+                    currentState.selectedRegisterAs,
+                    currentState.selectedLegalEntity,
+                    currentState.email,
+                    currentState.legalName,
+                    currentState.firstName,
+                    currentState.lastName,
+                    currentState.password,
+                    currentState.selectedCountry?.code ?: ""
+                ).onEach {
                     when (it.status) {
                         Resource.Status.SUCCESS -> {
                             send(RegisterAction.SignupSucceeded)
@@ -45,14 +53,18 @@ class RegisterDataMiddleware @Inject constructor(
                 }.launchIn(coroutineScope)
             }
             is RegisterAction.FetchCountries -> {
-                getCountries().onEach {
+                getCountries(true).onEach {
                     when (it.status) {
                         Resource.Status.LOADING -> {
                             send(RegisterAction.FetchCountriesStarted)
                         }
                         Resource.Status.SUCCESS -> {
                             send(RegisterAction.CountriesRetrieved(it.data?.map { country ->
-                                CustomDropDownModel(name = country.name, imageUrl = country.image, code = country.code)
+                                CustomDropDownModel(
+                                    name = country.name.common,
+                                    imageUrl = country.image.png,
+                                    code = country.code
+                                )
                             } ?: listOf()))
                             close()
                         }

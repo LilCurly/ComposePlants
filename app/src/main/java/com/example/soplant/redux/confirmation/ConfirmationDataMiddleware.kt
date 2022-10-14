@@ -16,7 +16,6 @@ class ConfirmationDataMiddleware @Inject constructor(
     private val resendCode: ResendCode,
     private val loginWithCredentials: LoginWithCredentials,
     private val createAccount: CreateAccount,
-    private val createWallet: CreateWallet,
     private val createExploration: CreateExploration
     ): Middleware<ConfirmationAction, ConfirmationViewState> {
     @ExperimentalCoroutinesApi
@@ -67,7 +66,6 @@ class ConfirmationDataMiddleware @Inject constructor(
                     when (it.status) {
                         Resource.Status.SUCCESS -> {
                             createAccount().launchIn(coroutineScope)
-                            createWallet().launchIn(coroutineScope)
                             createExploration().launchIn(coroutineScope)
                             UserAttributes.fetchUserAttributes().onEach { success ->
                                 if (success) {

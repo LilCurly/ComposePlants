@@ -10,12 +10,14 @@ class ResourceRemoteDataSource @Inject constructor(
     private val resourceService: ResourceService,
     private val countryMapper: CountryMapper
 ) {
-    suspend fun getCountries(): CustomResponse<List<Country>> {
-        val result = resourceService.getCountries()
+    suspend fun getCountries(onlySupported: Boolean): CustomResponse<List<Country>> {
+        val queryMap = mutableMapOf<String, String>()
+        queryMap["supported"] = if (onlySupported) "true" else "false"
+        val result = resourceService.getCountries(queryMap)
         return CustomResponse(
             isSuccessful = result.isSuccessful,
             code = result.code(),
-            value = result.body()?.results?.map {
+            value = result.body()?.map {
                 countryMapper.mapToEntity(it)
             }
         )

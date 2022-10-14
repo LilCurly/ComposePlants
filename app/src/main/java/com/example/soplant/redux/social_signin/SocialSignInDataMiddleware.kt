@@ -76,7 +76,7 @@ class SocialSignInDataMiddleware @Inject constructor(
                 }.launchIn(coroutineScope)
             }
             is SocialSignInAction.FetchCountries -> {
-                getCountries().onEach {
+                getCountries(true).onEach {
                     when (it.status) {
                         Resource.Status.LOADING -> {
                             send(SocialSignInAction.FetchCountriesStarted)
@@ -84,8 +84,8 @@ class SocialSignInDataMiddleware @Inject constructor(
                         Resource.Status.SUCCESS -> {
                             send(SocialSignInAction.CountriesRetrieved(it.data?.map { country ->
                                 CustomDropDownModel(
-                                    name = country.name,
-                                    imageUrl = country.image,
+                                    name = country.name.common,
+                                    imageUrl = country.image.png,
                                     code = country.code
                                 )
                             } ?: listOf()))

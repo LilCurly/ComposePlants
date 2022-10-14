@@ -4,5 +4,5 @@ import com.example.soplant.domain.repositories.LoginRepository
 import javax.inject.Inject
 
 class SignupUser @Inject constructor(private val repository: LoginRepository) {
-    operator fun invoke(email: String, username: String, password: String, location: String) = repository.signupUser(email, username, password, location)
+    operator fun invoke(registerAs: String, legalType: String, email: String, legalName: String, firstName: String, lastName: String, password: String, location: String) = repository.signupUser(registerAs, legalType, email, legalName, firstName, lastName, password, location)
 }

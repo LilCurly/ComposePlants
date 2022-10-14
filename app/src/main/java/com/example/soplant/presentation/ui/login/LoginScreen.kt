@@ -5,7 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +26,12 @@ import androidx.navigation.NavController
 import com.example.soplant.R
 import com.example.soplant.presentation.MainActivity
 import com.example.soplant.presentation.commons.Screen
-import com.example.soplant.presentation.theme.*
+import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
+import com.example.soplant.presentation.theme.Grey
+import com.example.soplant.presentation.theme.RedError
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.getActivity
-import com.example.soplant.presentation.ui.extensions.noRippleClickable
 import com.example.soplant.presentation.ui.login.components.SocialButtonComponent
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
@@ -60,10 +64,12 @@ fun ComposeLoginScreen(
         }
     }
 
-    LoadingScreenComposable(isLoading = state.isSigningIn) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(26.dp, 26.dp)) {
+    LoadingScreenDecorator(isLoading = state.isSigningIn) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(26.dp, 26.dp)
+        ) {
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                 Button(
                     onClick = {},
@@ -147,7 +153,10 @@ fun ComposeLoginScreen(
                         })
             }
             Spacer(modifier = Modifier.height(25.dp))
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = ErrorCodeConverter.convertErrorCodeToMessage(state.errorCode),
                     color = RedError,
@@ -169,11 +178,17 @@ fun ComposeLoginScreen(
             }
             Spacer(modifier = Modifier.height(50.dp))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-                SocialButtonComponent(image = painterResource(id = R.drawable.icon_facebook), buttonColors = facebookButtonColors()) {
+                SocialButtonComponent(
+                    image = painterResource(id = R.drawable.icon_facebook),
+                    buttonColors = facebookButtonColors()
+                ) {
                     viewModel.signInFacebook(activity)
                 }
                 Spacer(modifier = Modifier.width(40.dp))
-                SocialButtonComponent(image = painterResource(id = R.drawable.icon_google), buttonColors = googleButtonColors()) {
+                SocialButtonComponent(
+                    image = painterResource(id = R.drawable.icon_google),
+                    buttonColors = googleButtonColors()
+                ) {
                     viewModel.signInGoogle(activity)
                 }
             }
@@ -184,20 +199,25 @@ fun ComposeLoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.weight(1f))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            navController.navigate(Screen.Register.route)
-                        },
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Text(
-                        text = "Don’t have an account already? Signup here.",
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onBackground
-                    )
+                CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme()) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                navController.navigate(Screen.Register.route) {
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            },
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        Text(
+                            text = "Don’t have an account already? Signup here.",
+                            style = MaterialTheme.typography.subtitle1,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
                 }
             }
         }

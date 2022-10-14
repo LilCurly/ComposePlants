@@ -119,16 +119,18 @@ fun CustomTextField(modifier: Modifier = Modifier, value: String, onValueChange:
                     )
                 }
                 Spacer(modifier = Modifier.width(if (hideContent) 15.dp else 0.dp))
-                Column(modifier = Modifier
-                    .fillMaxHeight()
-                    .width(if (hideContent) 20.dp else 0.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    IconButton(onClick = { hiddenContentVisibility = !hiddenContentVisibility }) {
-                        Image(
-                            painter = painterResource(id = if (hiddenContentVisibility) R.drawable.icon_hide else R.drawable.icon_show),
-                            contentDescription = null)
+                if (hideContent) {
+                    Column(modifier = Modifier
+                        .fillMaxHeight()
+                        .width(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        IconButton(onClick = { hiddenContentVisibility = !hiddenContentVisibility }) {
+                            Image(
+                                painter = painterResource(id = if (hiddenContentVisibility) R.drawable.icon_hide else R.drawable.icon_show),
+                                contentDescription = null)
+                        }
                     }
                 }
             }

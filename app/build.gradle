@@ -19,6 +19,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
@@ -52,6 +53,7 @@ android {
             isDefault = true
             dimension "ENVIRONEMENT"
             applicationIdSuffix ".dev"
+            buildConfigField 'String', 'API_BASE_URL', '"https://9lu8f7dqp2.execute-api.eu-west-3.amazonaws.com/v1/"'
             buildConfigField 'String', 'API_RESOURCE_URL', '"https://a0p0oxzdji.execute-api.eu-west-3.amazonaws.com/v1/resource/"'
             buildConfigField 'String', 'API_PRODUCT_URL', '"https://i40wosaqzh.execute-api.eu-west-3.amazonaws.com/v1/product/"'
             buildConfigField 'String', 'API_ACCOUNT_URL', '"https://lqvtfo6nyb.execute-api.eu-west-3.amazonaws.com/v1/"'
@@ -107,9 +109,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
 
     // Accompanist
-    implementation "com.google.accompanist:accompanist-placeholder-material:0.25.1"
-    implementation "com.google.accompanist:accompanist-pager:0.25.1"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.25.1"
-    implementation "com.google.accompanist:accompanist-flowlayout:0.25.1"
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
+    implementation "com.google.accompanist:accompanist-placeholder-material:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist_version"
 }

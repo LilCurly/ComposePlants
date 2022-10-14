@@ -33,13 +33,19 @@ class LoginRemoteDataSource @Inject constructor() {
         }
     }
 
-    suspend fun signupUser(email: String, username: String, password: String, location: String): AmplifyModel {
+    suspend fun signupUser(registerAs: String, legalType: String, legalName: String, email: String, firstName: String, lastName: String, location: String, password: String): AmplifyModel {
+        val firstNameTrimmed = firstName.replace(" ", "")
+        val lastNameTrimmed = lastName.replace(" ", "")
         val options = AuthSignUpOptions.builder()
             .userAttributes(mutableListOf(
                 AuthUserAttribute(AuthUserAttributeKey.email(), email),
-                AuthUserAttribute(AuthUserAttributeKey.name(), username),
-                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_USERNAME), username),
+                AuthUserAttribute(AuthUserAttributeKey.name(), "$firstNameTrimmed $lastNameTrimmed"),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_FIRSTNAME), firstNameTrimmed),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LASTNAME), lastNameTrimmed),
                 AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_TYPE), registerAs),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.LEGAL_TYPE), legalType),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.LEGAL_NAME), legalName)
             ))
             .build()
         return try {

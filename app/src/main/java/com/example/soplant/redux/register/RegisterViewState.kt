@@ -8,7 +8,9 @@ data class RegisterViewState(
     val isSigningUp: Boolean,
     val signUpSuccessful: Boolean,
     val signUpFailed: Boolean,
-    val username: String,
+    val legalName: String,
+    val firstName: String,
+    val lastName: String,
     val email: String,
     val password: String,
     val tosChecked: Boolean,
@@ -19,8 +21,28 @@ data class RegisterViewState(
     val errorCode: String,
     val selectedCountry: CustomDropDownModel?,
     val countries: List<CustomDropDownModel>,
-    val fetchingCountries: Boolean
+    val fetchingCountries: Boolean,
+    val selectedRegisterAs: String,
+    var selectedLegalEntity: String,
+    var currentScreenState: RegisterScreenState
 ): State {
     @Inject
-    constructor(): this(false, false, false, "", "", "", false, false, true, true, false, "", null, listOf(), false)
+    constructor(): this(false, false, false, "", "", "", "", "", false, false, true, true, false, "", null, listOf(), false, "", "", RegisterScreenState.REGISTER_AS_CHOICE)
+
+    enum class RegisterAsOptions(val optionValue: String) {
+        USER_TYPE_NATURAL("USER_TYPE_NATURAL"),
+        USER_TYPE_LEGAL("USER_TYPE_LEGAL")
+    }
+
+    enum class LegalEntityOptions(val optionValue: String) {
+        SOLETRADER("SOLETRADER"),
+        BUSINESS("BUSINESS"),
+        ORGANIZATION("ORGANIZATION"),
+    }
+}
+
+enum class RegisterScreenState {
+    REGISTER_AS_CHOICE,
+    LEGAL_ENTITY_CHOICE,
+    FORM
 }

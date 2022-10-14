@@ -19,12 +19,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
+import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
-import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
-import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
-import com.example.soplant.presentation.ui.extensions.noRippleClickable
+import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
@@ -54,7 +53,7 @@ fun ComposeConfirmationScreen(
         viewModel.setUserPassword(userPassword)
     }
 
-    LoadingScreenComposable(isLoading = state.isLoading) {
+    LoadingScreenDecorator(isLoading = state.isLoading) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -64,19 +63,25 @@ fun ComposeConfirmationScreen(
                 IconButton(onClick = {
                     navController.popBackStack()
                 }) {
-                    Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                    Image(
+                        painter = painterResource(id = R.drawable.back_arrow),
+                        contentDescription = null
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(2.dp))
             Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
                 Image(
                     painter = painterResource(id = R.drawable.logo),
                     contentDescription = null,
-                    modifier = Modifier.size(136.dp, 72.dp)
+                    modifier = Modifier.size(111.dp, 59.dp)
                 )
             }
             Spacer(modifier = Modifier.height(38.dp))
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = "We sent you a confirmation code on your email. Please enter it here.",
                     color = Grey,
@@ -104,13 +109,19 @@ fun ComposeConfirmationScreen(
                 viewModel.confirmClicked()
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    viewModel.resendClicked()
-                },
-                horizontalArrangement = Arrangement.Center) {
-                Text(text = "Didn't receive? Resend.", style = MaterialTheme.typography.body1, color = MaterialTheme.colors.primary)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        viewModel.resendClicked()
+                    },
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Didn't receive? Resend.",
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.primary
+                )
             }
             Spacer(modifier = Modifier.height(55.dp))
             Column(modifier = Modifier.fillMaxWidth()) {

@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.soplant.R
+import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.RedError
-import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
+import com.example.soplant.presentation.ui.confirmation.components.OtpComponent
 import com.example.soplant.presentation.ui.custom.CustomTextField
-import com.example.soplant.presentation.ui.custom.LoadingScreenComposable
 import com.example.soplant.presentation.utils.ErrorCodeConverter
 
 @Composable
@@ -46,15 +46,20 @@ fun ComposeConfirmResetScreen(
         viewModel.navigateToLogin(navController)
     }
 
-    LoadingScreenComposable(isLoading = state.isLoading) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(26.dp)) {
+    LoadingScreenDecorator(isLoading = state.isLoading) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(26.dp)
+        ) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 IconButton(onClick = {
                     navController.popBackStack()
                 }) {
-                    Image(painter = painterResource(id = R.drawable.back_arrow), contentDescription = null)
+                    Image(
+                        painter = painterResource(id = R.drawable.back_arrow),
+                        contentDescription = null
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -66,7 +71,10 @@ fun ComposeConfirmResetScreen(
                 )
             }
             Spacer(modifier = Modifier.height(38.dp))
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = "We sent a confirmation code on the email you provided.",
                     color = Grey,
@@ -115,9 +123,11 @@ fun ComposeConfirmResetScreen(
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(11.dp, 0.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(11.dp, 0.dp)
+            ) {
                 Text(
                     text = "Password should contain at least 8 characters, with at least one uppercase character, one lowercase character, one number and one special character.",
                     style = MaterialTheme.typography.caption,
@@ -125,7 +135,10 @@ fun ComposeConfirmResetScreen(
                 )
             }
             Spacer(modifier = Modifier.height(25.dp))
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = ErrorCodeConverter.convertErrorCodeToMessage(state.errorCode),
                     color = RedError,
@@ -133,7 +146,11 @@ fun ComposeConfirmResetScreen(
                     modifier = Modifier.alpha(if (state.errorCode.isNotEmpty()) 1f else 0f)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                BaseButtonComponent(text = "Confirm", modifier = Modifier.fillMaxWidth(), enabled = state.canConfirm) {
+                BaseButtonComponent(
+                    text = "Confirm",
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = state.canConfirm
+                ) {
                     viewModel.confirmClicked()
                 }
             }

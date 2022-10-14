@@ -14,10 +14,10 @@ import javax.inject.Inject
 class ResourceRepositoryImpl @Inject constructor(
     private val remoteDataSource: ResourceRemoteDataSource
 ): ResourceRepository {
-    override fun getCountries(): Flow<Resource<List<Country>>> = flow {
+    override fun getCountries(onlySupported: Boolean): Flow<Resource<List<Country>>> = flow {
         try {
             emit(Resource.loading(null))
-            val result = remoteDataSource.getCountries()
+            val result = remoteDataSource.getCountries(onlySupported)
             if (result.isSuccessful) {
                 emit(Resource.success(result.value))
             } else {

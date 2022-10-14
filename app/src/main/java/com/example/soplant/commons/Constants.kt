@@ -52,10 +52,15 @@ object Constants {
     object AuthSessionKeys {
         const val USER_ID: String = "sub"
         const val USER_USERNAME: String = "custom:username"
+        const val LEGAL_TYPE: String = "custom:legal_type"
+        const val USER_TYPE: String = "custom:user_type"
+        const val LEGAL_NAME: String = "custom:legal_name"
         const val USER_NAME: String = "name"
         const val USER_EMAIL: String = "email"
         const val USER_VERIFIED: String = "custom:is_verified"
         const val USER_LOCATION: String = "custom:location"
+        const val USER_LASTNAME: String = "custom:last_name"
+        const val USER_FIRSTNAME: String = "custom:first_name"
         const val SOCIAL_IDENTITIES: String = "identities"
         const val USER_PICTURE: String = "picture"
         const val USER_IMAGE_URL: String = "custom:userImageUrl"
@@ -79,10 +84,10 @@ object Constants {
             const val GET_TRANSACTIONS: String = "transaction"
         }
         object AccountApi {
-            const val CREATE_ACCOUNT: String = "account"
+            const val CREATE_ACCOUNT: String = "user/first"
         }
         object ExplorationApi {
-            const val CREATE_EXPLORATION: String = "exploration"
+            const val CREATE_EXPLORATION: String = "/{userId}/exploration"
         }
     }
     object ApiUtils {
