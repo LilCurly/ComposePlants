@@ -101,10 +101,20 @@ class MainActivity : ComponentActivity() {
                                     animationSpec = tween(transitionTime)
                                 )
                             }, exitTransition = {
-                                slideOutOfContainer(
-                                    AnimatedContentScope.SlideDirection.Left,
-                                    animationSpec = tween(transitionTime)
-                                )
+                                when (targetState.destination.route) {
+                                    Screen.Wall.route -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Down,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                    else -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Left,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                }
                             }) {
                                 ComposeLoginScreen(navController = navController)
                             }
@@ -114,14 +124,44 @@ class MainActivity : ComponentActivity() {
                                     animationSpec = tween(transitionTime)
                                 )
                             }, exitTransition = {
-                                slideOutOfContainer(
-                                    AnimatedContentScope.SlideDirection.Right,
-                                    animationSpec = tween(transitionTime)
-                                )
+                                when (targetState.destination.route) {
+                                    Screen.SignUpConfirmation().route -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Left,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                    else -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Right,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                }
                             }) {
                                 ComposeRegisterScreen(navController = navController)
                             }
-                            composable(Screen.SignUpConfirmation().route) {
+                            composable(Screen.SignUpConfirmation().route, enterTransition = {
+                                slideIntoContainer(
+                                    AnimatedContentScope.SlideDirection.Left,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }, exitTransition = {
+                                when (targetState.destination.route) {
+                                    Screen.Wall.route -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Down,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                    else -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Right,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                }
+                            }) {
                                 ComposeConfirmationScreen(
                                     navController = navController,
                                     userEmail = it.arguments?.getString("userEmail") ?: "",
@@ -137,7 +177,27 @@ class MainActivity : ComponentActivity() {
                             composable(Screen.ConfirmReset.route) {
                                 ComposeConfirmResetScreen(navController = navController)
                             }
-                            composable(Screen.SocialSignIn.route) {
+                            composable(Screen.SocialSignIn.route, enterTransition = {
+                                slideIntoContainer(
+                                    AnimatedContentScope.SlideDirection.Left,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }, exitTransition = {
+                                when (targetState.destination.route) {
+                                    Screen.Login.route -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Right,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                    else -> {
+                                        slideOutOfContainer(
+                                            AnimatedContentScope.SlideDirection.Down,
+                                            animationSpec = tween(transitionTime)
+                                        )
+                                    }
+                                }
+                            }) {
                                 ComposeSocialSignInScreen(
                                     navController = navController
                                 )
