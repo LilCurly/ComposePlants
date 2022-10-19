@@ -30,13 +30,35 @@ class SharedPreferencesManager constructor(private val sharedPreferences: Shared
         }
     }
 
-    fun getUserId(): String {
-        return sharedPreferences.getString(Constants.SharedPreferences.PREF_USER_ID, "") ?: ""
+    fun getAccountId(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_ACCOUNT_ID, "") ?: ""
     }
 
-    fun storeUserId(userId: String) {
+    fun storeAccountId(accountId: String) {
         with(sharedPreferences.edit()) {
-            putString(Constants.SharedPreferences.PREF_USER_ID, userId)
+            putString(Constants.SharedPreferences.PREF_ACCOUNT_ID, accountId)
+            apply()
+        }
+    }
+
+    fun getAccountUsers(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_ACCOUNT_USERS, "") ?: ""
+    }
+
+    fun storeAccountUsers(accountUsers: String) {
+        with(sharedPreferences.edit()) {
+            putString(Constants.SharedPreferences.PREF_ACCOUNT_USERS, accountUsers)
+            apply()
+        }
+    }
+
+    fun getLastUserId(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_LAST_USER_ID, "") ?: ""
+    }
+
+    fun storeLastUserId(lastUserId: String) {
+        with(sharedPreferences.edit()) {
+            putString(Constants.SharedPreferences.PREF_LAST_USER_ID, lastUserId)
             apply()
         }
     }
@@ -74,13 +96,13 @@ class SharedPreferencesManager constructor(private val sharedPreferences: Shared
         }
     }
 
-    fun getUserEmail(): String {
-        return sharedPreferences.getString(Constants.SharedPreferences.PREF_USER_EMAIL, "") ?: ""
+    fun getAccountEmail(): String {
+        return sharedPreferences.getString(Constants.SharedPreferences.PREF_ACCOUNT_EMAIL, "") ?: ""
     }
 
-    fun storeUserEmail(userEmail: String) {
+    fun storeAccountEmail(userEmail: String) {
         with(sharedPreferences.edit()) {
-            putString(Constants.SharedPreferences.PREF_USER_EMAIL, userEmail)
+            putString(Constants.SharedPreferences.PREF_ACCOUNT_EMAIL, userEmail)
             apply()
         }
     }
@@ -133,8 +155,8 @@ class SharedPreferencesManager constructor(private val sharedPreferences: Shared
     fun signOut() {
         with(sharedPreferences.edit()) {
             putString(Constants.SharedPreferences.PREF_USER_NAME, "")
-            putString(Constants.SharedPreferences.PREF_USER_ID, "")
-            putString(Constants.SharedPreferences.PREF_USER_EMAIL, "")
+            putString(Constants.SharedPreferences.PREF_ACCOUNT_ID, "")
+            putString(Constants.SharedPreferences.PREF_ACCOUNT_EMAIL, "")
             putString(Constants.SharedPreferences.PREF_USER_USERNAME, "")
             putString(Constants.SharedPreferences.PREF_USER_LOCATION, "")
             putBoolean(Constants.SharedPreferences.PREF_USER_VERIFIED, false)

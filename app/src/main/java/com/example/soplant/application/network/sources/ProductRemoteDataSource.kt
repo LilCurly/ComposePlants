@@ -17,7 +17,8 @@ class ProductRemoteDataSource @Inject constructor(
 
     suspend fun getUserWall(lastPaginationTimestamp: String?): CustomResponse<ProductList> {
         val timestamp = lastPaginationTimestamp?.toLong()
-        val response = productService.getUserWall(Headers.getDefaultJwtHeader(), timestamp)
+        val headers = Headers.getDefaultJwtHeader()
+        val response = productService.getUserWall(headers, timestamp)
         var result: ProductList? = null
         if (response.isSuccessful && response.body() != null) {
             result = productListMapper.mapToEntity(response.body()!!)

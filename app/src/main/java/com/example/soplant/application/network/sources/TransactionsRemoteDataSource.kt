@@ -12,7 +12,8 @@ class TransactionsRemoteDataSource @Inject constructor(
     private val mapper: TransactionListMapper
 ) {
     suspend fun getTransactions(lastEvaluatedKey: String?): CustomResponse<TransactionList> {
-        val response = service.getTransactions(Headers.getDefaultJwtHeader(), lastEvaluatedKey)
+        val headers = Headers.getDefaultJwtHeader()
+        val response = service.getTransactions(headers, lastEvaluatedKey)
         var result: TransactionList? = null
         if (response.isSuccessful && response.body() != null) {
             result = mapper.mapToEntity(response.body()!!)

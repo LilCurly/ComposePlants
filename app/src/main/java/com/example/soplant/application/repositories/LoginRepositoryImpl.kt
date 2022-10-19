@@ -20,12 +20,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -49,12 +49,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -65,12 +65,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -81,12 +81,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -97,12 +97,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -113,28 +113,28 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
-    override fun federateSignIn(username: String, location: String, userImageUrl: String): Flow<Resource<Boolean>> = flow {
+    override fun federateSignIn(legalName: String, firstName: String, lastName: String, registerAs: String, legalType: String, location: String, userImageUrl: String): Flow<Resource<Boolean>> = flow {
         try {
             emit(Resource.loading(null))
-            val result = remoteSource.federateSignIn(username, location, userImageUrl)
+            val result = remoteSource.federateSignIn(legalName, firstName, lastName, registerAs, legalType, location, userImageUrl)
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -145,12 +145,12 @@ class LoginRepositoryImpl @Inject constructor(
             if (result.operationSuccess) {
                 emit(Resource.success(result.operationSuccess))
             } else {
-                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR))
+                emit(Resource.error<Boolean>(result.errorCode ?: Constants.Error.Amplify.AMPLIFY_UNEXPECTED_ERROR, null))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 }

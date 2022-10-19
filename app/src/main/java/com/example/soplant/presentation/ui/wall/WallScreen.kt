@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.soplant.commons.SharedPreferencesManager
+import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.theme.Green
 import com.example.soplant.presentation.theme.GreenAlpha
 import com.example.soplant.presentation.theme.GreyAlternative
@@ -40,6 +41,19 @@ fun ComposeWallScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val scrollState = rememberLazyListState()
+
+    if (state.shouldCreateUser) {
+        navController.navigate(Screen.SocialSignIn.route) {
+            popUpTo(0) {
+                inclusive = true
+            }
+        }
+    }
+
+    if (state.shouldLoadRemaining) {
+        viewModel.loadProducts()
+        viewModel.loadWallet()
+    }
 
     Column(
         modifier = Modifier
@@ -61,7 +75,7 @@ fun ComposeWallScreen(
                 Column {
                     WalletViewComponent(
                         state.isLoadingWallet,
-                        if (state.wallet != null) state.wallet!!.availableAmount else "0",
+                        if (state.wallet != null) state.user!!.wallets[0].amount else "0",
                         navController
                     )
                 }

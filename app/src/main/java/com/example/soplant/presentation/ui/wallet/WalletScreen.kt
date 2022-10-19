@@ -74,7 +74,7 @@ fun ComposeWalletScreen(
                 ) {
                     Text(text = "Available Balance", style = MaterialTheme.typography.body1)
                     Text(
-                        text = "$${state.wallet?.availableAmount ?: "0"}",
+                        text = "$${state.wallet?.amount ?: "0"}",
                         style = MaterialTheme.typography.body1,
                         fontSize = 38.sp,
                         fontFamily = montserrat,
@@ -82,7 +82,7 @@ fun ComposeWalletScreen(
                     )
                     Spacer(modifier = Modifier.height(7.dp))
                     Text(
-                        text = "Total Balance $${DecimalConverter.convertPriceString((state.wallet?.availableAmount?.toFloat() ?: 0f) + (state.wallet?.pendingAmount?.toFloat() ?: 0f) + (state.wallet?.frozenAmount?.toFloat() ?: 0f))}",
+                        text = "Total Balance $${DecimalConverter.convertPriceString((state.wallet?.amount?.toFloat() ?: 0f) + (state.wallet?.amount?.toFloat() ?: 0f) + (state.wallet?.amount?.toFloat() ?: 0f))}",
                         style = MaterialTheme.typography.body2,
                         color = GreyShark
                     )

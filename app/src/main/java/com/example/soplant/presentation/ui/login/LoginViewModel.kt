@@ -96,7 +96,7 @@ class LoginViewModel @Inject constructor(private val store: Store<LoginViewState
 
     fun federateSignIn(method: String, navController: NavController) {
         if (method != Constants.SocialSignInMethod.FAILED) {
-            if (SharedPreferencesManager.shared().getUserUsername().isEmpty() || SharedPreferencesManager.shared().getUserLocation().isEmpty()) {
+            if (SharedPreferencesManager.shared().getAccountUsers().isEmpty()) {
                 navController.navigate(Screen.SocialSignIn.route) {
                     popUpTo(0) {
                         inclusive = true

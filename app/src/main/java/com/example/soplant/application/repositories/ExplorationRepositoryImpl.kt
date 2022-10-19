@@ -20,12 +20,12 @@ class ExplorationRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 emit(Resource.success(true))
             } else {
-                emit(Resource.error(Constants.Error.ExplorationApi.FAILED_TO_CREATE))
+                emit(Resource.error(Constants.Error.ExplorationApi.FAILED_TO_CREATE, response.error))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 }

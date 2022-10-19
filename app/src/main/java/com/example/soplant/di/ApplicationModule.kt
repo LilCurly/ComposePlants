@@ -11,9 +11,7 @@ import com.example.soplant.domain.interactors.register.SignupUser
 import com.example.soplant.domain.interactors.reset_password.ResetPassword
 import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.social_signin.SignOut
-import com.example.soplant.domain.interactors.wall.GetOfflineWall
-import com.example.soplant.domain.interactors.wall.GetUserWall
-import com.example.soplant.domain.interactors.wall.GetWallet
+import com.example.soplant.domain.interactors.wall.*
 import com.example.soplant.domain.interactors.wallet.GetTransactions
 import com.example.soplant.domain.repositories.*
 import com.example.soplant.domain.utils.StringValidators
@@ -91,6 +89,18 @@ class ApplicationModule {
 
     @Provides
     @Singleton
+    fun provideUserService(): UserService {
+        return Retrofit
+            .Builder()
+            .baseUrl(BuildConfig.API_BASE_URL)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideWalletService(): WalletService {
         return Retrofit
             .Builder()
@@ -162,7 +172,6 @@ class ApplicationModule {
         federateSignIn: FederateSignIn,
         signOut: SignOut,
         getCountries: GetCountries,
-        createWallet: CreateWallet,
         createAccount: CreateAccount,
         createExploration: CreateExploration
     ): List<Middleware<SocialSignInAction, SocialSignInViewState>> {
@@ -172,7 +181,6 @@ class ApplicationModule {
                 signOut,
                 getCountries,
                 createAccount,
-                createWallet,
                 createExploration
             )
         )
@@ -220,9 +228,11 @@ class ApplicationModule {
     fun provideWallMiddlewares(
         getOfflineWall: GetOfflineWall,
         getUserWall: GetUserWall,
-        getWallet: GetWallet
+        getWallet: GetWallet,
+        getUsers: GetUsers,
+        getUser: GetUser
     ): List<Middleware<WallAction, WallViewState>> {
-        return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet))
+        return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet, getUsers, getUser))
     }
 
     @Provides
@@ -257,6 +267,12 @@ class ApplicationModule {
         fun bindResourceRepository(
             resourceRepositoryImpl: ResourceRepositoryImpl
         ): ResourceRepository
+
+        @Binds
+        @Singleton
+        fun bindUserRepository(
+            userRepositoryImpl: UserRepositoryImpl
+        ): UserRepository
 
         @Binds
         @Singleton

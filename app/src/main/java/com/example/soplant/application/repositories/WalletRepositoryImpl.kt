@@ -21,12 +21,12 @@ class WalletRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 emit(Resource.success(true))
             } else {
-                emit(Resource.error(Constants.Error.WalletApi.FAILED_TO_CREATE))
+                emit(Resource.error(Constants.Error.WalletApi.FAILED_TO_CREATE, response.error))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Boolean>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
@@ -37,12 +37,12 @@ class WalletRepositoryImpl @Inject constructor(
             if (response.isSuccessful && response.value != null) {
                 emit(Resource.success(response.value))
             } else {
-                emit(Resource.error(Constants.Error.WalletApi.FAILED_TO_LOAD))
+                emit(Resource.error(Constants.Error.WalletApi.FAILED_TO_LOAD, response.error))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<Wallet>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<Wallet>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<Wallet>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<Wallet>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 }

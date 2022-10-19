@@ -1,8 +1,6 @@
 package com.example.soplant.redux.wall
 
-import com.example.soplant.domain.interactors.wall.GetOfflineWall
-import com.example.soplant.domain.interactors.wall.GetUserWall
-import com.example.soplant.domain.interactors.wall.GetWallet
+import com.example.soplant.domain.interactors.wall.*
 import com.example.soplant.domain.utils.Resource
 import com.example.soplant.redux.Middleware
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +12,13 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class WallDataMiddleware @Inject constructor(private val getOfflineWall: GetOfflineWall, private val getUserWall: GetUserWall, private val getWallet: GetWallet): Middleware<WallAction, WallViewState> {
+class WallDataMiddleware @Inject constructor(
+    private val getOfflineWall: GetOfflineWall,
+    private val getUserWall: GetUserWall,
+    private val getWallet: GetWallet,
+    private val getUsers: GetUsers,
+    private val getUser: GetUser
+) : Middleware<WallAction, WallViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: WallViewState,
@@ -48,7 +52,12 @@ class WallDataMiddleware @Inject constructor(private val getOfflineWall: GetOffl
                             close()
                         }
                         Resource.Status.SUCCESS -> {
-                            send(WallAction.ProductLoadingSuccess(it.data?.products ?: listOf(), if (it.data?.isLast == true) it.data.lastPaginationId else null))
+                            send(
+                                WallAction.ProductLoadingSuccess(
+                                    it.data?.products ?: listOf(),
+                                    if (it.data?.isLast == true) it.data.lastPaginationId else null
+                                )
+                            )
                             close()
                         }
                     }
@@ -66,6 +75,40 @@ class WallDataMiddleware @Inject constructor(private val getOfflineWall: GetOffl
                         }
                         Resource.Status.SUCCESS -> {
                             send(WallAction.WalletLoadingSuccess(it.data))
+                            close()
+                        }
+                    }
+                }.launchIn(coroutineScope)
+            }
+            is WallAction.LoadUsers -> {
+                getUsers().onEach {
+                    when (it.status) {
+                        Resource.Status.LOADING -> {
+                            send(WallAction.UsersLoading)
+                        }
+                        Resource.Status.ERROR -> {
+                            send(WallAction.UsersLoadingFailed(it.message, it.error))
+                            close()
+                        }
+                        Resource.Status.SUCCESS -> {
+                            send(WallAction.UsersLoadingSuccess(it.data))
+                            close()
+                        }
+                    }
+                }.launchIn(coroutineScope)
+            }
+            is WallAction.LoadUser -> {
+                getUser(action.userId).onEach {
+                    when (it.status) {
+                        Resource.Status.LOADING -> {
+                            send(WallAction.UserLoading)
+                        }
+                        Resource.Status.ERROR -> {
+                            send(WallAction.UserLoadingFailed(it.message, it.error))
+                            close()
+                        }
+                        Resource.Status.SUCCESS -> {
+                            send(WallAction.UserLoadingSuccess(it.data))
                             close()
                         }
                     }

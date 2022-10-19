@@ -4,9 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class WalletDto (
-    @Json(name = "type")
-    val type: String,
-    @Json(name = "amount")
-    val amount: String
+data class ErrorDto(
+    @Json(name = "errorType")
+    val errorType: String?,
+    @Json(name = "errorMessage")
+    val errorMessage: String?
 )

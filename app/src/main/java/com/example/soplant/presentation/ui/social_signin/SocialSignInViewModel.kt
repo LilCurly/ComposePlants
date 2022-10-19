@@ -2,9 +2,12 @@ package com.example.soplant.presentation.ui.social_signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.results.Tokens
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoIdentityProviderClientConfig
+import com.example.soplant.commons.UserAttributes
 import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.presentation.ui.custom.CustomDropDownModel
 import com.example.soplant.redux.Store
@@ -16,7 +19,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SocialSignInViewModel @Inject constructor(private val store: Store<SocialSignInViewState, SocialSignInAction>): ViewModel() {
+class SocialSignInViewModel @Inject constructor(private val store: Store<SocialSignInViewState, SocialSignInAction>) :
+    ViewModel() {
     val state: StateFlow<SocialSignInViewState> = store.state
 
     init {
@@ -27,8 +31,48 @@ class SocialSignInViewModel @Inject constructor(private val store: Store<SocialS
         }
     }
 
-    fun updateUsername(username: String) {
-        val action = SocialSignInAction.UpdatingUsername(username)
+    fun updateFirstName(firstName: String) {
+        val action = SocialSignInAction.UpdatingFirstName(firstName)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updateLastName(lastName: String) {
+        val action = SocialSignInAction.UpdatingLastName(lastName)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updateLegalName(legalName: String) {
+        val action = SocialSignInAction.UpdatingLegalName(legalName)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updateRegisterAs(registerAs: String) {
+        val action = SocialSignInAction.SelectingRegisterAs(registerAs)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun updateLegalEntity(legalEntity: String) {
+        val action = SocialSignInAction.SelectingLegalEntity(legalEntity)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun navigateBack() {
+        val action = SocialSignInAction.NavigateBack
 
         viewModelScope.launch {
             store.dispatch(action, this)
@@ -63,7 +107,9 @@ class SocialSignInViewModel @Inject constructor(private val store: Store<SocialS
         val action = SocialSignInAction.NavigateToWall
 
         viewModelScope.launch {
-            store.dispatch(action, this)
+            UserAttributes.fetchUserAttributes().collect { success ->
+                store.dispatch(action, this)
+            }
         }
 
         navController.navigate(Screen.Wall.route) {

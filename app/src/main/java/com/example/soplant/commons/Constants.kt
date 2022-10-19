@@ -19,6 +19,10 @@ object Constants {
         object AccountApi {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_ACCOUNT"
         }
+        object UserApi {
+            const val FAILED_TO_GET_USERS: String = "FAILED_TO_GET_USERS"
+            const val FAILED_TO_GET_USER: String = "FAILED_TO_GET_USER"
+        }
         object WalletApi {
             const val FAILED_TO_CREATE: String = "FAILED_TO_CREATE_WALLET"
             const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_WALLET"
@@ -34,23 +38,30 @@ object Constants {
             const val FAILED_TO_LOAD: String = "FAILED_TO_LOAD_PRODUCTS"
         }
     }
+    object ApiError {
+        object User {
+            const val DOES_NOT_OWN_ANY_USER: String = "ERROR_ACCOUNT_DOES_NOT_OWN_ANY_MANGO_USER"
+        }
+    }
     object SharedPreferences {
-        const val PREF_USER_ID: String = "PREF_USER_ID"
+        const val PREF_ACCOUNT_ID: String = "PREF_ACCOUNT_ID"
         const val PREF_USER_USERNAME: String = "PREF_USER_USERNAME"
-        const val PREF_USER_EMAIL: String = "PREF_USER_EMAIL"
+        const val PREF_ACCOUNT_EMAIL: String = "PREF_ACCOUNT_EMAIL"
         const val PREF_USER_NAME: String = "PREF_USER_NAME"
         const val PREF_USER_LOCATION: String = "PREF_USER_LOCATION"
         const val PREF_USER_VERIFIED: String = "PREF_USER_VERIFIED"
         const val PREF_LOGIN_STATUS: String = "PREF_LOGIN_STATUS"
         const val PREF_SOCIAL_METHOD: String = "PREF_SOCIAL_METHOD"
         const val PREF_PROFILE_URL: String = "PREF_PROFILE_URL"
+        const val PREF_LAST_USER_ID: String = "PREF_LAST_USER_ID"
+        const val PREF_ACCOUNT_USERS: String = "PREF_ACCOUNT_USERS"
     }
     object LoginStatus {
         const val STATUS_LOGGED_IN: String = "STATUS_LOGGED_IN"
         const val STATUS_LOGGED_OUT: String = "STATUS_LOGGED_OUT"
     }
     object AuthSessionKeys {
-        const val USER_ID: String = "sub"
+        const val ACCOUNT_ID: String = "sub"
         const val USER_USERNAME: String = "custom:username"
         const val LEGAL_TYPE: String = "custom:legal_type"
         const val USER_TYPE: String = "custom:user_type"
@@ -64,6 +75,7 @@ object Constants {
         const val SOCIAL_IDENTITIES: String = "identities"
         const val USER_PICTURE: String = "picture"
         const val USER_IMAGE_URL: String = "custom:userImageUrl"
+        const val ACCOUNT_USERS: String = "custom:users"
     }
     object SocialSignInMethod {
         const val GOOGLE: String = "Google"
@@ -73,6 +85,10 @@ object Constants {
     object Endpoints {
         object ResourceApi {
             const val COUNTRIES: String = "countries"
+        }
+        object UserApi {
+            const val GET_USERS: String = "user"
+            const val GET_USER: String = "user/{userId}"
         }
         object ProductApi {
             const val OFFLINE_WALL: String = "list/dwall"

@@ -34,14 +34,12 @@ class LoginRemoteDataSource @Inject constructor() {
     }
 
     suspend fun signupUser(registerAs: String, legalType: String, legalName: String, email: String, firstName: String, lastName: String, location: String, password: String): AmplifyModel {
-        val firstNameTrimmed = firstName.replace(" ", "")
-        val lastNameTrimmed = lastName.replace(" ", "")
         val options = AuthSignUpOptions.builder()
             .userAttributes(mutableListOf(
                 AuthUserAttribute(AuthUserAttributeKey.email(), email),
-                AuthUserAttribute(AuthUserAttributeKey.name(), "$firstNameTrimmed $lastNameTrimmed"),
-                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_FIRSTNAME), firstNameTrimmed),
-                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LASTNAME), lastNameTrimmed),
+                AuthUserAttribute(AuthUserAttributeKey.name(), "${firstName.trim()} ${lastName.trim()}"),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_FIRSTNAME), firstName.trim()),
+                AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LASTNAME), lastName.trim()),
                 AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location),
                 AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_TYPE), registerAs),
                 AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.LEGAL_TYPE), legalType),
@@ -126,10 +124,15 @@ class LoginRemoteDataSource @Inject constructor() {
         }
     }
 
-    suspend fun federateSignIn(username: String, location: String, userImageUrl: String): AmplifyModel {
+    suspend fun federateSignIn(legalName: String, firstName: String, lastName: String, registerAs: String, legalType: String, location: String, userImageUrl: String): AmplifyModel {
         val attrs = listOf(
-            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_USERNAME), username),
+            AuthUserAttribute(AuthUserAttributeKey.name(), "${firstName.trim()} ${lastName.trim()}"),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_FIRSTNAME), firstName.trim()),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LASTNAME), lastName.trim()),
             AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_LOCATION), location),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_TYPE), registerAs),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.LEGAL_TYPE), legalType),
+            AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.LEGAL_NAME), legalName),
             AuthUserAttribute(AuthUserAttributeKey.custom(Constants.AuthSessionKeys.USER_IMAGE_URL), userImageUrl)
         )
         return try {

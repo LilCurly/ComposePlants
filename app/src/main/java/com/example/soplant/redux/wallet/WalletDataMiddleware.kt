@@ -43,7 +43,6 @@ class WalletDataMiddleware @Inject constructor(
                                 WalletAction.WalletLoadingSuccess(
                                     it.data ?: Wallet(
                                         "0",
-                                        "0",
                                         "0"
                                     )
                                 )

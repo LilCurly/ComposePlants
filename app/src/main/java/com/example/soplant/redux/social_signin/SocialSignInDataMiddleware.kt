@@ -1,10 +1,13 @@
 package com.example.soplant.redux.social_signin
 
+import com.amazonaws.mobile.client.AWSMobileClient
+import com.amazonaws.mobile.client.Callback
+import com.amazonaws.mobile.client.results.Tokens
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.util.CognitoIdentityProviderClientConfig
 import com.example.soplant.commons.Constants
 import com.example.soplant.commons.UserAttributes
 import com.example.soplant.domain.interactors.confirmation.CreateAccount
 import com.example.soplant.domain.interactors.confirmation.CreateExploration
-import com.example.soplant.domain.interactors.confirmation.CreateWallet
 import com.example.soplant.domain.interactors.register.GetCountries
 import com.example.soplant.domain.interactors.social_signin.FederateSignIn
 import com.example.soplant.domain.interactors.social_signin.SignOut
@@ -14,7 +17,11 @@ import com.example.soplant.redux.Middleware
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SocialSignInDataMiddleware @Inject constructor(
@@ -22,9 +29,8 @@ class SocialSignInDataMiddleware @Inject constructor(
     private val signOut: SignOut,
     private val getCountries: GetCountries,
     private val createAccount: CreateAccount,
-    private val createWallet: CreateWallet,
     private val createExploration: CreateExploration
-): Middleware<SocialSignInAction, SocialSignInViewState> {
+) : Middleware<SocialSignInAction, SocialSignInViewState> {
     @ExperimentalCoroutinesApi
     override suspend fun process(
         currentState: SocialSignInViewState,
@@ -33,7 +39,15 @@ class SocialSignInDataMiddleware @Inject constructor(
     ): Flow<SocialSignInAction> = channelFlow {
         when (action) {
             is SocialSignInAction.ClickingContinue -> {
-                federateSignIn(currentState.username, currentState.selectedCountry?.code ?: "", currentState.userImageUrl).onEach {
+                federateSignIn(
+                    currentState.legalName,
+                    currentState.firstName,
+                    currentState.lastName,
+                    currentState.selectedRegisterAs,
+                    currentState.selectedLegalEntity,
+                    currentState.selectedCountry?.code ?: "",
+                    currentState.userImageUrl
+                ).onEach {
                     when (it.status) {
                         Resource.Status.LOADING -> {
                             send(SocialSignInAction.StartedAttributeUpdate)
@@ -43,17 +57,62 @@ class SocialSignInDataMiddleware @Inject constructor(
                             close()
                         }
                         Resource.Status.SUCCESS -> {
-                            createAccount().launchIn(coroutineScope)
-                            createWallet().launchIn(coroutineScope)
-                            createExploration().launchIn(coroutineScope)
-                            UserAttributes.fetchUserAttributes().collect { success ->
-                                if (success) {
-                                    send(SocialSignInAction.AttributeUpdatedSucceeded)
-                                } else {
-                                    send(SocialSignInAction.AttributeUpdateFailed(it.message))
+                            createAccount().onEach { resource ->
+                                when (resource.status) {
+                                    Resource.Status.ERROR -> {
+                                        //TODO: Something ?
+                                        send(SocialSignInAction.AttributeUpdateFailed(it.message))
+                                        close()
+                                    }
+                                    Resource.Status.SUCCESS -> {
+                                        Thread {
+                                            try {
+                                                CognitoIdentityProviderClientConfig.setRefreshThreshold(
+                                                    1800000
+                                                )
+                                                AWSMobileClient.getInstance().getTokens(object :
+                                                    Callback<Tokens> {
+                                                    override fun onResult(result: Tokens?) {
+                                                        coroutineScope.launch {
+                                                            UserAttributes.fetchUserAttributes()
+                                                                .collect { success ->
+                                                                    if (success) {
+                                                                        send(SocialSignInAction.AttributeUpdatedSucceeded)
+                                                                        close()
+                                                                    } else {
+                                                                        //TODO: Something ?
+                                                                        send(
+                                                                            SocialSignInAction.AttributeUpdateFailed(
+                                                                                it.message
+                                                                            )
+                                                                        )
+                                                                        close()
+                                                                    }
+                                                                }
+                                                        }
+                                                    }
+
+                                                    override fun onError(e: java.lang.Exception?) {
+                                                        //TODO: Something ?
+                                                        coroutineScope.launch {
+                                                            send(
+                                                                SocialSignInAction.AttributeUpdateFailed(
+                                                                    it.message
+                                                                )
+                                                            )
+                                                            close()
+                                                        }
+                                                    }
+
+                                                })
+                                            } catch (e: Exception) {
+                                                e.printStackTrace()
+                                            }
+                                        }.start()
+                                    }
+                                    Resource.Status.LOADING -> {}
                                 }
-                            }
-                            close()
+                            }.launchIn(coroutineScope)
                         }
                     }
                 }.launchIn(coroutineScope)
@@ -69,7 +128,11 @@ class SocialSignInDataMiddleware @Inject constructor(
                             close()
                         }
                         Resource.Status.ERROR -> {
-                            send(SocialSignInAction.SigningOutFailed(it.message ?: Constants.Error.General.UNEXPECTED_ERROR))
+                            send(
+                                SocialSignInAction.SigningOutFailed(
+                                    it.message ?: Constants.Error.General.UNEXPECTED_ERROR
+                                )
+                            )
                             close()
                         }
                     }

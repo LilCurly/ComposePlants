@@ -5,20 +5,18 @@ import com.example.soplant.domain.entities.Wallet
 import com.example.soplant.domain.mappers.Mapper
 import javax.inject.Inject
 
-class WalletMapper @Inject constructor(): Mapper<WalletDto, Wallet> {
+class WalletMapper @Inject constructor() : Mapper<WalletDto, Wallet> {
     override fun mapToEntity(model: WalletDto): Wallet {
         return Wallet(
-            model.availableAmount,
-            model.frozenAmount,
-            model.pendingAmount
+            type = model.type,
+            amount = model.amount
         )
     }
 
     override fun mapFromEntity(entity: Wallet): WalletDto {
         return WalletDto(
-            entity.availableAmount,
-            entity.frozenAmount,
-            entity.pendingAmount
+            type = entity.type,
+            amount = entity.amount
         )
     }
 }

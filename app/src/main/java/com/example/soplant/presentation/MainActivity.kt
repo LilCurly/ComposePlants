@@ -90,11 +90,10 @@ class MainActivity : ComponentActivity() {
                         shouldShowBottomBar = shouldShowBottomBar
                     ) {
                         val isSignedIn = SharedPreferencesManager.shared().isLoggedIn()
-                        val username = SharedPreferencesManager.shared().getUserUsername()
-                        val location = SharedPreferencesManager.shared().getUserLocation()
+                        val users = SharedPreferencesManager.shared().getAccountUsers()
                         AnimatedNavHost(
                             navController = navController,
-                            startDestination = if (!isSignedIn) Screen.Login.route else if (username.isEmpty() || location.isEmpty()) Screen.SocialSignIn.route else Screen.Wall.route
+                            startDestination = if (!isSignedIn) Screen.Login.route else if (users.isEmpty()) Screen.SocialSignIn.route else Screen.Wall.route
                         ) {
                             composable(Screen.Login.route, enterTransition = {
                                 slideIntoContainer(

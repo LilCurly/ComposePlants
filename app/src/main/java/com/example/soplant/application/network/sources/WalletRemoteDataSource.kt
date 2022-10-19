@@ -12,12 +12,14 @@ class WalletRemoteDataSource @Inject constructor(
     private val mapper: WalletMapper
 ) {
     suspend fun createWallet(): CustomResponse<Void> {
-        val response = service.createWallet(Headers.getDefaultJwtHeader())
+        val headers = Headers.getDefaultJwtHeader()
+        val response = service.createWallet(headers)
         return CustomResponse(isSuccessful = response.isSuccessful, code = response.code())
     }
 
     suspend fun getWallet(): CustomResponse<Wallet> {
-        val response = service.getWallet(Headers.getDefaultJwtHeader())
+        val headers = Headers.getDefaultJwtHeader()
+        val response = service.getWallet(headers)
         var wallet: Wallet? = null
         if (response.isSuccessful && response.body() != null) {
             wallet = mapper.mapToEntity(response.body()!!)

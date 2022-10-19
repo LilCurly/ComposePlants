@@ -21,12 +21,12 @@ class TransactionRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 emit(Resource.success(response.value))
             } else {
-                emit(Resource.error(Constants.Error.TransactionsApi.FAILED_TO_LOAD))
+                emit(Resource.error(Constants.Error.TransactionsApi.FAILED_TO_LOAD, response.error))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<TransactionList>(Constants.Error.General.UNEXPECTED_ERROR))
+            emit(Resource.error<TransactionList>(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<TransactionList>(Constants.Error.General.NETWORK_ERROR))
+            emit(Resource.error<TransactionList>(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 }

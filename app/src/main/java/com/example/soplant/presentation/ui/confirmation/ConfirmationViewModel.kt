@@ -3,7 +3,6 @@ package com.example.soplant.presentation.ui.confirmation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.soplant.presentation.commons.Screen
 import com.example.soplant.redux.Store
 import com.example.soplant.redux.confirmation.ConfirmationAction
@@ -13,8 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class ConfirmationViewModel @Inject constructor(private val store: Store<ConfirmationViewState, ConfirmationAction>): ViewModel() {
+class ConfirmationViewModel @Inject constructor(private val store: Store<ConfirmationViewState, ConfirmationAction>) :
+    ViewModel() {
     val state: StateFlow<ConfirmationViewState> = store.state
 
     fun confirmClicked() {

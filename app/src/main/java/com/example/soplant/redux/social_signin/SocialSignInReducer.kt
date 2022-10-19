@@ -4,17 +4,39 @@ import com.example.soplant.commons.Constants
 import com.example.soplant.redux.Reducer
 import javax.inject.Inject
 
-class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, SocialSignInViewState> {
+class SocialSignInReducer @Inject constructor() :
+    Reducer<SocialSignInAction, SocialSignInViewState> {
     override fun reduce(
         previousState: SocialSignInViewState,
         currentAction: SocialSignInAction
     ): SocialSignInViewState {
         return when (currentAction) {
-            is SocialSignInAction.UpdatingUsername -> {
-                previousState.copy(username = currentAction.username, canContinue = currentAction.username.isNotEmpty() && previousState.tosChecked && previousState.selectedCountry != null)
+            is SocialSignInAction.UpdatingFirstName -> {
+                canContinueState(previousState.copy(firstName = currentAction.firstName))
+            }
+            is SocialSignInAction.UpdatingLastName -> {
+                canContinueState(previousState.copy(lastName = currentAction.lastName))
+            }
+            is SocialSignInAction.UpdatingLegalName -> {
+                canContinueState(previousState.copy(legalName = currentAction.newLegalName))
             }
             is SocialSignInAction.ClickingTos -> {
-                previousState.copy(tosChecked = !previousState.tosChecked, canContinue = !previousState.tosChecked && previousState.username.isNotEmpty() && previousState.selectedCountry != null)
+                canContinueState(previousState.copy(tosChecked = !previousState.tosChecked))
+            }
+            is SocialSignInAction.SelectingRegisterAs -> {
+                previousState.copy(
+                    selectedRegisterAs = currentAction.registerAs,
+                    screenState = if (currentAction.registerAs == SocialSignInViewState.RegisterAsOptions.USER_TYPE_NATURAL.optionValue) SocialSignInViewState.SocialSignInScreenState.FORM else SocialSignInViewState.SocialSignInScreenState.LEGAL_ENTITY_CHOICE
+                )
+            }
+            is SocialSignInAction.SelectingLegalEntity -> {
+                previousState.copy(
+                    selectedLegalEntity = currentAction.legalEntity,
+                    screenState = SocialSignInViewState.SocialSignInScreenState.FORM
+                )
+            }
+            is SocialSignInAction.NavigateBack -> {
+                previousState.copy(screenState = if (previousState.screenState == SocialSignInViewState.SocialSignInScreenState.LEGAL_ENTITY_CHOICE) SocialSignInViewState.SocialSignInScreenState.REGISTER_AS_CHOICE else if (previousState.selectedRegisterAs == SocialSignInViewState.RegisterAsOptions.USER_TYPE_LEGAL.optionValue) SocialSignInViewState.SocialSignInScreenState.LEGAL_ENTITY_CHOICE else SocialSignInViewState.SocialSignInScreenState.REGISTER_AS_CHOICE)
             }
             is SocialSignInAction.ClickingContinue -> {
                 previousState.copy(errorCode = "")
@@ -23,13 +45,16 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
                 previousState.copy(isLoading = true)
             }
             is SocialSignInAction.AttributeUpdateFailed -> {
-                previousState.copy(isLoading = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
+                previousState.copy(
+                    isLoading = false,
+                    errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR
+                )
             }
             is SocialSignInAction.AttributeUpdatedSucceeded -> {
-                previousState.copy(isLoading = false, updateSuccessful = true)
+                previousState.copy(updateSuccessful = true)
             }
             is SocialSignInAction.NavigateToWall -> {
-                previousState.copy(updateSuccessful = false)
+                previousState.copy(updateSuccessful = false, isLoading = false)
             }
             is SocialSignInAction.ClickingChange -> {
                 previousState.copy(errorCode = "")
@@ -44,7 +69,10 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
                 previousState.copy(signOutSuccessful = false)
             }
             is SocialSignInAction.SigningOutFailed -> {
-                previousState.copy(errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, isLoading = false)
+                previousState.copy(
+                    errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR,
+                    isLoading = false
+                )
             }
             is SocialSignInAction.FetchCountries -> {
                 previousState
@@ -59,7 +87,7 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
                 previousState.copy(fetchingCountries = false)
             }
             is SocialSignInAction.SelectingCountry -> {
-                previousState.copy(selectedCountry = currentAction.newSelectedCountry, canContinue = previousState.tosChecked && previousState.username.isNotEmpty() && currentAction.newSelectedCountry != null)
+                canContinueState(previousState.copy(selectedCountry = currentAction.newSelectedCountry))
             }
             is SocialSignInAction.UpdatingUserImageUrl -> {
                 previousState.copy(userImageUrl = currentAction.userImageUrl)
@@ -67,4 +95,12 @@ class SocialSignInReducer @Inject constructor(): Reducer<SocialSignInAction, Soc
         }
     }
 
+    private fun canContinueState(previousState: SocialSignInViewState): SocialSignInViewState {
+        return if (previousState.selectedRegisterAs == SocialSignInViewState.RegisterAsOptions.USER_TYPE_LEGAL.optionValue) {
+            previousState.copy(canContinue = previousState.tosChecked && previousState.legalName.isNotEmpty() && previousState.firstName.isNotEmpty() && previousState.lastName.isNotEmpty() && previousState.selectedCountry != null)
+        } else {
+
+            previousState.copy(canContinue = previousState.tosChecked && previousState.firstName.isNotEmpty() && previousState.lastName.isNotEmpty() && previousState.selectedCountry != null)
+        }
+    }
 }

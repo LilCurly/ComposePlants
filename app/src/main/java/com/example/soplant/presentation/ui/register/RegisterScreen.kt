@@ -96,7 +96,7 @@ fun ComposeRegisterScreen(
                                 textAlign = TextAlign.Center
                             )
                             Text(
-                                text = "Please enter your details",
+                                text = "To continue please enter your details.",
                                 color = Grey,
                                 style = MaterialTheme.typography.body1,
                                 textAlign = TextAlign.Center

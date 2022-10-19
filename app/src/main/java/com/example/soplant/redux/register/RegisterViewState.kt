@@ -23,8 +23,8 @@ data class RegisterViewState(
     val countries: List<CustomDropDownModel>,
     val fetchingCountries: Boolean,
     val selectedRegisterAs: String,
-    var selectedLegalEntity: String,
-    var currentScreenState: RegisterScreenState
+    val selectedLegalEntity: String,
+    val currentScreenState: RegisterScreenState
 ): State {
     @Inject
     constructor(): this(false, false, false, "", "", "", "", "", false, false, true, true, false, "", null, listOf(), false, "", "", RegisterScreenState.REGISTER_AS_CHOICE)

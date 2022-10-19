@@ -19,7 +19,8 @@ class ResourceRemoteDataSource @Inject constructor(
             code = result.code(),
             value = result.body()?.map {
                 countryMapper.mapToEntity(it)
-            }
+            },
+            error = null
         )
     }
 }

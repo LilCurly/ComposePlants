@@ -5,7 +5,10 @@ import com.example.soplant.redux.Action
 import com.example.soplant.redux.register.RegisterAction
 
 sealed class SocialSignInAction: Action {
-    data class UpdatingUsername(val username: String): SocialSignInAction()
+    data class UpdatingFirstName(val firstName: String): SocialSignInAction()
+    data class UpdatingLastName(val lastName: String): SocialSignInAction()
+    data class SelectingRegisterAs(val registerAs: String): SocialSignInAction()
+    data class SelectingLegalEntity(val legalEntity: String): SocialSignInAction()
     data class UpdatingUserImageUrl(val userImageUrl: String): SocialSignInAction()
     object ClickingTos: SocialSignInAction()
     object ClickingContinue: SocialSignInAction()
@@ -23,4 +26,6 @@ sealed class SocialSignInAction: Action {
     data class CountriesRetrieved(val countries: List<CustomDropDownModel>): SocialSignInAction()
     object FailedToRetrieveCountries: SocialSignInAction()
     data class SelectingCountry(val newSelectedCountry: CustomDropDownModel?): SocialSignInAction()
+    data class UpdatingLegalName(val newLegalName: String): SocialSignInAction()
+    object NavigateBack: SocialSignInAction()
 }

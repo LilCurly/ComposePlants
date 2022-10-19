@@ -1,6 +1,6 @@
 package com.example.soplant.domain.entities
 
-data class Wallet(
+data class ApiError(
     val type: String,
-    val amount: String
+    val message: String
 )
