@@ -91,8 +91,8 @@ object Constants {
             const val GET_USER: String = "user/{userId}"
         }
         object ProductApi {
-            const val OFFLINE_WALL: String = "list/dwall"
-            const val USER_WALL: String = "list/cwall"
+            const val OFFLINE_WALL: String = "{userId}/products/offline"
+            const val USER_WALL: String = "{userId}/products"
         }
         object WalletApi {
             const val CREATE_WALLET: String = "wallet"

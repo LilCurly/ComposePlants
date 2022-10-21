@@ -5,20 +5,14 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ProductDto(
-    @Json(name = "id")
+    @Json(name = "productId")
     val productId: String?,
     @Json(name = "productName")
     val productName: String?,
     @Json(name = "productDescription")
     val productDescription: String?,
-    @Json(name = "sellerId")
-    val sellerId: String?,
-    @Json(name = "sellerName")
-    val sellerName: String?,
-    @Json(name = "sellerImageUrl")
-    val sellerImageUrl: String?,
-    @Json(name = "sellerReviewAverage")
-    val sellerReviewAverage: String?,
+    @Json(name = "sellerDetail")
+    val sellerDetail: SellerDto?,
     @Json(name = "headerImageUrl")
     val headerImageUrl: String?,
     @Json(name = "complementaryImagesUrl")
@@ -29,30 +23,18 @@ data class ProductDto(
     val unitaryPriceSeller: String?,
     @Json(name = "unitaryPriceDisplay")
     val unitaryPriceDisplay: String?,
-    @Json(name = "sellerVerified")
-    val sellerVerified: Boolean?,
     @Json(name = "isVarigation")
     val isVariegated: Boolean?,
-    @Json(name = "isPetFriendly")
-    val isPetFriendly: Boolean?,
-    @Json(name = "type")
-    val type: String?,
-    @Json(name = "isBeginnerFriendly")
-    val isBeginnerFriendly: Boolean?,
-    @Json(name = "size")
-    val size: Int?,
-    @Json(name = "weight")
-    val weight: Int?,
-    @Json(name = "sellerCountryCode")
-    val sellerCountryCode: String?,
+    @Json(name = "plantFamily")
+    val plantFamily: PlantDto?,
+    @Json(name = "maturity")
+    val maturity: Int?,
+    @Json(name = "deliveryPricesRange")
+    val deliveryPricesRange: DeliveryPricesRangeDto?,
+    @Json(name = "deliveryCountriesAdditional")
+    val deliveryCountriesAdditional: DeliveryCountriesAdditionalDto?,
     @Json(name = "sellInternationally")
     val sellInternationally: Boolean?,
     @Json(name = "createdOn")
-    val createdOn: Long?,
-    @Json(name = "lightLevel")
-    val lightLevel: Int?,
-    @Json(name = "waterLevel")
-    val waterLevel: Int?,
-    @Json(name = "maturity")
-    val maturity: Int?
+    val createdOn: Long?
 )

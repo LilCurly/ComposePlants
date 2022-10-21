@@ -68,7 +68,7 @@ class ApplicationModule {
     fun provideProductService(): ProductService {
         return Retrofit
             .Builder()
-            .baseUrl(BuildConfig.API_PRODUCT_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -104,7 +104,7 @@ class ApplicationModule {
     fun provideWalletService(): WalletService {
         return Retrofit
             .Builder()
-            .baseUrl(BuildConfig.API_WALLET_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .client(OkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -228,11 +228,10 @@ class ApplicationModule {
     fun provideWallMiddlewares(
         getOfflineWall: GetOfflineWall,
         getUserWall: GetUserWall,
-        getWallet: GetWallet,
         getUsers: GetUsers,
         getUser: GetUser
     ): List<Middleware<WallAction, WallViewState>> {
-        return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getWallet, getUsers, getUser))
+        return listOf(WallDataMiddleware(getOfflineWall, getUserWall, getUsers, getUser))
     }
 
     @Provides

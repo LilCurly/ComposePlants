@@ -13,16 +13,16 @@ data class WallViewState(
     val isLoadingUser: Boolean,
     val isLoadingProduct: Boolean,
     val products: List<Product>?,
-    val isLoadingWallet: Boolean,
-    val wallet: Wallet?,
-    val lastProductTimestamp: String?,
+    val lastProductTimestamp: Long?,
     val users: List<User>?,
     val user: User?,
     val shouldCreateUser: Boolean,
+    val shouldLoadUsers: Boolean,
+    val shouldLoadUser: Boolean,
     val shouldLoadRemaining: Boolean,
     val errorCode: String,
     val error: ApiError?
 ) : State {
     @Inject
-    constructor() : this(false, false, true, null, true, null, null, null, null, false, false, "", null)
+    constructor() : this(false, false, true, null, null, null, null, false, false, false, false, "", null)
 }

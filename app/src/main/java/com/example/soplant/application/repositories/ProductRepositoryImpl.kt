@@ -20,13 +20,13 @@ class ProductRepositoryImpl @Inject constructor(
             val result = remoteDataSource.getOfflineWall()
             emit(Resource.success(result))
         } catch (e: HttpException) {
-            emit(Resource.error<ProductList>(Constants.Error.General.UNEXPECTED_ERROR, null))
+            emit(Resource.error(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<ProductList>(Constants.Error.General.NETWORK_ERROR, null))
+            emit(Resource.error(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 
-    override fun getUserWall(lastPaginationTimestamp: String?): Flow<Resource<ProductList>> = flow {
+    override fun getUserWall(lastPaginationTimestamp: Long?): Flow<Resource<ProductList>> = flow {
         try {
             emit(Resource.loading(null))
             val result = remoteDataSource.getUserWall(lastPaginationTimestamp)
@@ -36,9 +36,9 @@ class ProductRepositoryImpl @Inject constructor(
                 emit(Resource.error(Constants.Error.ProductApi.FAILED_TO_LOAD, result.error))
             }
         } catch (e: HttpException) {
-            emit(Resource.error<ProductList>(Constants.Error.General.UNEXPECTED_ERROR, null))
+            emit(Resource.error(Constants.Error.General.UNEXPECTED_ERROR, null))
         } catch (e: IOException) {
-            emit(Resource.error<ProductList>(Constants.Error.General.NETWORK_ERROR, null))
+            emit(Resource.error(Constants.Error.General.NETWORK_ERROR, null))
         }
     }
 }

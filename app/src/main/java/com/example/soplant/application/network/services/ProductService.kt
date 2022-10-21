@@ -9,5 +9,5 @@ interface ProductService {
     @GET(Constants.Endpoints.ProductApi.OFFLINE_WALL)
     suspend fun getOfflineWall(): ProductListDto
     @GET(Constants.Endpoints.ProductApi.USER_WALL)
-    suspend fun getUserWall(@HeaderMap headers: Map<String, String>, @Query(Constants.ApiUtils.PAGINATION_TIMESTAMP) lastPaginationTimestamp: Long?): Response<ProductListDto>
+    suspend fun getUserWall(@HeaderMap headers: Map<String, String>, @Path("userId") userId: String, @Query(Constants.ApiUtils.PAGINATION_TIMESTAMP) lastPaginationTimestamp: Long?): Response<ProductListDto>
 }

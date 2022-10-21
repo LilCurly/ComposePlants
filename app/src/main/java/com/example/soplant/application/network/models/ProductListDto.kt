@@ -7,8 +7,8 @@ import com.squareup.moshi.JsonClass
 data class ProductListDto (
     @Json(name = "products")
     val products: List<ProductDto>?,
-    @Json(name = "lastPaginationId")
-    val lastPaginationId: String?,
+    @Json(name = "lastPaginationTimestamp")
+    val lastPaginationTimestamp: Long?,
     @Json(name = "isLast")
     val isLast: Boolean?
 )

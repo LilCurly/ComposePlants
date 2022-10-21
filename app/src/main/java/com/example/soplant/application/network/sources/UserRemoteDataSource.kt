@@ -6,6 +6,7 @@ import com.example.soplant.application.network.mappers.UsersMapper
 import com.example.soplant.application.network.services.UserService
 import com.example.soplant.application.network.utils.Headers
 import com.example.soplant.application.utils.CustomResponse
+import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.domain.entities.User
 import javax.inject.Inject
 
@@ -36,6 +37,7 @@ class UserRemoteDataSource @Inject constructor(
         var user: User? = null
         if (response.isSuccessful && response.body() != null) {
             user = userMapper.mapToEntity(response.body()!!)
+            SharedPreferencesManager.shared().storeLastUserId(user.id)
         }
         return CustomResponse(
             user,

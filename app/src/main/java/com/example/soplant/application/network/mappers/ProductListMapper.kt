@@ -13,7 +13,7 @@ class ProductListMapper @Inject constructor(private val productMapper: ProductMa
             products = model.products?.map {
                 productMapper.mapToEntity(it)
             } ?: listOf(),
-            lastPaginationId = model.lastPaginationId ?: "",
+            lastPaginationTimestamp = model.lastPaginationTimestamp,
             isLast = model.isLast ?: false
         )
     }
@@ -23,7 +23,7 @@ class ProductListMapper @Inject constructor(private val productMapper: ProductMa
             products = entity.products.map {
                 productMapper.mapFromEntity(it)
             },
-            lastPaginationId = entity.lastPaginationId,
+            lastPaginationTimestamp = entity.lastPaginationTimestamp,
             isLast = entity.isLast
         )
     }

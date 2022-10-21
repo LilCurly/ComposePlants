@@ -25,7 +25,7 @@ class WallViewModel @Inject constructor(private val store: Store<WallViewState, 
         }
     }
 
-    private fun loadUsers() {
+    fun loadUsers() {
         val action = WallAction.LoadUsers
 
         viewModelScope.launch {
@@ -33,7 +33,7 @@ class WallViewModel @Inject constructor(private val store: Store<WallViewState, 
         }
     }
 
-    private fun loadUser(userId: String) {
+    fun loadUser(userId: String) {
         val action = WallAction.LoadUser(userId)
 
         viewModelScope.launch {
@@ -43,14 +43,6 @@ class WallViewModel @Inject constructor(private val store: Store<WallViewState, 
 
     fun loadProducts() {
         val action = WallAction.LoadProducts
-
-        viewModelScope.launch {
-            store.dispatch(action, this)
-        }
-    }
-
-    fun loadWallet() {
-        val action = WallAction.LoadWallet
 
         viewModelScope.launch {
             store.dispatch(action, this)

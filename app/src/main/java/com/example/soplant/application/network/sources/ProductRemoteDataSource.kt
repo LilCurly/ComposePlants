@@ -4,6 +4,7 @@ import com.example.soplant.application.network.mappers.ProductListMapper
 import com.example.soplant.application.network.services.ProductService
 import com.example.soplant.application.network.utils.Headers
 import com.example.soplant.application.utils.CustomResponse
+import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.domain.entities.ProductList
 import javax.inject.Inject
 
@@ -15,10 +16,9 @@ class ProductRemoteDataSource @Inject constructor(
         return productListMapper.mapToEntity(productService.getOfflineWall())
     }
 
-    suspend fun getUserWall(lastPaginationTimestamp: String?): CustomResponse<ProductList> {
-        val timestamp = lastPaginationTimestamp?.toLong()
+    suspend fun getUserWall(lastPaginationTimestamp: Long?): CustomResponse<ProductList> {
         val headers = Headers.getDefaultJwtHeader()
-        val response = productService.getUserWall(headers, timestamp)
+        val response = productService.getUserWall(headers, SharedPreferencesManager.shared().getLastUserId(), lastPaginationTimestamp)
         var result: ProductList? = null
         if (response.isSuccessful && response.body() != null) {
             result = productListMapper.mapToEntity(response.body()!!)

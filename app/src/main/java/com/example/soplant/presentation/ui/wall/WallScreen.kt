@@ -50,9 +50,16 @@ fun ComposeWallScreen(
         }
     }
 
+    if (state.shouldLoadUser && state.users?.isNotEmpty() == true) {
+        viewModel.loadUser(state.users!!.first().id)
+    }
+
+    if (state.shouldLoadUsers) {
+        viewModel.loadUsers()
+    }
+
     if (state.shouldLoadRemaining) {
         viewModel.loadProducts()
-        viewModel.loadWallet()
     }
 
     Column(
@@ -68,14 +75,14 @@ fun ComposeWallScreen(
             ) {
                 Column {
                     ProfileViewComponent(
-                        image = SharedPreferencesManager.shared().getPictureUrl(),
-                        name = SharedPreferencesManager.shared().getUserUsername()
+                        image = state.user?.profileImageUrl ?: "",
+                        name = state.user?.alias ?: ""
                     )
                 }
                 Column {
                     WalletViewComponent(
-                        state.isLoadingWallet,
-                        if (state.wallet != null) state.user!!.wallets[0].amount else "0",
+                        state.isLoadingUser || state.isLoadingUsers,
+                        if (state.user != null) state.user!!.wallets[0].amount else "0",
                         navController
                     )
                 }

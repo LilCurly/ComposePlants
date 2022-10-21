@@ -90,7 +90,7 @@ fun ProductViewComponent(product: Product)
                         color = MaterialTheme.colors.onSurface
                     )
                     Spacer(modifier = Modifier.size(8.dp))
-                    ProfileViewReviewsComponent(product.sellerName, product.sellerReviewAverage, product.sellerImageUrl, product.sellerVerified)
+                    ProfileViewReviewsComponent(product.seller.sellerName, product.seller.sellerReviewAverage, product.seller.sellerImageUrl, product.seller.sellerVerified)
                 }
                 Column(modifier = Modifier.padding(0.dp, 19.dp)) {
                     Text(text = "$${product.unitaryPriceDisplay}",

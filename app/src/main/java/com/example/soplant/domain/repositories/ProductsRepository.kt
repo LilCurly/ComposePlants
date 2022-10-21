@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductsRepository {
     fun getOfflineWall(lastPaginationTimestamp: Long): Flow<Resource<ProductList>>
-    fun getUserWall(lastPaginationTimestamp: String?): Flow<Resource<ProductList>>
+    fun getUserWall(lastPaginationTimestamp: Long?): Flow<Resource<ProductList>>
 }

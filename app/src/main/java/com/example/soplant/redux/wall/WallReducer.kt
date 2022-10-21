@@ -14,16 +14,7 @@ class WallReducer @Inject constructor(): Reducer<WallAction, WallViewState> {
                 previousState.copy(isLoadingProduct = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
             }
             is WallAction.ProductLoadingSuccess -> {
-                previousState.copy(isLoadingProduct = false, products = currentAction.products, lastProductTimestamp = currentAction.lastPaginationId)
-            }
-            is WallAction.WalletLoading -> {
-                previousState.copy(isLoadingWallet = true, shouldLoadRemaining = false)
-            }
-            is WallAction.WalletLoadingFailed -> {
-                previousState.copy(isLoadingWallet = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR)
-            }
-            is WallAction.WalletLoadingSuccess -> {
-                previousState.copy(isLoadingWallet = false, wallet = currentAction.wallet)
+                previousState.copy(isLoadingProduct = false, products = currentAction.products, lastProductTimestamp = currentAction.lastPaginationTimestamp)
             }
             is WallAction.UsersLoading -> {
                 previousState.copy(isLoadingUsers = true)
@@ -33,21 +24,22 @@ class WallReducer @Inject constructor(): Reducer<WallAction, WallViewState> {
             }
             is WallAction.UsersLoadingFailed -> {
                 val shouldCreateUser = currentAction.error?.type?.equals(Constants.ApiError.User.DOES_NOT_OWN_ANY_USER)
-                previousState.copy(isLoadingUsers = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, error = currentAction.error, shouldCreateUser = shouldCreateUser ?: true)
+                previousState.copy(isLoadingUsers = false, shouldLoadUsers = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, error = currentAction.error, shouldCreateUser = shouldCreateUser ?: true)
             }
             is WallAction.UsersLoadingSuccess -> {
                 val shouldCreateUser = currentAction.users?.isEmpty() ?: true
-                previousState.copy(isLoadingUsers = false, users = currentAction.users, user = currentAction.users?.first(), shouldCreateUser = shouldCreateUser, shouldLoadRemaining = !shouldCreateUser)
+                previousState.copy(isLoadingUsers = false, shouldLoadUsers = false, users = currentAction.users, user = currentAction.users?.first(), shouldCreateUser = shouldCreateUser, shouldLoadUser = !shouldCreateUser)
             }
             is WallAction.UserLoadingFailed -> {
                 val shouldCreateUser = currentAction.error?.type?.equals(Constants.ApiError.User.DOES_NOT_OWN_ANY_USER)
-                previousState.copy(isLoadingUser = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, error = currentAction.error, shouldCreateUser = shouldCreateUser ?: true)
+                val shouldLoadUsers = shouldCreateUser == false
+                previousState.copy(isLoadingUser = false, shouldLoadUser = false, errorCode = currentAction.errorCode ?: Constants.Error.General.UNEXPECTED_ERROR, error = currentAction.error, shouldCreateUser = shouldCreateUser ?: true, shouldLoadUsers = shouldLoadUsers)
             }
             is WallAction.UserLoadingSuccess -> {
-                val shouldCreateUser = currentAction.user == null
-                previousState.copy(isLoadingUser = false, user = currentAction.user, shouldCreateUser = shouldCreateUser, shouldLoadRemaining = !shouldCreateUser)
+                val shouldLoadUsers = currentAction.user == null
+                previousState.copy(isLoadingUser = false, shouldLoadUser = false, user = currentAction.user, shouldLoadUsers = shouldLoadUsers, shouldLoadRemaining = !shouldLoadUsers)
             }
-            is WallAction.LoadProducts, WallAction.LoadWallet, WallAction.LoadUsers -> {
+            is WallAction.LoadProducts, WallAction.LoadUsers -> {
                 previousState
             }
             is WallAction.LoadUser -> {
