@@ -18,6 +18,7 @@ data class ConfirmationViewState(
     val valueSix: String,
     val email: String,
     val password: String
-): State {
-    @Inject constructor(): this(false, false, false, false, "", false, "", "", "", "", "", "", "", "")
+) : State {
+    @Inject
+    constructor() : this(false, false, false, false, "", false, "", "", "", "", "", "", "", "")
 }

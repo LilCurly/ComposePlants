@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TestHelpPopup() {
+fun TestHelpPopupContent() {
     Text(
         text = "Test title",
         style = MaterialTheme.typography.h1,

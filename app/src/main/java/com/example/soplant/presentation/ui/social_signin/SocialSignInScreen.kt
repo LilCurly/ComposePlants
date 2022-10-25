@@ -23,7 +23,7 @@ import com.example.soplant.R
 import com.example.soplant.commons.SharedPreferencesManager
 import com.example.soplant.presentation.commons.decorators.HelpScreenDecorator
 import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
-import com.example.soplant.presentation.commons.popup.help.TestHelpPopup
+import com.example.soplant.presentation.commons.popup.help.TestHelpPopupContent
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.ui.social_signin.components.ComposeSocialProfileCardComponent
 import com.example.soplant.presentation.ui.social_signin.components.LegalEntityComponent
@@ -69,7 +69,7 @@ fun ComposeSocialSignInScreen(
         HelpScreenDecorator(
             showHelpButton = state.screenState != SocialSignInViewState.SocialSignInScreenState.FORM,
             popupContent = {
-                TestHelpPopup()
+                TestHelpPopupContent()
             }) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
                 item {

@@ -73,11 +73,19 @@ fun zeroButtonElevation(): ButtonElevation = ButtonDefaults.elevation(
 )
 
 @Composable
-fun zeroContentPadding(): PaddingValues = PaddingValues(
+fun socialContentPadding(): PaddingValues = PaddingValues(
     top = 10.dp,
     start = 15.dp,
     end = 15.dp,
     bottom = 10.dp
+)
+
+@Composable
+fun zeroContentPadding(): PaddingValues = PaddingValues(
+    top = 0.dp,
+    start = 0.dp,
+    end = 0.dp,
+    bottom = 0.dp
 )
 
 @Composable

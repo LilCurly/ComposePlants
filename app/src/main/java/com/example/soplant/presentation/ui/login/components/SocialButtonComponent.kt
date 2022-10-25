@@ -8,12 +8,9 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.soplant.R
-import com.example.soplant.presentation.ui.custom.facebookButtonColors
 import com.example.soplant.presentation.ui.custom.zeroButtonElevation
-import com.example.soplant.presentation.ui.custom.zeroContentPadding
+import com.example.soplant.presentation.ui.custom.socialContentPadding
 
 @Composable
 fun SocialButtonComponent(image: Painter, buttonColors: ButtonColors, onClick: () -> Unit) {
@@ -22,7 +19,7 @@ fun SocialButtonComponent(image: Painter, buttonColors: ButtonColors, onClick: (
         shape = CircleShape,
         colors = buttonColors,
         elevation = zeroButtonElevation(),
-        contentPadding = zeroContentPadding(),
+        contentPadding = socialContentPadding(),
         modifier = Modifier.size(56.dp, 56.dp)
     ) {
         Icon(painter = image, contentDescription = null)

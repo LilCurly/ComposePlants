@@ -4,7 +4,10 @@ import com.example.soplant.BuildConfig
 import com.example.soplant.application.network.services.*
 import com.example.soplant.application.repositories.*
 import com.example.soplant.domain.interactors.confirm_reset.ConfirmReset
-import com.example.soplant.domain.interactors.confirmation.*
+import com.example.soplant.domain.interactors.confirmation.CreateAccount
+import com.example.soplant.domain.interactors.confirmation.CreateExploration
+import com.example.soplant.domain.interactors.confirmation.ResendCode
+import com.example.soplant.domain.interactors.confirmation.ValidateUser
 import com.example.soplant.domain.interactors.login.LoginWithCredentials
 import com.example.soplant.domain.interactors.register.GetCountries
 import com.example.soplant.domain.interactors.register.SignupUser
@@ -22,6 +25,9 @@ import com.example.soplant.redux.confirmation.ConfirmationAction
 import com.example.soplant.redux.confirmation.ConfirmationDataMiddleware
 import com.example.soplant.redux.confirmation.ConfirmationReducer
 import com.example.soplant.redux.confirmation.ConfirmationViewState
+import com.example.soplant.redux.create_post.CreatePostAction
+import com.example.soplant.redux.create_post.CreatePostReducer
+import com.example.soplant.redux.create_post.CreatePostViewState
 import com.example.soplant.redux.login.LoginAction
 import com.example.soplant.redux.login.LoginDataMiddleware
 import com.example.soplant.redux.login.LoginReducer
@@ -243,6 +249,13 @@ class ApplicationModule {
         return listOf(WalletDataMiddleware(getWallet, getTransactions))
     }
 
+    @Provides
+    @Singleton
+    fun provideCreatePostMiddlewares(
+    ): List<Middleware<CreatePostAction, CreatePostViewState>> {
+        return listOf()
+    }
+
     @Module
     @InstallIn(SingletonComponent::class)
     interface RepositoriesModule {
@@ -346,5 +359,11 @@ class ApplicationModule {
         fun bindWalletReducer(
             walletReducer: WalletReducer
         ): Reducer<WalletAction, WalletViewState>
+
+        @Binds
+        @Singleton
+        fun createPostReducer(
+            createPostReducer: CreatePostReducer
+        ): Reducer<CreatePostAction, CreatePostViewState>
     }
 }

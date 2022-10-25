@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import com.example.soplant.R
 import com.example.soplant.presentation.commons.decorators.HelpScreenDecorator
 import com.example.soplant.presentation.commons.decorators.LoadingScreenDecorator
-import com.example.soplant.presentation.commons.popup.help.TestHelpPopup
+import com.example.soplant.presentation.commons.popup.help.TestHelpPopupContent
 import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.ui.register.components.LegalEntityComponent
 import com.example.soplant.presentation.ui.register.components.RegisterAsComponent
@@ -47,7 +47,7 @@ fun ComposeRegisterScreen(
         HelpScreenDecorator(
             showHelpButton = state.currentScreenState != RegisterScreenState.FORM,
             popupContent = {
-                TestHelpPopup()
+                TestHelpPopupContent()
             }) {
             LazyColumn(
                 modifier = Modifier

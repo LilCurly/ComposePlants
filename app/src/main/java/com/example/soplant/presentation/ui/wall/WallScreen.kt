@@ -82,7 +82,7 @@ fun ComposeWallScreen(
                 Column {
                     WalletViewComponent(
                         state.isLoadingUser || state.isLoadingUsers,
-                        if (state.user != null) state.user!!.wallets[0].amount else "0",
+                        if (state.user != null && state.user!!.wallets.isNotEmpty()) state.user!!.wallets[0].amount else "0",
                         navController
                     )
                 }
