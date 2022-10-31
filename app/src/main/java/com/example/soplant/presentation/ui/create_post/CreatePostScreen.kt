@@ -219,6 +219,13 @@ fun ComposeCreatePostScreen(
                                 viewModel.switchPlantIsVariegation()
                             }
                             Spacer(modifier = Modifier.height(9.dp))
+                            CustomSwitch(
+                                title = "Is beginner friendly ?",
+                                currentValue = state.plantIsUserFriendly
+                            ) {
+                                viewModel.switchPlantIsUserFriendly()
+                            }
+                            Spacer(modifier = Modifier.height(9.dp))
                             CustomHorizontalOptions(
                                 image = R.drawable.icon_bank,
                                 title = "Light level",
@@ -227,6 +234,26 @@ fun ComposeCreatePostScreen(
                                 onValueSelected = {
                                     viewModel.selectPlantLightLevel(it)
                                 }
+                            )
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomHorizontalOptions(
+                                image = R.drawable.icon_bank,
+                                title = "Water level",
+                                values = listOf("Low", "Medium", "High"),
+                                selectedIndex = state.plantWaterLevel,
+                                onValueSelected = {
+                                    viewModel.selectPlantWaterLevel(it)
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomDropDown(
+                                values = listOf(),
+                                selectedValue = null,
+                                title = "Maturity",
+                                placeholder = "Enter here",
+                                isLoading = false,
+                                focusManager = focusManager,
+                                onSelectChanged = {}
                             )
                             Spacer(modifier = Modifier.height(9.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
