@@ -3,6 +3,7 @@ package com.example.soplant.presentation.utils
 import android.content.Context
 import android.net.Uri
 import android.os.Environment
+import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -12,6 +13,11 @@ import java.util.*
 
 
 object FileUtils {
+
+    fun getUriFromFile(context: Context, file: File): Uri {
+        return FileProvider.getUriForFile(context, "com.example.soplant.file_provider", file)
+    }
+
     fun createImageFile(context: Context): File {
         // Create an image file name
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())

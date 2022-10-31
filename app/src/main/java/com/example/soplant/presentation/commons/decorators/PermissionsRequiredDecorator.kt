@@ -14,6 +14,7 @@ fun PermissionsRequiredDecorator(
     rationalePopupContent: String,
     onPermissionGranted: (String) -> Unit,
     onPermissionRefused: (String) -> Unit,
+    onPopupClose: () -> Unit,
     nextComposable: @Composable () -> Unit
 ) {
     var shouldShow by remember {
@@ -29,7 +30,10 @@ fun PermissionsRequiredDecorator(
             }
         })
 
-    PopupDecorator(shouldShow = shouldShow, onClose = { shouldShow = false }, content = {
+    PopupDecorator(shouldShow = shouldShow, onClose = {
+        shouldShow = false
+        onPopupClose()
+    }, content = {
         PermissionRequestPopupContent(
             content = rationalePopupContent,
         ) {

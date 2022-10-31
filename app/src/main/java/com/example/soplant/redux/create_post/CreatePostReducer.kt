@@ -34,6 +34,18 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
                 }
                 previousState.copy(filePaths = filePaths)
             }
+            is CreatePostAction.DeleteFilePath -> {
+                if (previousState.filePaths.size - 1 >= currentAction.index) {
+                    val filePaths = mutableListOf<String>()
+                    previousState.filePaths.forEachIndexed { i, value ->
+                        if (i != currentAction.index) {
+                            filePaths.add(value)
+                        }
+                    }
+                    return previousState.copy(filePaths = filePaths)
+                }
+                return previousState
+            }
             is CreatePostAction.ClearPermission -> {
                 previousState.copy(currentPermissionRequest = "")
             }
@@ -51,6 +63,38 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
             }
             is CreatePostAction.OpenEditImageBottomSheet -> {
                 previousState.copy(bottomSheetState = CreatePostViewState.BottomSheetState.EDIT_IMAGE)
+            }
+            is CreatePostAction.NavigateToStep -> {
+                val previousStep = previousState.currentStep
+                previousState.copy(
+                    previousStep = previousStep,
+                    currentStep = currentAction.nextStep,
+                    lastHighestStep = if (currentAction.nextStep > previousState.lastHighestStep) currentAction.nextStep else previousState.lastHighestStep
+                )
+            }
+            is CreatePostAction.EditPostTitle -> {
+                previousState.copy(postTitle = currentAction.newPostTitle)
+            }
+            is CreatePostAction.EditPostDescription -> {
+                previousState.copy(postDescription = currentAction.newPostDescription)
+            }
+            is CreatePostAction.SelectPlantType -> {
+                previousState.copy(plantType = currentAction.newPlantType)
+            }
+            is CreatePostAction.SelectPlantLightLevel -> {
+                previousState.copy(plantLightLevel = currentAction.newLightLevel)
+            }
+            is CreatePostAction.SelectPlantWaterLevel -> {
+                previousState.copy(plantWaterLevel = currentAction.newWaterLevel)
+            }
+            is CreatePostAction.SelectPlantGrowLevel -> {
+                previousState.copy(plantGrowLevel = currentAction.newGrowLevel)
+            }
+            is CreatePostAction.SwitchPlantIsUserFriendly -> {
+                previousState.copy(plantIsUserFriendly = !previousState.plantIsUserFriendly)
+            }
+            is CreatePostAction.SwitchPlantIsVariegation -> {
+                previousState.copy(plantIsVariegation = !previousState.plantIsVariegation)
             }
         }
     }

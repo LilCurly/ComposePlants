@@ -56,7 +56,7 @@ fun PopupDecorator(
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(15.dp),
+                shape = MaterialTheme.shapes.large,
                 backgroundColor = MaterialTheme.colors.surface,
                 elevation = 0.dp
             ) {

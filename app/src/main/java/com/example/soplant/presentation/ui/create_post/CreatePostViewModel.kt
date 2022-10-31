@@ -86,4 +86,86 @@ class CreatePostViewModel @Inject constructor(private val store: Store<CreatePos
             store.dispatch(action, this)
         }
     }
+
+    fun deleteFilePath(index: Int) {
+        val action = CreatePostAction.DeleteFilePath(index)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun navigateToStep(nextStep: Int) {
+        val action = CreatePostAction.NavigateToStep(nextStep)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun editPostTitle(newPostTitle: String) {
+        val action = CreatePostAction.EditPostTitle(newPostTitle)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun editPostDescription(newPostDescription: String) {
+        val action = CreatePostAction.EditPostDescription(newPostDescription)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun selectPlantType(newPlantType: String) {
+        val action = CreatePostAction.SelectPlantType(newPlantType)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun selectPlantLightLevel(newPlantLightLevel: Int) {
+        val action = CreatePostAction.SelectPlantLightLevel(newPlantLightLevel)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun selectPlantWaterLevel(newWaterLevel: Int) {
+        val action = CreatePostAction.SelectPlantWaterLevel(newWaterLevel)
+
+        viewModelScope.launch {
+            store.dispatch(
+                action, this
+            )
+        }
+    }
+
+    fun selectPlantGrowLevel(newPlantGrowLevel: Int) {
+        val action = CreatePostAction.SelectPlantGrowLevel(newPlantGrowLevel)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun switchPlantIsUserFriendly() {
+        val action = CreatePostAction.SwitchPlantIsUserFriendly
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun switchPlantIsVariegation() {
+        val action = CreatePostAction.SwitchPlantIsVariegation
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
 }

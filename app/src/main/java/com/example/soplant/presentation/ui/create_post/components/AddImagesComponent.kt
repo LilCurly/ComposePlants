@@ -1,14 +1,13 @@
 package com.example.soplant.presentation.ui.create_post.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +22,7 @@ import com.example.soplant.presentation.ui.custom.zeroContentPadding
 import com.example.soplant.presentation.ui.extensions.advancedShadow
 import java.io.File
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddImagesComponent(
     images: List<String>,
@@ -52,12 +52,35 @@ fun AddImagesComponent(
                     )
             ) {
                 if (images.isNotEmpty()) {
-                    Image(
-                        painter = rememberImagePainter(File(images[0])),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize()
-                    )
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Image(
+                            painter = rememberImagePainter(File(images[0])),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                        Card(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .align(Alignment.BottomEnd)
+                                .offset(x = (-10).dp, y = (-10).dp),
+                            shape = MaterialTheme.shapes.medium,
+                            backgroundColor = Color.White,
+                            onClick = { onDeleteClick(0) }
+                        ) {
+                            Column(
+                                modifier = Modifier.fillMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier.fillMaxSize(0.5f),
+                                    painter = painterResource(id = R.drawable.icon_cross_black),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
                 } else {
                     Image(
                         painter = painterResource(id = R.drawable.icon_add_light),
@@ -96,12 +119,35 @@ fun AddImagesComponent(
                         )
                 ) {
                     if (images.size >= 2) {
-                        Image(
-                            painter = rememberImagePainter(File(images[1])),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = rememberImagePainter(File(images[1])),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-5).dp, y = (-5).dp),
+                                shape = MaterialTheme.shapes.medium,
+                                backgroundColor = Color.White,
+                                onClick = { onDeleteClick(1) }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        modifier = Modifier.fillMaxSize(0.5f),
+                                        painter = painterResource(id = R.drawable.icon_cross_black),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.icon_add_light),
@@ -128,12 +174,35 @@ fun AddImagesComponent(
                         )
                 ) {
                     if (images.size >= 3) {
-                        Image(
-                            painter = rememberImagePainter(File(images[2])),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = rememberImagePainter(File(images[2])),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-5).dp, y = (-5).dp),
+                                shape = MaterialTheme.shapes.medium,
+                                backgroundColor = Color.White,
+                                onClick = { onDeleteClick(2) }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        modifier = Modifier.fillMaxSize(0.5f),
+                                        painter = painterResource(id = R.drawable.icon_cross_black),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.icon_add_light),
@@ -167,12 +236,35 @@ fun AddImagesComponent(
                         )
                 ) {
                     if (images.size >= 4) {
-                        Image(
-                            painter = rememberImagePainter(File(images[3])),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = rememberImagePainter(File(images[3])),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-5).dp, y = (-5).dp),
+                                shape = MaterialTheme.shapes.medium,
+                                backgroundColor = Color.White,
+                                onClick = { onDeleteClick(3) }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        modifier = Modifier.fillMaxSize(0.5f),
+                                        painter = painterResource(id = R.drawable.icon_cross_black),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.icon_add_light),
@@ -199,12 +291,35 @@ fun AddImagesComponent(
                         )
                 ) {
                     if (images.size == 5) {
-                        Image(
-                            painter = rememberImagePainter(File(images[4])),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxSize()
-                        )
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            Image(
+                                painter = rememberImagePainter(File(images[4])),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                            Card(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .align(Alignment.BottomEnd)
+                                    .offset(x = (-5).dp, y = (-5).dp),
+                                shape = MaterialTheme.shapes.medium,
+                                backgroundColor = Color.White,
+                                onClick = { onDeleteClick(4) }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Image(
+                                        modifier = Modifier.fillMaxSize(0.5f),
+                                        painter = painterResource(id = R.drawable.icon_cross_black),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        }
                     } else {
                         Image(
                             painter = painterResource(id = R.drawable.icon_add_light),

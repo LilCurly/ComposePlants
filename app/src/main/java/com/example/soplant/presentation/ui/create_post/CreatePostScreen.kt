@@ -1,7 +1,6 @@
 package com.example.soplant.presentation.ui.create_post
 
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,12 +13,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.soplant.R
 import com.example.soplant.presentation.commons.bottom_sheet.AddImageMethodBottomSheetContent
 import com.example.soplant.presentation.commons.bottom_sheet.EditImageMethodBottomSheetContent
 import com.example.soplant.presentation.commons.decorators.BottomSheetDecorator
@@ -30,10 +30,10 @@ import com.example.soplant.presentation.theme.Grey
 import com.example.soplant.presentation.theme.White
 import com.example.soplant.presentation.ui.components.BaseButtonComponent
 import com.example.soplant.presentation.ui.components.NumberPicker
+import com.example.soplant.presentation.ui.components.ProcessProgressComponent
 import com.example.soplant.presentation.ui.components.TopBarComponent
 import com.example.soplant.presentation.ui.create_post.components.AddImagesComponent
-import com.example.soplant.presentation.ui.custom.CustomTextField
-import com.example.soplant.presentation.ui.custom.KeyboardSpacer
+import com.example.soplant.presentation.ui.custom.*
 import com.example.soplant.presentation.ui.extensions.advancedShadow
 import com.example.soplant.presentation.utils.FileUtils
 import com.example.soplant.redux.create_post.CreatePostViewState
@@ -48,10 +48,12 @@ fun ComposeCreatePostScreen(
 
     val scrollState = rememberLazyListState()
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
 
     var file by remember {
         mutableStateOf<File?>(null)
     }
+
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { isSuccess ->
@@ -69,7 +71,7 @@ fun ComposeCreatePostScreen(
         contract = ActivityResultContracts.GetMultipleContents(),
         onResult = { images ->
             val imagesList = mutableListOf<String>()
-            run loop@ {
+            run loop@{
                 for (i in 0 until (5 - state.filePaths.size)) {
                     if (i < images.size) {
                         FileUtils.createCopyAndReturnRealPath(context, images[i])?.let {
@@ -104,12 +106,13 @@ fun ComposeCreatePostScreen(
             viewModel.clearPermission()
             file = FileUtils.createImageFile(context)
             file?.let {
-                val imageUri =
-                    FileProvider.getUriForFile(context, "com.example.soplant.file_provider", it)
-                cameraLauncher.launch(imageUri)
+                cameraLauncher.launch(FileUtils.getUriFromFile(context, it))
             }
         },
         onPermissionRefused = {
+            viewModel.clearPermission()
+        },
+        onPopupClose = {
             viewModel.clearPermission()
         }
     ) {
@@ -148,6 +151,24 @@ fun ComposeCreatePostScreen(
                         contentPadding = PaddingValues(start = 26.dp, end = 26.dp, bottom = 40.dp)
                     ) {
                         item {
+                            Row(modifier = Modifier.fillMaxWidth()) {
+                                ProcessProgressComponent(
+                                    images = listOf(
+                                        R.drawable.icon_bank,
+                                        R.drawable.icon_bank,
+                                        R.drawable.icon_bank,
+                                        R.drawable.icon_bank
+                                    ),
+                                    currentStep = state.currentStep,
+                                    previousStep = state.previousStep,
+                                    onClickStep = {
+                                        if (it < state.lastHighestStep) {
+                                            viewModel.navigateToStep(it)
+                                        }
+                                    }
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(16.dp))
                             Row {
                                 Spacer(modifier = Modifier.width(14.dp))
                                 Text(
@@ -160,7 +181,7 @@ fun ComposeCreatePostScreen(
                             AddImagesComponent(
                                 images = state.filePaths,
                                 onAddClick = { viewModel.openAddImageBottomSheet() },
-                                onDeleteClick = {},
+                                onDeleteClick = { viewModel.deleteFilePath(it) },
                                 onEditClick = { index ->
                                     viewModel.tapImage(index)
                                     viewModel.openEditImageBottomSheet()
@@ -168,16 +189,49 @@ fun ComposeCreatePostScreen(
                             )
                             Spacer(modifier = Modifier.height(13.dp))
                             CustomTextField(
-                                value = "",
-                                onValueChange = {},
+                                value = state.postTitle,
+                                onValueChange = { viewModel.editPostTitle(it) },
                                 placeholder = "Enter here",
                                 title = "Post Title"
                             )
-                            Spacer(modifier = Modifier.height(13.dp))
-                            val testStateO = remember { mutableStateOf(10) }
-                            val testStateT = remember { mutableStateOf(0) }
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomDropDown(
+                                values = listOf(),
+                                selectedValue = null,
+                                title = "Plant Type",
+                                placeholder = "Enter here",
+                                isLoading = false,
+                                focusManager = focusManager,
+                                onSelectChanged = {}
+                            )
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomMultiLineTextField(
+                                value = state.postDescription,
+                                onValueChange = { viewModel.editPostDescription(it) },
+                                placeholder = "Enter here",
+                                title = "Description"
+                            )
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomSwitch(
+                                title = "Is variegation ?",
+                                currentValue = state.plantIsVariegation
+                            ) {
+                                viewModel.switchPlantIsVariegation()
+                            }
+                            Spacer(modifier = Modifier.height(9.dp))
+                            CustomHorizontalOptions(
+                                image = R.drawable.icon_bank,
+                                title = "Light level",
+                                values = listOf("Low", "Medium", "High"),
+                                selectedIndex = state.plantLightLevel,
+                                onValueSelected = {
+                                    viewModel.selectPlantLightLevel(it)
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(9.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Spacer(modifier = Modifier.width(19.dp))
+                                val testStateO = remember { mutableStateOf(10) }
+                                val testStateT = remember { mutableStateOf(0) }
                                 Text(
                                     text = "Price",
                                     style = MaterialTheme.typography.subtitle1,

@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -17,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SoPlantTheme {
+                val density = LocalDensity.current
                 val transitionTime = 300
                 val navController = rememberAnimatedNavController()
                 val navControllerState by navController.currentBackStackEntryAsState()
@@ -79,7 +80,14 @@ class MainActivity : ComponentActivity() {
                             navControllerState?.destination?.route == Screen.Profile.route
                 Scaffold(
                     bottomBar = {
-                        if (shouldShowBottomBar) {
+                        AnimatedVisibility(
+                            visible = shouldShowBottomBar,
+                            enter = fadeIn(animationSpec = tween(transitionTime)) + slideInVertically(animationSpec = tween(transitionTime)) {
+                                with(density) { 100.dp.roundToPx() }
+                            }, exit = fadeOut(animationSpec = tween(transitionTime)) + slideOutVertically(animationSpec = tween(transitionTime)) {
+                                with(density) { 100.dp.roundToPx() }
+                            }
+                        ) {
                             ComposeBottomNavigation(navController = navController)
                         }
                     }
@@ -168,7 +176,9 @@ class MainActivity : ComponentActivity() {
                                     userPassword = it.arguments?.getString("userPassword") ?: ""
                                 )
                             }
-                            composable(Screen.Wall.route) {
+                            composable(Screen.Wall.route, exitTransition = {
+                                fadeOut(animationSpec = tween(transitionTime))
+                            }) {
                                 ComposeWallScreen(navController = navController)
                             }
                             composable(Screen.ResetPassword.route) {
@@ -217,7 +227,17 @@ class MainActivity : ComponentActivity() {
                                     navController = navController
                                 )
                             }
-                            composable(Screen.CreatePost.route) {
+                            composable(Screen.CreatePost.route, enterTransition = {
+                                slideIntoContainer(
+                                    AnimatedContentScope.SlideDirection.Up,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }, exitTransition = {
+                                slideOutOfContainer(
+                                    AnimatedContentScope.SlideDirection.Down,
+                                    animationSpec = tween(transitionTime)
+                                )
+                            }) {
                                 ComposeCreatePostScreen(
                                     navController = navController
                                 )
