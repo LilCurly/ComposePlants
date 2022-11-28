@@ -28,4 +28,8 @@ sealed class CreatePostAction : Action {
     data class SelectPlantGrowLevel(val newGrowLevel: Int) : CreatePostAction()
     object SwitchPlantIsUserFriendly : CreatePostAction()
     object SwitchPlantIsVariegation : CreatePostAction()
+
+    // Plant unitary price
+    data class EditUnitaryPrice(val char: String) : CreatePostAction()
+    object DeleteUnitaryPrice : CreatePostAction()
 }

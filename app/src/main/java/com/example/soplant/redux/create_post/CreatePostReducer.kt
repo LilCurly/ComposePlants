@@ -15,13 +15,13 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
                 if (filePaths.size < 5) {
                     filePaths.add(currentAction.filePath)
                 }
-                previousState.copy(filePaths = filePaths)
+                canContinueState(previousState.copy(filePaths = filePaths))
             }
             is CreatePostAction.AddMultipleFilePaths -> {
                 val filePaths = mutableListOf<String>()
                 filePaths.addAll(previousState.filePaths)
                 filePaths.addAll(currentAction.filePaths)
-                previousState.copy(filePaths = filePaths)
+                canContinueState(previousState.copy(filePaths = filePaths))
             }
             is CreatePostAction.EditFilePath -> {
                 val filePaths = mutableListOf<String>()
@@ -42,7 +42,7 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
                             filePaths.add(value)
                         }
                     }
-                    return previousState.copy(filePaths = filePaths)
+                    return canContinueState(previousState.copy(filePaths = filePaths))
                 }
                 return previousState
             }
@@ -66,20 +66,28 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
             }
             is CreatePostAction.NavigateToStep -> {
                 val previousStep = previousState.currentStep
-                previousState.copy(
-                    previousStep = previousStep,
-                    currentStep = currentAction.nextStep,
-                    lastHighestStep = if (currentAction.nextStep > previousState.lastHighestStep) currentAction.nextStep else previousState.lastHighestStep
+                canContinueState(
+                    previousState.copy(
+                        previousStep = previousStep,
+                        currentStep = currentAction.nextStep,
+                        lastHighestStep = if (currentAction.nextStep > previousState.lastHighestStep) currentAction.nextStep else previousState.lastHighestStep
+                    )
                 )
             }
             is CreatePostAction.EditPostTitle -> {
-                previousState.copy(postTitle = currentAction.newPostTitle)
+                canContinueState(
+                    previousState.copy(postTitle = currentAction.newPostTitle)
+                )
             }
             is CreatePostAction.EditPostDescription -> {
-                previousState.copy(postDescription = currentAction.newPostDescription)
+                canContinueState(
+                    previousState.copy(postDescription = currentAction.newPostDescription)
+                )
             }
             is CreatePostAction.SelectPlantType -> {
-                previousState.copy(plantType = currentAction.newPlantType)
+                canContinueState(
+                    previousState.copy(plantType = currentAction.newPlantType)
+                )
             }
             is CreatePostAction.SelectPlantLightLevel -> {
                 previousState.copy(plantLightLevel = currentAction.newLightLevel)
@@ -96,6 +104,51 @@ class CreatePostReducer @Inject constructor() : Reducer<CreatePostAction, Create
             is CreatePostAction.SwitchPlantIsVariegation -> {
                 previousState.copy(plantIsVariegation = !previousState.plantIsVariegation)
             }
+            is CreatePostAction.EditUnitaryPrice -> {
+                val newPrice = if (currentAction.char == ".") {
+                    if (previousState.plantUnitaryPrice.contains(".") || previousState.plantUnitaryPrice.isEmpty()) {
+                        previousState.plantUnitaryPrice
+                    } else {
+                        previousState.plantUnitaryPrice + currentAction.char
+                    }
+                } else {
+                    if (currentAction.char == "0" && previousState.plantUnitaryPrice.isEmpty()) {
+                        previousState.plantUnitaryPrice
+                    } else {
+                        if (previousState.plantUnitaryPrice.count() <= 3 || previousState.plantUnitaryPrice[previousState.plantUnitaryPrice.count() - 3].toString() != ".") {
+                            previousState.plantUnitaryPrice + currentAction.char
+                        } else {
+                            previousState.plantUnitaryPrice
+                        }
+                    }
+                }
+                canContinueState(previousState.copy(plantUnitaryPrice = newPrice))
+            }
+            is CreatePostAction.DeleteUnitaryPrice -> {
+                canContinueState(previousState.copy(plantUnitaryPrice = previousState.plantUnitaryPrice.dropLast(1)))
+            }
         }
     }
+
+    private fun canContinueState(previousState: CreatePostViewState): CreatePostViewState {
+        return when (previousState.currentStep) {
+            0 -> {
+                previousState.copy(
+                    canContinue = previousState.postTitle.trim()
+                        .isNotEmpty() && previousState.postDescription.trim()
+                        //.isNotEmpty() && previousState.plantType.trim()
+                        .isNotEmpty() && previousState.filePaths.size > 0
+                )
+            }
+            1 -> {
+                previousState.copy(
+                    canContinue = previousState.plantUnitaryPrice.trim().isNotEmpty()
+                )
+            }
+            else -> {
+                previousState.copy(canContinue = false)
+            }
+        }
+    }
+
 }

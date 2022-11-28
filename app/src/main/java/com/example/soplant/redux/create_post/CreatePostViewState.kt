@@ -21,7 +21,10 @@ data class CreatePostViewState(
     val plantWaterLevel: Int,
     val plantGrowLevel: Int,
     val plantIsUserFriendly: Boolean,
-    val plantIsVariegation: Boolean
+    val plantIsVariegation: Boolean,
+    val canContinue: Boolean,
+    // Plant unitary price
+    val plantUnitaryPrice: String
 ) : State {
     @Inject
     constructor() : this(
@@ -39,7 +42,9 @@ data class CreatePostViewState(
         0,
         0,
         false,
-        false
+        false,
+        false,
+        ""
     )
 
     enum class BottomSheetState {

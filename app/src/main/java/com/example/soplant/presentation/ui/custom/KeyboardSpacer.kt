@@ -10,5 +10,5 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun KeyboardSpacer() {
     val keyboardState by keyboardAsState()
-    Spacer(modifier = Modifier.height(if (keyboardState == Keyboard.Opened) 300.dp else 0.dp))
+    Spacer(modifier = Modifier.height(if (keyboardState == Keyboard.Opened) 70.dp else 0.dp))
 }

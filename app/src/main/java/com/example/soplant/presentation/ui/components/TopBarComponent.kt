@@ -7,27 +7,36 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.soplant.R
 import com.example.soplant.presentation.theme.Grey
+import com.example.soplant.presentation.theme.SoPlantTheme
 import com.example.soplant.presentation.theme.White
 import com.example.soplant.presentation.ui.extensions.advancedShadow
 
 @Composable
 fun TopBarComponent(
-    navController: NavController,
+    navController: NavController?,
     title: String,
     scrollState: LazyListState? = null
 ) {
     Row(
         modifier = Modifier
+            .background(White)
+            .padding(horizontal = 22.dp)
+    ) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(65.dp)
             .advancedShadow(
                 color = Grey,
                 alpha = if (scrollState != null)
@@ -36,12 +45,7 @@ fun TopBarComponent(
                     0f,
                 shadowBlurRadius = 20.dp
             )
-            .background(White)
-            .padding(horizontal = 22.dp)
-            .fillMaxWidth()
-            .height(65.dp)
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.h1,
@@ -51,7 +55,7 @@ fun TopBarComponent(
                     .widthIn(0.dp, 230.dp)
             )
             IconButton(
-                onClick = { navController.popBackStack() },
+                onClick = { navController?.popBackStack() },
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
                 Image(
@@ -59,6 +63,16 @@ fun TopBarComponent(
                     contentDescription = null
                 )
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun TopBarComponentPreview() {
+    SoPlantTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            TopBarComponent(navController = null, title = "Test Title")
         }
     }
 }

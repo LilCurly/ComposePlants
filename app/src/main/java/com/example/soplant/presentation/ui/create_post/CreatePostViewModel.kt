@@ -168,4 +168,20 @@ class CreatePostViewModel @Inject constructor(private val store: Store<CreatePos
             store.dispatch(action, this)
         }
     }
+
+    fun editUnitaryPrice(char: String) {
+        val action = CreatePostAction.EditUnitaryPrice(char)
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
+
+    fun deleteUnitaryPrice() {
+        val action = CreatePostAction.DeleteUnitaryPrice
+
+        viewModelScope.launch {
+            store.dispatch(action, this)
+        }
+    }
 }
