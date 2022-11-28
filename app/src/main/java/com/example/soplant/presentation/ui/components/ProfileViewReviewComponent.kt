@@ -33,7 +33,7 @@ fun ProfileViewReviewsComponent(
             modifier = Modifier.fillMaxHeight()
         ) {
             CustomPlaceholderImage(
-                data = if (sellerImageUrl.isNotEmpty()) sellerImageUrl else R.drawable.splashscreen,
+                data = if (sellerImageUrl.isNotEmpty()) sellerImageUrl else R.drawable.logo,
                 modifier = Modifier
                     .size(23.dp)
                     .clip(CircleShape)

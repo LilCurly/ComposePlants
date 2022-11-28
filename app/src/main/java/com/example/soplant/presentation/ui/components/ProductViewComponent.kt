@@ -58,7 +58,7 @@ fun ProductViewComponent(product: Product)
                     val pagerState = rememberPagerState()
                     HorizontalPager(count = 5, state = pagerState) {
                         CustomPlaceholderImage(
-                            data = R.drawable.splashscreen,
+                            data = R.drawable.logo,
                             modifier = Modifier.alpha(0.8f)
                         )
                     }
